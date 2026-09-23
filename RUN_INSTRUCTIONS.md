@@ -100,7 +100,41 @@ Generate 1–5 questions per command. On this CPU-only machine, answer generatio
 
 ## Add another textbook
 
-1. Put the Markdown file under `dataset/raw/`. Keep the `## পৃষ্ঠা N` headings so citations can point to real pages.
+If the textbook is already Markdown, put it under `dataset/raw/`. Keep the `## পৃষ্ঠা N` headings so citations can point to real pages.
+
+To convert an NCTB PDF with the optional Surya OCR 2 module, install only its additional dependencies:
+
+```powershell
+& ".\.venv\Scripts\python.exe" -m pip install -r ".\requirements-ocr.txt"
+```
+
+On this CPU-only Windows machine, point Surya at the already installed `llama-server` and the project-local model cache before each OCR session:
+
+```powershell
+$env:SURYA_INFERENCE_BACKEND = "llamacpp"
+$env:LLAMA_CPP_BINARY = "C:\Users\Ashad Bin Rashid\Desktop\Bangla-Notebook\.runtime\llama-b10516\llama-server.exe"
+$env:LLAMA_CPP_NGL = "0"
+$env:SURYA_INFERENCE_PARALLEL = "1"
+$env:HF_HOME = "$PWD\.runtime\huggingface"
+```
+
+Convert the full PDF directly to parser-compatible Markdown:
+
+```powershell
+& ".\.venv\Scripts\python.exe" -m bangla_ocr ".\NCTB-Books\book.pdf" -o ".\dataset\raw\book.md" --dpi 300
+```
+
+For a quick validation, process a small page range first. Use a `.json` output path when region confidence and bounding boxes are needed:
+
+```powershell
+& ".\.venv\Scripts\python.exe" -m bangla_ocr ".\NCTB-Books\book.pdf" -o ".\ocr-smoke.json" --pages 1-3 --dpi 96
+```
+
+OCR runs one page at a time and displays live terminal progress. It does not automatically register or index the new book.
+
+After conversion:
+
+1. Check the OCR output, then keep the Markdown file under `dataset/raw/`.
 2. Add a record to `config/books.json`. Give the book a unique `id`, bilingual title, one or more class records, and a bilingual subject record. Reuse the same subject `id` for books belonging to the same subject.
 3. Rebuild the index:
 

@@ -1,0 +1,6 @@
+# Optional dependencies for `python -m bangla_ocr`.
+surya-ocr>=0.22
+pypdfium2>=4.0
+Pillow>=10.0
+tqdm>=4.65
+

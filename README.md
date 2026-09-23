@@ -16,6 +16,7 @@ When the demonstration is finished, double-click `Stop-Pathshongi.cmd` to stop t
 - bilingual Bengali/English web GUI
 - class → subject → textbook selection, ready for more books
 - interactive quiz creation and scoring
+- optional Surya OCR 2 conversion from textbook PDF/image to Markdown or JSON
 - no paid APIs and no model training required
 
 See [RUN_INSTRUCTIONS.md](RUN_INSTRUCTIONS.md) for setup and usage.
