@@ -1,0 +1,8 @@
+.venv/
+.runtime/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+dataset/index/
+*.log
+

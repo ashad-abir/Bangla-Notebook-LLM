@@ -1,0 +1,15 @@
+[
+  {"question": "ভৌত রাশি কাকে বলে?", "answerable": true},
+  {"question": "বেগ ও দ্রুতি কীভাবে আলাদা?", "answerable": true},
+  {"question": "নিউটনের দ্বিতীয় সূত্রটি কী?", "answerable": true},
+  {"question": "কাজের একক কী?", "answerable": true},
+  {"question": "আলোর প্রতিফলনের সূত্র লেখ।", "answerable": true},
+  {"question": "তেজস্ক্রিয়তা কী?", "answerable": true},
+  {"question": "বাংলাদেশের বর্তমান রাষ্ট্রপতি কে?", "answerable": false},
+  {"question": "পাইথনে একটি ওয়েবসাইট কীভাবে বানাব?", "answerable": false},
+  {"question": "রবীন্দ্রনাথ ঠাকুরের শেষ উপন্যাস কোনটি?", "answerable": false},
+  {"question": "আজ ঢাকার আবহাওয়া কেমন?", "answerable": false},
+  {"question": "ফরাসি বিপ্লব কত সালে হয়েছিল?", "answerable": false},
+  {"question": "একটি বিরিয়ানির রেসিপি দাও।", "answerable": false}
+]
+

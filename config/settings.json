@@ -1,0 +1,13 @@
+{
+  "embedding_model": "local-embedding-model",
+  "embedding_base_url": "http://127.0.0.1:8081/v1",
+  "llm_base_url": "http://127.0.0.1:8080/v1",
+  "llm_model": "local-model",
+  "max_chunk_words": 220,
+  "overlap_words": 35,
+  "semantic_threshold": 0.52,
+  "semantic_with_keyword_threshold": 0.55,
+  "keyword_coverage_threshold": 0.61,
+  "answer_passages": 2,
+  "request_timeout_seconds": 300
+}

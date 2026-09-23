@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="অষ্টম থেকে দশম শ্রেণির পাঠ্যবইভিত্তিক প্রশ্নোত্তর ও কুইজ">
+  <title>পাঠসঙ্গী · বইভিত্তিক শিক্ষা</title>
+  <link rel="icon" type="image/png" href="/static/assets/pathshongi-logo.png">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="topbar">
+    <a class="brand" href="/" data-i18n-aria="homeLabel" aria-label="পাঠসঙ্গী হোম">
+      <span class="brand-mark" aria-hidden="true"><img src="/static/assets/pathshongi-logo.png" alt=""></span>
+      <span>
+        <strong data-i18n="brandName">পাঠসঙ্গী</strong>
+        <small data-i18n="brandSubtitle">আপনার বইভিত্তিক শিক্ষা সহায়ক</small>
+      </span>
+    </a>
+    <div class="topbar-actions">
+      <div class="language-switch" aria-label="Language selector">
+        <button type="button" data-language="bn" class="active">বাংলা</button>
+        <button type="button" data-language="en">English</button>
+      </div>
+      <div class="status-pill" id="system-status" role="status">
+        <span class="status-dot"></span>
+        <span data-i18n="checkingSystem">সিস্টেম যাচাই হচ্ছে…</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow" data-i18n="eyebrow">বইয়ের বাইরে নয় · উৎসসহ উত্তর</div>
+      <h1><span class="hero-ink" data-i18n="heroLineOne">নিজের শ্রেণি বেছে নিন,</span><br><span data-i18n="heroLineTwo">নিজের মতো শিখুন।</span></h1>
+      <p data-i18n="heroDescription">শ্রেণি ও বিষয় নির্বাচন করুন। তারপর বাংলা বা ইংরেজিতে প্রশ্ন করুন অথবা বইভিত্তিক কুইজ তৈরি করুন।</p>
+      <div class="book-meta">
+        <span><b id="book-count">২</b> <span data-i18n="booksLabel">বই</span></span>
+        <span><b id="page-count">—</b> <span data-i18n="pagesLabel">পৃষ্ঠা</span></span>
+        <span><b id="chunk-count">—</b> <span data-i18n="chunksLabel">জ্ঞানাংশ</span></span>
+      </div>
+    </section>
+
+    <section class="learning-path" id="learning-path" aria-labelledby="path-title">
+      <div class="path-heading">
+        <div>
+          <p class="section-label" data-i18n="startLearning">শেখা শুরু করুন</p>
+          <h2 id="path-title" data-i18n="choosePath">আপনার শেখার পথ বেছে নিন</h2>
+        </div>
+        <p data-i18n="pathHelp">প্রথমে শ্রেণি, তারপর বিষয় নির্বাচন করুন। আপনার প্রশ্ন শুধু নির্বাচিত বইয়ে খোঁজা হবে।</p>
+      </div>
+      <div class="path-grid">
+        <section class="selection-step active" id="class-step">
+          <div class="step-heading">
+            <span class="step-number" id="class-step-number">১</span>
+            <div><small data-i18n="firstStep">প্রথম ধাপ</small><h3 data-i18n="selectClass">শ্রেণি নির্বাচন</h3></div>
+          </div>
+          <div class="choice-grid" id="class-choices" data-i18n-aria="classChoices" aria-label="Class choices"></div>
+        </section>
+        <section class="selection-step locked" id="subject-step">
+          <div class="step-heading">
+            <span class="step-number" id="subject-step-number">২</span>
+            <div><small data-i18n="secondStep">দ্বিতীয় ধাপ</small><h3 data-i18n="selectSubject">বিষয় নির্বাচন</h3></div>
+          </div>
+          <div class="choice-grid" id="subject-choices" data-i18n-aria="subjectChoices" aria-label="Subject choices">
+            <p class="selection-placeholder" data-i18n="classFirst">বিষয় দেখতে আগে শ্রেণি নির্বাচন করুন।</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="workspace" id="workspace" data-i18n-aria="appLabel" aria-label="পাঠসঙ্গী অ্যাপ" hidden>
+      <div class="context-bar">
+        <div class="context-copy">
+          <span class="context-icon" id="context-icon">φ</span>
+          <div>
+            <small data-i18n="currentlyLearning">এখন শিখছেন</small>
+            <strong id="context-title">নবম–দশম শ্রেণি · পদার্থবিজ্ঞান</strong>
+          </div>
+        </div>
+        <button class="ghost-button" id="change-selection" type="button" data-i18n="changeSelection">পরিবর্তন করুন</button>
+      </div>
+      <nav class="tabs" data-i18n-aria="mainSections" aria-label="প্রধান বিভাগ">
+        <button class="tab active" data-tab="ask" aria-selected="true">
+          <span aria-hidden="true">✦</span> <span data-i18n="askTab">প্রশ্ন করুন</span>
+        </button>
+        <button class="tab" data-tab="quiz" aria-selected="false">
+          <span aria-hidden="true">✓</span> <span data-i18n="quizTab">কুইজ তৈরি</span>
+        </button>
+      </nav>
+
+      <div class="panel active" id="ask-panel">
+        <div class="panel-intro">
+          <div>
+            <p class="section-label" data-i18n="bookAssistant">বইভিত্তিক সহায়ক</p>
+            <h2 data-i18n="whatToKnow">কী জানতে চান?</h2>
+          </div>
+          <button class="ghost-button" id="clear-chat" type="button" data-i18n="clearChat">কথোপকথন মুছুন</button>
+        </div>
+
+        <div class="suggestions" data-i18n-aria="sampleQuestions" aria-label="নমুনা প্রশ্ন">
+          <button type="button" data-suggestion="newton">নিউটনের দ্বিতীয় সূত্র কী?</button>
+          <button type="button" data-suggestion="speed">বেগ ও দ্রুতি কীভাবে আলাদা?</button>
+          <button type="button" data-suggestion="reflection">আলোর প্রতিফলনের সূত্র ব্যাখ্যা করো।</button>
+        </div>
+
+        <div class="conversation" id="conversation" aria-live="polite">
+          <div class="welcome-card" id="welcome-card">
+            <div class="welcome-icon">φ</div>
+            <div>
+              <strong data-i18n="letsStart">শুরু করা যাক</strong>
+              <p data-i18n="welcomeCopy">উপরের একটি নমুনা বেছে নিন অথবা নিজের প্রশ্ন লিখুন। নির্বাচিত বইয়ে উত্তর না থাকলে আমি তা স্পষ্টভাবে জানাব।</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="composer" id="ask-form">
+          <label class="sr-only" for="question" data-i18n="questionLabel">আপনার প্রশ্ন</label>
+          <textarea id="question" rows="2" maxlength="2000" data-i18n-placeholder="questionPlaceholder" placeholder="যেমন: নিউটনের দ্বিতীয় সূত্রটি উদাহরণসহ বুঝিয়ে দাও…" required></textarea>
+          <button class="primary-button" type="submit" id="ask-button">
+            <span data-i18n="answerButton">উত্তর দিন</span><span aria-hidden="true">→</span>
+          </button>
+        </form>
+        <p class="latency-note" data-i18n="latencyNote">CPU-তে একটি উত্তর তৈরি হতে প্রায় ১–২ মিনিট লাগতে পারে।</p>
+      </div>
+
+      <div class="panel" id="quiz-panel" hidden>
+        <div class="panel-intro">
+          <div>
+            <p class="section-label" data-i18n="practice">অনুশীলন</p>
+            <h2 data-i18n="makeQuiz">নিজের কুইজ বানান</h2>
+          </div>
+        </div>
+
+        <form class="quiz-builder" id="quiz-form">
+          <div class="field grow">
+            <label for="quiz-chapter" data-i18n="selectChapter">অধ্যায় নির্বাচন করুন</label>
+            <select id="quiz-chapter" required>
+              <option value="" data-i18n="chapterFirst">প্রথমে একটি অধ্যায় বেছে নিন</option>
+            </select>
+          </div>
+          <div class="field type-field">
+            <label for="quiz-type" data-i18n="quizType">প্রশ্নের ধরন</label>
+            <select id="quiz-type">
+              <option value="mcq" data-i18n="mcqType">বহুনির্বাচনী (MCQ)</option>
+              <option value="knowledge" data-i18n="knowledgeType">জ্ঞানমূলক (সংক্ষিপ্ত)</option>
+            </select>
+          </div>
+          <div class="field count-field">
+            <label for="quiz-count" data-i18n="questionsLabel">প্রশ্ন</label>
+            <select id="quiz-count"></select>
+          </div>
+          <button class="primary-button" type="submit" id="quiz-button" data-i18n="createQuiz">কুইজ তৈরি</button>
+        </form>
+        <p class="latency-note quiz-latency" data-i18n="quizLatency">প্রশ্নের সংখ্যা অনুযায়ী কুইজ তৈরি হতে কয়েক মিনিট লাগতে পারে।</p>
+
+        <div class="quiz-empty" id="quiz-empty">
+          <span>◎</span>
+          <h3 data-i18n="chooseTopic">অধ্যায় ও প্রশ্নের ধরন বেছে নিন</h3>
+          <p data-i18n="quizEmptyCopy">বইয়ের নির্বাচিত অধ্যায় থেকে উৎসসহ MCQ অথবা সংক্ষিপ্ত জ্ঞানমূলক প্রশ্ন তৈরি হবে।</p>
+        </div>
+        <div id="quiz-results" class="quiz-results" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p data-i18n="privacyFooter">সম্পূর্ণ লোকাল · কোনো প্রশ্ন বা উত্তর ইন্টারনেটে পাঠানো হয় না</p>
+    <p data-i18n="reviewFooter">AI-তৈরি কুইজ শ্রেণিকক্ষে ব্যবহারের আগে শিক্ষক যাচাই করুন।</p>
+  </footer>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
