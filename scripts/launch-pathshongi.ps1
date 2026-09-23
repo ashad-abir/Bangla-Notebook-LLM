@@ -1,14 +1,20 @@
 param(
     [int]$GuiPort = 8000,
     [int]$AnswerPort = 8080,
-    [int]$EmbeddingPort = 8081
+    [int]$EmbeddingPort = 8081,
+    [string]$Server = $env:PATHSHONGI_LLAMA_SERVER,
+    [string]$Model
 )
 
 $ErrorActionPreference = "Stop"
 $projectRoot = (Resolve-Path -LiteralPath "$PSScriptRoot\..").Path
 $python = Join-Path $projectRoot ".venv\Scripts\python.exe"
-$server = "C:\Users\Ashad Bin Rashid\Desktop\Bangla-Notebook\.runtime\llama-b10516\llama-server.exe"
-$model = Join-Path $projectRoot ".runtime\models\Qwen3-4B-Q4_K_M.gguf"
+if (-not $Server) {
+    $Server = Join-Path $projectRoot ".runtime\llama.cpp\llama-server.exe"
+}
+if (-not $Model) {
+    $Model = Join-Path $projectRoot ".runtime\models\Qwen3-4B-Q4_K_M.gguf"
+}
 $runtimeDir = Join-Path $projectRoot ".runtime"
 $logDir = Join-Path $runtimeDir "logs"
 $statePath = Join-Path $runtimeDir "pathshongi-processes.json"
@@ -46,7 +52,7 @@ function Start-HiddenProcess([string]$FilePath, [string[]]$Arguments, [string]$L
 }
 
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
-foreach ($required in @($python, $server, $model)) {
+foreach ($required in @($python, $Server, $Model)) {
     if (-not (Test-Path -LiteralPath $required)) {
         throw "Required file was not found: $required"
     }
@@ -68,7 +74,7 @@ try {
     Write-Host "Starting Pathshongi (পাঠসঙ্গী)..." -ForegroundColor Cyan
 
     if (-not (Test-LocalPort $EmbeddingPort)) {
-        $process = Start-HiddenProcess $server @(
+        $process = Start-HiddenProcess $Server @(
             "--embd-gemma-default", "--alias", "local-embedding-model",
             "--host", "127.0.0.1", "--port", "$EmbeddingPort",
             "-c", "8192", "--parallel", "8", "-ngl", "0", "--embedding", "--no-webui"
@@ -78,8 +84,8 @@ try {
     }
 
     if (-not (Test-LocalPort $AnswerPort)) {
-        $quotedModel = '"' + $model + '"'
-        $process = Start-HiddenProcess $server @(
+        $quotedModel = '"' + $Model + '"'
+        $process = Start-HiddenProcess $Server @(
             "-m", $quotedModel, "--alias", "local-model",
             "--host", "127.0.0.1", "--port", "$AnswerPort",
             "-c", "8192", "-ngl", "0", "--reasoning", "off", "--jinja", "--no-webui"

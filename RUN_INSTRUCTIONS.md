@@ -1,9 +1,9 @@
 # Local Run Instructions (Windows)
 
-All commands below are intended for PowerShell in:
+All commands below are intended for PowerShell opened at the cloned repository root:
 
 ```powershell
-Set-Location -LiteralPath "C:\Users\Ashad Bin Rashid\Documents\ChatGPT\Bangla Notebook LLM"
+Set-Location -LiteralPath "C:\path\to\Bangla-Notebook-LLM"
 ```
 
 ## 1. Install Python and dependencies
@@ -45,13 +45,13 @@ Evaluation prints every evidence-gate decision. The current thresholds are conse
 
 ## 4. Start a free local answer model
 
-The official free Qwen3-4B Q4 answer model is already stored under `.runtime\models` and is ignored by Git. The launcher also starts a small local EmbeddingGemma service for retrieval, avoiding PyTorch DLL restrictions on managed Windows devices. Start both with:
+Place a Qwen3-4B Q4 GGUF under `.runtime\models` and a recent `llama-server.exe` under `.runtime\llama.cpp`, or set `PATHSHONGI_LLAMA_SERVER` to the executable path. The launcher also starts a local EmbeddingGemma service for retrieval. Start both with:
 
 ```powershell
 & ".\scripts\start-local-model.ps1"
 ```
 
-Keep that terminal open. On the first run, `llama.cpp` downloads the free EmbeddingGemma GGUF into the local Hugging Face cache; later runs are offline. The launcher uses the existing free `llama.cpp` binary at `C:\Users\Ashad Bin Rashid\Desktop\Bangla-Notebook\.runtime\llama-b10516\llama-server.exe`. The application expects OpenAI-compatible answer and embedding endpoints at `http://127.0.0.1:8080/v1` and `http://127.0.0.1:8081/v1`. Change the corresponding settings in `config/settings.json` if your local servers differ.
+Keep that terminal open. On the first run, `llama.cpp` downloads the free EmbeddingGemma GGUF into the local Hugging Face cache; later runs are offline. The application expects OpenAI-compatible answer and embedding endpoints at `http://127.0.0.1:8080/v1` and `http://127.0.0.1:8081/v1`. Change the corresponding settings in `config/settings.json` if your local servers differ.
 
 ## 5. Ask questions
 
@@ -112,7 +112,11 @@ On this CPU-only Windows machine, point Surya at the already installed `llama-se
 
 ```powershell
 $env:SURYA_INFERENCE_BACKEND = "llamacpp"
-$env:LLAMA_CPP_BINARY = "C:\Users\Ashad Bin Rashid\Desktop\Bangla-Notebook\.runtime\llama-b10516\llama-server.exe"
+$env:LLAMA_CPP_BINARY = if ($env:PATHSHONGI_LLAMA_SERVER) {
+    $env:PATHSHONGI_LLAMA_SERVER
+} else {
+    (Resolve-Path ".\.runtime\llama.cpp\llama-server.exe").Path
+}
 $env:LLAMA_CPP_NGL = "0"
 $env:SURYA_INFERENCE_PARALLEL = "1"
 $env:HF_HOME = "$PWD\.runtime\huggingface"

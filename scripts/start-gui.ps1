@@ -7,7 +7,7 @@ $projectRoot = (Resolve-Path -LiteralPath "$PSScriptRoot\..").Path
 $python = Join-Path $projectRoot ".venv\Scripts\python.exe"
 
 if (-not (Test-Path -LiteralPath $python)) {
-    throw "Project Python was not found at $python. Follow RUN_INSTRUCTIONS.md first."
+    throw "Project Python was not found at $python. Follow README.md first."
 }
 
 Set-Location -LiteralPath $projectRoot

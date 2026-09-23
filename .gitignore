@@ -1,8 +1,43 @@
+# Local Python environments and machine-specific configuration
 .venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.python-version
+RUN_INSTRUCTIONS.local.md
+*.local.ps1
+
+# Local models, caches, logs, and process state
 .runtime/
-__pycache__/
-.pytest_cache/
-*.py[cod]
-dataset/index/
+*.gguf
+*.safetensors
+*.pid
 *.log
 
+# Generated indexes and OCR working data
+dataset/index/
+NCTB-Books/
+ocr-output/
+ocr-*.json
+quiz/*.json
+!quiz/newton-smoke.json
+
+# Python, test, coverage, and build output
+__pycache__/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+build/
+dist/
+*.egg-info/
+*.py[cod]
+
+# Local editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
