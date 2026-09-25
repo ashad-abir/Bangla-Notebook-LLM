@@ -36,7 +36,6 @@ The current catalog registers:
 
 | ID | Textbook | Class | Chapters |
 | --- | --- | --- | ---: |
-| `bgs-8` | Bangladesh and Global Studies | 8 | 13 |
 | `physics-9-10` | Physics | 9–10 | 13 |
 
 Additional Markdown may exist under `dataset/raw/`, but a book is available in the application only after it is registered in `config/books.json` and the index is rebuilt.
@@ -89,6 +88,32 @@ Then start the web interface:
 Open <http://127.0.0.1:8000>. API documentation is available at <http://127.0.0.1:8000/api/docs>.
 
 After the environment, model, and index are ready, `Launch-Pathshongi.cmd` starts all three local services and opens the browser. `Stop-Pathshongi.cmd` stops only processes recorded by that launcher.
+
+## Quick start on Linux
+
+After creating `.venv` and installing `requirements.txt`, run:
+
+```bash
+./Launch-Pathshongi.sh
+```
+
+The launcher builds a lexical index when no index exists, starts any locally installed llama.cpp services, starts the web app, records its process IDs under `.runtime/`, and opens the browser. If the model binary or GGUF is not installed, the catalog and lexical retrieval still start in limited mode.
+
+Stop only the launcher-managed processes with:
+
+```bash
+./Stop-Pathshongi.sh
+```
+
+Use `./Launch-Pathshongi.sh --port 8001` to select a different GUI port, or add `--no-browser` when running without a desktop session.
+
+To download and install the official CPU llama.cpp runtime and Qwen3-4B Q4_K_M model into `.runtime/`, run:
+
+```bash
+./Install-Pathshongi-Model.sh
+```
+
+The download is resumable. Restart Pathshongi afterward so the launcher can start the answer and embedding services.
 
 ## OCR: convert a textbook to Markdown or JSON
 

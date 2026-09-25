@@ -1,0 +1,2585 @@
+{
+  "version": "1.0",
+  "language": "bn",
+  "task": "physics-chapter-classification",
+  "source": "dataset/raw/physics.md",
+  "count": 234,
+  "label_count": 13,
+  "questions_per_chapter": 18,
+  "questions": [
+    {
+      "id": "physics-01-01",
+      "question": "পদার্থবিজ্ঞান কী নিয়ে আলোচনা করে?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-02",
+      "question": "ভৌত রাশি কাকে বলে?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-03",
+      "question": "মৌলিক রাশি ও লব্ধ রাশির পার্থক্য কী?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-04",
+      "question": "এসআই একক ব্যবহারের সুবিধা কী?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-05",
+      "question": "দৈর্ঘ্যের এসআই একক কী?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-06",
+      "question": "ভরের এসআই একক কী?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-07",
+      "question": "সময়ের এসআই একক কী?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-08",
+      "question": "তাপমাত্রার এসআই একক কী?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-09",
+      "question": "মাত্রা বলতে কী বোঝায়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-10",
+      "question": "বৈজ্ঞানিক প্রতীক ব্যবহার করা হয় কেন?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-11",
+      "question": "এককের উপসর্গ বলতে কী বোঝায়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-12",
+      "question": "পরিমাপের ত্রুটি কীভাবে সৃষ্টি হয়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-13",
+      "question": "নির্ভুলতা ও সূক্ষ্মতার মধ্যে পার্থক্য কী?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-14",
+      "question": "ভার্নিয়ার ধ্রুবক কীভাবে নির্ণয় করা হয়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-15",
+      "question": "ভার্নিয়ার ক্যালিপার্স দিয়ে কী মাপা যায়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-16",
+      "question": "স্ক্রু গজের লঘিষ্ঠ গণন কীভাবে নির্ণয় করা হয়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-17",
+      "question": "তাৎপর্যপূর্ণ অঙ্ক বলতে কী বোঝায়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-01-18",
+      "question": "একটি লব্ধ রাশির মাত্রা কীভাবে নির্ণয় করা হয়?",
+      "label": 0,
+      "chapter_id": 1,
+      "chapter_title": "ভৌত রাশি এবং তাদের পরিমাপ",
+      "chapter_page_range": [
+        6,
+        36
+      ]
+    },
+    {
+      "id": "physics-02-01",
+      "question": "স্থিতি ও গতি আপেক্ষিক কেন?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-02",
+      "question": "প্রসঙ্গ কাঠামো বলতে কী বোঝায়?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-03",
+      "question": "দূরত্ব ও সরণের পার্থক্য কী?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-04",
+      "question": "দ্রুতি কাকে বলে?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-05",
+      "question": "বেগ কাকে বলে?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-06",
+      "question": "সমদ্রুতি ও সমবেগের পার্থক্য কী?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-07",
+      "question": "গড় দ্রুতি কীভাবে নির্ণয় করা হয়?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-08",
+      "question": "ত্বরণ কাকে বলে?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-09",
+      "question": "মন্দন বলতে কী বোঝায়?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-10",
+      "question": "সরলরৈখিক গতি কাকে বলে?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-11",
+      "question": "পর্যাবৃত্ত গতি কী?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-12",
+      "question": "ঘূর্ণন গতি ও চলন গতির পার্থক্য কী?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-13",
+      "question": "দূরত্ব-সময় লেখচিত্রের ঢাল কী নির্দেশ করে?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-14",
+      "question": "বেগ-সময় লেখচিত্রের ঢাল কী নির্দেশ করে?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-15",
+      "question": "বেগ-সময় লেখচিত্র থেকে সরণ কীভাবে পাওয়া যায়?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-16",
+      "question": "গতির সমীকরণগুলো কখন প্রয়োগ করা যায়?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-17",
+      "question": "মুক্তভাবে পড়ন্ত বস্তুর ত্বরণ কত?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-02-18",
+      "question": "অভিকর্ষজ ত্বরণের মান স্থানভেদে বদলায় কেন?",
+      "label": 1,
+      "chapter_id": 2,
+      "chapter_title": "গতি",
+      "chapter_page_range": [
+        37,
+        66
+      ]
+    },
+    {
+      "id": "physics-03-01",
+      "question": "বল কাকে বলে?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-02",
+      "question": "জড়তা বলতে কী বোঝায়?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-03",
+      "question": "ভরকে জড়তার পরিমাপ বলা হয় কেন?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-04",
+      "question": "নিউটনের প্রথম গতিসূত্র কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-05",
+      "question": "নিউটনের দ্বিতীয় গতিসূত্র কীভাবে বলকে সংজ্ঞায়িত করে?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-06",
+      "question": "নিউটনের তৃতীয় গতিসূত্র কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-07",
+      "question": "ক্রিয়া ও প্রতিক্রিয়া বল একই বস্তুর ওপর কাজ করে কি?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-08",
+      "question": "ভরবেগ কাকে বলে?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-09",
+      "question": "ঘাত বল বলতে কী বোঝায়?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-10",
+      "question": "বল ও ভরবেগের পরিবর্তনের সম্পর্ক কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-11",
+      "question": "ভরবেগের সংরক্ষণ সূত্র কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-12",
+      "question": "ঘর্ষণ বল কীভাবে সৃষ্টি হয়?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-13",
+      "question": "স্থিতি ঘর্ষণ ও গতি ঘর্ষণের পার্থক্য কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-14",
+      "question": "ঘর্ষণ বাড়ানোর একটি উপায় কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-15",
+      "question": "ঘর্ষণ কমানোর একটি উপায় কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-16",
+      "question": "মৌলিক বল কয় প্রকার ও কী কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-17",
+      "question": "ভর ও ওজনের পার্থক্য কী?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-03-18",
+      "question": "বৃত্তাকার গতির জন্য কেন্দ্রমুখী বল কেন প্রয়োজন?",
+      "label": 2,
+      "chapter_id": 3,
+      "chapter_title": "বল",
+      "chapter_page_range": [
+        67,
+        102
+      ]
+    },
+    {
+      "id": "physics-04-01",
+      "question": "কাজ কাকে বলে?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-02",
+      "question": "কোন অবস্থায় বল প্রয়োগ করলেও কাজ শূন্য হয়?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-03",
+      "question": "কাজের এসআই একক কী?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-04",
+      "question": "ধনাত্মক ও ঋণাত্মক কাজ বলতে কী বোঝায়?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-05",
+      "question": "শক্তি কাকে বলে?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-06",
+      "question": "গতিশক্তি কী?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-07",
+      "question": "বস্তুর গতিশক্তি কোন কোন রাশির ওপর নির্ভর করে?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-08",
+      "question": "বিভবশক্তি কী?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-09",
+      "question": "অভিকর্ষীয় বিভবশক্তি কীভাবে নির্ণয় করা হয়?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-10",
+      "question": "স্থিতিস্থাপক বিভবশক্তি কোথায় সঞ্চিত থাকে?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-11",
+      "question": "শক্তির নিত্যতা সূত্র কী?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-12",
+      "question": "যান্ত্রিক শক্তি কখন সংরক্ষিত থাকে?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-13",
+      "question": "ক্ষমতা কাকে বলে?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-14",
+      "question": "ক্ষমতার এসআই একক কী?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-15",
+      "question": "কিলোওয়াট-ঘণ্টা কোন রাশির একক?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-16",
+      "question": "দক্ষতা কাকে বলে?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-17",
+      "question": "যন্ত্রের দক্ষতা শতভাগের কম হয় কেন?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-04-18",
+      "question": "নবায়নযোগ্য ও অনবায়নযোগ্য শক্তির পার্থক্য কী?",
+      "label": 3,
+      "chapter_id": 4,
+      "chapter_title": "কাজ, ক্ষমতা ও শক্তি",
+      "chapter_page_range": [
+        103,
+        131
+      ]
+    },
+    {
+      "id": "physics-05-01",
+      "question": "পদার্থের তিনটি সাধারণ অবস্থা কী কী?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-02",
+      "question": "আন্তঃআণবিক বল পদার্থের অবস্থাকে কীভাবে প্রভাবিত করে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-03",
+      "question": "স্থিতিস্থাপকতা কাকে বলে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-04",
+      "question": "হুকের সূত্র কী?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-05",
+      "question": "ঘনত্ব কাকে বলে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-06",
+      "question": "আপেক্ষিক ঘনত্বের কোনো একক নেই কেন?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-07",
+      "question": "চাপ কাকে বলে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-08",
+      "question": "চাপের এসআই একক কী?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-09",
+      "question": "তরলের চাপ গভীরতার সঙ্গে বাড়ে কেন?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-10",
+      "question": "প্যাসকেলের সূত্র কী?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-11",
+      "question": "হাইড্রোলিক প্রেস কীভাবে কাজ করে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-12",
+      "question": "আর্কিমিডিসের সূত্র কী?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-13",
+      "question": "প্লবতা কাকে বলে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-14",
+      "question": "কোন শর্তে একটি বস্তু তরলে ভাসে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-15",
+      "question": "বায়ুমণ্ডলীয় চাপ কীভাবে সৃষ্টি হয়?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-16",
+      "question": "ব্যারোমিটার দিয়ে কী পরিমাপ করা হয়?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-17",
+      "question": "পৃষ্ঠটান বলতে কী বোঝায়?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-05-18",
+      "question": "সান্দ্রতা কাকে বলে?",
+      "label": 4,
+      "chapter_id": 5,
+      "chapter_title": "পদার্থের অবস্থা ও চাপ",
+      "chapter_page_range": [
+        132,
+        163
+      ]
+    },
+    {
+      "id": "physics-06-01",
+      "question": "তাপ ও তাপমাত্রার পার্থক্য কী?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-02",
+      "question": "তাপীয় সাম্য বলতে কী বোঝায়?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-03",
+      "question": "সেলসিয়াস ও কেলভিন স্কেলের সম্পর্ক কী?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-04",
+      "question": "থার্মোমিটারের স্থির বিন্দু কী?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-05",
+      "question": "তাপমাত্রা বাড়লে কঠিন পদার্থ প্রসারিত হয় কেন?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-06",
+      "question": "রৈখিক প্রসারণ সহগ কাকে বলে?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-07",
+      "question": "ক্ষেত্র প্রসারণ ও আয়তন প্রসারণের পার্থক্য কী?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-08",
+      "question": "দ্বিধাতব পাত কীভাবে কাজ করে?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-09",
+      "question": "তাপধারণ ক্ষমতা কাকে বলে?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-10",
+      "question": "আপেক্ষিক তাপ কাকে বলে?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-11",
+      "question": "ক্যালোরিমিতির মূলনীতি কী?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-12",
+      "question": "সুপ্ততাপ বলতে কী বোঝায়?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-13",
+      "question": "গলনের সুপ্ততাপ কী?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-14",
+      "question": "বাষ্পীভবনের সুপ্ততাপ কী?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-15",
+      "question": "পরিবহন প্রক্রিয়ায় তাপ কীভাবে সঞ্চালিত হয়?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-16",
+      "question": "পরিচলন প্রক্রিয়া কোথায় ঘটে?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-17",
+      "question": "বিকিরণের জন্য মাধ্যমের প্রয়োজন হয় না কেন?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-06-18",
+      "question": "কালো পৃষ্ঠ ভালো তাপ শোষক কেন?",
+      "label": 5,
+      "chapter_id": 6,
+      "chapter_title": "বস্তুর ওপর তাপের প্রভাব",
+      "chapter_page_range": [
+        164,
+        190
+      ]
+    },
+    {
+      "id": "physics-07-01",
+      "question": "তরঙ্গ কাকে বলে?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-02",
+      "question": "যান্ত্রিক তরঙ্গের জন্য মাধ্যম প্রয়োজন কেন?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-03",
+      "question": "অনুপ্রস্থ ও অনুদৈর্ঘ্য তরঙ্গের পার্থক্য কী?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-04",
+      "question": "তরঙ্গের বিস্তার কাকে বলে?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-05",
+      "question": "কম্পাঙ্ক কাকে বলে?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-06",
+      "question": "পর্যায়কাল ও কম্পাঙ্কের সম্পর্ক কী?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-07",
+      "question": "তরঙ্গদৈর্ঘ্য কাকে বলে?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-08",
+      "question": "তরঙ্গের বেগ কীভাবে নির্ণয় করা হয়?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-09",
+      "question": "তরঙ্গের দশা বলতে কী বোঝায়?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-10",
+      "question": "শব্দ কীভাবে উৎপন্ন হয়?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-11",
+      "question": "শব্দ তরঙ্গ অনুদৈর্ঘ্য কেন?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-12",
+      "question": "শব্দের বেগ কোন কোন বিষয়ের ওপর নির্ভর করে?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-13",
+      "question": "প্রতিধ্বনি শোনার শর্ত কী?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-14",
+      "question": "অনুনাদ কাকে বলে?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-15",
+      "question": "মানুষের শ্রাব্য কম্পাঙ্কের সীমা কত?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-16",
+      "question": "শ্রাব্যোত্তর শব্দের একটি ব্যবহার কী?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-17",
+      "question": "শব্দের তীব্রতা কীসের ওপর নির্ভর করে?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-07-18",
+      "question": "শব্দদূষণ কমানোর একটি উপায় কী?",
+      "label": 6,
+      "chapter_id": 7,
+      "chapter_title": "তরঙ্গ ও শব্দ",
+      "chapter_page_range": [
+        191,
+        214
+      ]
+    },
+    {
+      "id": "physics-08-01",
+      "question": "আলোর প্রতিফলন কাকে বলে?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-02",
+      "question": "প্রতিফলনের প্রথম সূত্র কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-03",
+      "question": "প্রতিফলনের দ্বিতীয় সূত্র কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-04",
+      "question": "নিয়মিত ও ব্যাপ্ত প্রতিফলনের পার্থক্য কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-05",
+      "question": "সমতল দর্পণে গঠিত প্রতিবিম্বের বৈশিষ্ট্য কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-06",
+      "question": "পার্শ্বীয় পরিবর্তন বলতে কী বোঝায়?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-07",
+      "question": "গোলীয় দর্পণ কাকে বলে?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-08",
+      "question": "অবতল ও উত্তল দর্পণের পার্থক্য কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-09",
+      "question": "দর্পণের প্রধান অক্ষ কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-10",
+      "question": "বক্রতার কেন্দ্র কাকে বলে?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-11",
+      "question": "দর্পণের প্রধান ফোকাস কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-12",
+      "question": "ফোকাস দূরত্ব ও বক্রতার ব্যাসার্ধের সম্পর্ক কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-13",
+      "question": "অবতল দর্পণে বাস্তব প্রতিবিম্ব কখন গঠিত হয়?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-14",
+      "question": "উত্তল দর্পণের প্রতিবিম্ব সর্বদা কেমন হয়?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-15",
+      "question": "দর্পণের সমীকরণ কী?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-16",
+      "question": "রৈখিক বিবর্ধন কাকে বলে?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-17",
+      "question": "গাড়ির পেছন দেখার দর্পণ উত্তল হয় কেন?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-08-18",
+      "question": "পেরিস্কোপে প্রতিফলনের ব্যবহার কীভাবে হয়?",
+      "label": 7,
+      "chapter_id": 8,
+      "chapter_title": "আলোর প্রতিফলন",
+      "chapter_page_range": [
+        215,
+        245
+      ]
+    },
+    {
+      "id": "physics-09-01",
+      "question": "আলোর প্রতিসরণ কাকে বলে?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-02",
+      "question": "আলো এক মাধ্যম থেকে অন্য মাধ্যমে গেলে বেঁকে যায় কেন?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-03",
+      "question": "প্রতিসরণের প্রথম সূত্র কী?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-04",
+      "question": "স্নেলের সূত্র কী?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-05",
+      "question": "প্রতিসরাঙ্ক কাকে বলে?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-06",
+      "question": "পরম ও আপেক্ষিক প্রতিসরাঙ্কের পার্থক্য কী?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-07",
+      "question": "পূর্ণ অভ্যন্তরীণ প্রতিফলন কী?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-08",
+      "question": "সংকট কোণ কাকে বলে?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-09",
+      "question": "অপটিক্যাল ফাইবার কীভাবে আলো বহন করে?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-10",
+      "question": "লেন্স কাকে বলে?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-11",
+      "question": "উত্তল ও অবতল লেন্সের পার্থক্য কী?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-12",
+      "question": "লেন্সের আলোককেন্দ্র কাকে বলে?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-13",
+      "question": "লেন্সের সমীকরণ কী?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-14",
+      "question": "লেন্সের ক্ষমতা কাকে বলে?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-15",
+      "question": "লেন্সের ক্ষমতার একক কী?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-16",
+      "question": "চোখের নিকটদৃষ্টি কীভাবে সংশোধন করা হয়?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-17",
+      "question": "চোখের দূরদৃষ্টি কীভাবে সংশোধন করা হয়?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-09-18",
+      "question": "প্রিজমে সাদা আলোর বিচ্ছুরণ ঘটে কেন?",
+      "label": 8,
+      "chapter_id": 9,
+      "chapter_title": "আলোর প্রতিসরণ",
+      "chapter_page_range": [
+        246,
+        274
+      ]
+    },
+    {
+      "id": "physics-10-01",
+      "question": "বৈদ্যুতিক আধান কাকে বলে?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-02",
+      "question": "ধনাত্মক ও ঋণাত্মক আধান কীভাবে সৃষ্টি হয়?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-03",
+      "question": "আধানের সংরক্ষণ সূত্র কী?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-04",
+      "question": "ঘর্ষণের মাধ্যমে বস্তু কীভাবে আহিত হয়?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-05",
+      "question": "আবেশের মাধ্যমে আধান সৃষ্টি করা যায় কীভাবে?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-06",
+      "question": "পরিবাহী ও অপরিবাহীর পার্থক্য কী?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-07",
+      "question": "তড়িৎবীক্ষণ যন্ত্রের কাজ কী?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-08",
+      "question": "কুলম্বের সূত্র কী?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-09",
+      "question": "তড়িৎ ক্ষেত্র কাকে বলে?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-10",
+      "question": "তড়িৎ ক্ষেত্রের তীব্রতা কী?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-11",
+      "question": "তড়িৎ বলরেখার বৈশিষ্ট্য কী?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-12",
+      "question": "তড়িৎ বিভব কাকে বলে?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-13",
+      "question": "বিভব পার্থক্য বলতে কী বোঝায়?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-14",
+      "question": "ধারক কাকে বলে?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-15",
+      "question": "ধারকত্ব কোন কোন বিষয়ের ওপর নির্ভর করে?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-16",
+      "question": "বজ্রপাত কীভাবে সৃষ্টি হয়?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-17",
+      "question": "বজ্রনিরোধক কীভাবে ভবনকে রক্ষা করে?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-10-18",
+      "question": "আর্থিং করা হয় কেন?",
+      "label": 9,
+      "chapter_id": 10,
+      "chapter_title": "স্থির বিদ্যুৎ",
+      "chapter_page_range": [
+        275,
+        302
+      ]
+    },
+    {
+      "id": "physics-11-01",
+      "question": "তড়িৎ প্রবাহ কাকে বলে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-02",
+      "question": "তড়িৎ প্রবাহের এসআই একক কী?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-03",
+      "question": "বিভব পার্থক্য কীভাবে তড়িৎ প্রবাহ সৃষ্টি করে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-04",
+      "question": "তড়িচ্চালক শক্তি কাকে বলে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-05",
+      "question": "রোধ কাকে বলে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-06",
+      "question": "ওহমের সূত্র কী?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-07",
+      "question": "পরিবাহীর রোধ কোন কোন বিষয়ের ওপর নির্ভর করে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-08",
+      "question": "আপেক্ষিক রোধ কাকে বলে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-09",
+      "question": "শ্রেণি সংযোগে তুল্য রোধ কীভাবে নির্ণয় করা হয়?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-10",
+      "question": "সমান্তরাল সংযোগে তুল্য রোধ কীভাবে নির্ণয় করা হয়?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-11",
+      "question": "অ্যামিটার বর্তনীতে কীভাবে যুক্ত করা হয়?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-12",
+      "question": "ভোল্টমিটার বর্তনীতে কীভাবে যুক্ত করা হয়?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-13",
+      "question": "তড়িৎ ক্ষমতা কাকে বলে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-14",
+      "question": "তড়িৎ শক্তি কীভাবে হিসাব করা হয়?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-15",
+      "question": "জুলের তাপীয় সূত্র কী?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-16",
+      "question": "ফিউজ তারের গলনাঙ্ক কম রাখা হয় কেন?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-17",
+      "question": "বাড়ির যন্ত্রপাতি সমান্তরালে যুক্ত করা হয় কেন?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-11-18",
+      "question": "শর্ট সার্কিট কীভাবে ঘটে?",
+      "label": 10,
+      "chapter_id": 11,
+      "chapter_title": "চল বিদ্যুৎ",
+      "chapter_page_range": [
+        303,
+        333
+      ]
+    },
+    {
+      "id": "physics-12-01",
+      "question": "তড়িৎ প্রবাহের চৌম্বক ক্রিয়া কী?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-02",
+      "question": "ওয়েরস্টেডের পরীক্ষার ফল কী ছিল?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-03",
+      "question": "সোজা পরিবাহীর চারপাশে চৌম্বক ক্ষেত্রের দিক কীভাবে নির্ণয় করা হয়?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-04",
+      "question": "সলেনয়েডের চৌম্বক ক্ষেত্র কেমন?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-05",
+      "question": "তড়িৎচুম্বক কীভাবে তৈরি করা হয়?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-06",
+      "question": "তড়িৎচুম্বকের শক্তি কীভাবে বাড়ানো যায়?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-07",
+      "question": "চৌম্বক ক্ষেত্রে বিদ্যুৎবাহী তারের ওপর বল কেন কাজ করে?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-08",
+      "question": "ফ্লেমিংয়ের বামহস্ত নিয়ম কী নির্দেশ করে?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-09",
+      "question": "ডিসি মোটরের মূলনীতি কী?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-10",
+      "question": "তড়িৎচুম্বকীয় আবেশ কাকে বলে?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-11",
+      "question": "ফ্যারাডের আবেশ সূত্র কী?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-12",
+      "question": "লেন্‌জের সূত্র কী?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-13",
+      "question": "ফ্লেমিংয়ের ডানহস্ত নিয়ম কী নির্দেশ করে?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-14",
+      "question": "জেনারেটর কীভাবে বিদ্যুৎ উৎপন্ন করে?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-15",
+      "question": "এসি ও ডিসি প্রবাহের পার্থক্য কী?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-16",
+      "question": "ট্রান্সফরমারের মূলনীতি কী?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-17",
+      "question": "স্টেপ-আপ ও স্টেপ-ডাউন ট্রান্সফরমারের পার্থক্য কী?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-12-18",
+      "question": "উচ্চ ভোল্টেজে বিদ্যুৎ সঞ্চালন করা হয় কেন?",
+      "label": 11,
+      "chapter_id": 12,
+      "chapter_title": "বিদ্যুতের চৌম্বক ক্রিয়া",
+      "chapter_page_range": [
+        334,
+        350
+      ]
+    },
+    {
+      "id": "physics-13-01",
+      "question": "পরমাণুর নিউক্লিয়াস কী দিয়ে গঠিত?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-02",
+      "question": "আইসোটোপ কাকে বলে?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-03",
+      "question": "তেজস্ক্রিয়তা কাকে বলে?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-04",
+      "question": "আলফা রশ্মির বৈশিষ্ট্য কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-05",
+      "question": "বিটা রশ্মির বৈশিষ্ট্য কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-06",
+      "question": "গামা রশ্মির বৈশিষ্ট্য কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-07",
+      "question": "তেজস্ক্রিয় ক্ষয় কাকে বলে?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-08",
+      "question": "অর্ধায়ু বলতে কী বোঝায়?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-09",
+      "question": "নিউক্লীয় বিভাজন কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-10",
+      "question": "নিউক্লীয় সংযোজন কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-11",
+      "question": "শৃঙ্খল বিক্রিয়া কাকে বলে?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-12",
+      "question": "পারমাণবিক চুল্লিতে নিয়ন্ত্রক দণ্ডের কাজ কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-13",
+      "question": "তেজস্ক্রিয় বিকিরণের একটি ক্ষতিকর প্রভাব কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-14",
+      "question": "অর্ধপরিবাহী কাকে বলে?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-15",
+      "question": "পি-টাইপ ও এন-টাইপ অর্ধপরিবাহীর পার্থক্য কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-16",
+      "question": "ডায়োড কীভাবে একমুখী প্রবাহ তৈরি করে?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-17",
+      "question": "ট্রানজিস্টরের দুটি প্রধান ব্যবহার কী?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    },
+    {
+      "id": "physics-13-18",
+      "question": "লজিক গেট বলতে কী বোঝায়?",
+      "label": 12,
+      "chapter_id": 13,
+      "chapter_title": "তেজস্ক্রিয়তা ও ইলেকট্রনিকস",
+      "chapter_page_range": [
+        351,
+        366
+      ]
+    }
+  ]
+}

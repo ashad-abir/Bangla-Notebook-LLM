@@ -72,8 +72,8 @@ class CoreTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         books = {book.id: book for book in load_books(root)}
 
-        self.assertEqual(set(books), {"bgs-8", "physics-9-10"})
-        self.assertEqual(len(parse_book(books["bgs-8"])), 149)
+        self.assertEqual(set(books), {"physics-9-10"})
+        self.assertEqual(len(parse_book(books["physics-9-10"])), 366)
 
     def test_chunks_never_cross_pages(self):
         with tempfile.TemporaryDirectory() as directory:

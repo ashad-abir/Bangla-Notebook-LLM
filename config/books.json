@@ -1,35 +1,5 @@
 [
   {
-    "id": "bgs-8",
-    "title": "বাংলাদেশ ও বিশ্বপরিচয় — অষ্টম শ্রেণি",
-    "title_en": "Bangladesh and Global Studies — Class 8",
-    "classes": [
-      {"id": "8", "label_bn": "অষ্টম শ্রেণি", "label_en": "Class 8"}
-    ],
-    "subject": {
-      "id": "bgs",
-      "label_bn": "বাংলাদেশ ও বিশ্বপরিচয়",
-      "label_en": "Bangladesh and Global Studies",
-      "icon": "◎"
-    },
-    "chapters": [
-      {"id": "1", "title_bn": "ঔপনিবেশিক যুগ ও বাংলার স্বাধীনতা সংগ্রাম", "title_en": "Colonial Era and Bengal's Independence Struggle", "page_start": 6, "page_end": 17},
-      {"id": "2", "title_bn": "ঔপনিবেশিক যুগের প্রত্নতাত্ত্বিক ঐতিহ্য", "title_en": "Archaeological Heritage of the Colonial Era", "page_start": 18, "page_end": 23},
-      {"id": "3", "title_bn": "বাংলাদেশের মুক্তিযুদ্ধ ও গণতান্ত্রিক সংগ্রাম", "title_en": "Bangladesh's Liberation War and Democratic Movements", "page_start": 24, "page_end": 43},
-      {"id": "4", "title_bn": "বাংলাদেশের অর্থনীতি", "title_en": "Economy of Bangladesh", "page_start": 44, "page_end": 53},
-      {"id": "5", "title_bn": "বাংলাদেশ: রাষ্ট্র ও সরকার ব্যবস্থা", "title_en": "Bangladesh: State and Government System", "page_start": 54, "page_end": 67},
-      {"id": "6", "title_bn": "বাংলাদেশের সাংস্কৃতিক পরিবর্তন", "title_en": "Cultural Change in Bangladesh", "page_start": 68, "page_end": 79},
-      {"id": "7", "title_bn": "সামাজিকীকরণ", "title_en": "Socialization", "page_start": 80, "page_end": 88},
-      {"id": "8", "title_bn": "বাংলাদেশের বিভিন্ন নৃগোষ্ঠী", "title_en": "Ethnic Communities of Bangladesh", "page_start": 89, "page_end": 101},
-      {"id": "9", "title_bn": "বাংলাদেশের সামাজিক সমস্যা", "title_en": "Social Problems of Bangladesh", "page_start": 102, "page_end": 108},
-      {"id": "10", "title_bn": "বাংলাদেশের জনসংখ্যা ও উন্নয়ন", "title_en": "Population and Development in Bangladesh", "page_start": 109, "page_end": 113},
-      {"id": "11", "title_bn": "বাংলাদেশে জলবায়ু ও দুর্যোগ মোকাবিলা", "title_en": "Climate and Disaster Management in Bangladesh", "page_start": 114, "page_end": 130},
-      {"id": "12", "title_bn": "বাংলাদেশের প্রাকৃতিক সম্পদ", "title_en": "Natural Resources of Bangladesh", "page_start": 131, "page_end": 140},
-      {"id": "13", "title_bn": "বাংলাদেশ এবং বিভিন্ন আঞ্চলিক ও আন্তর্জাতিক সহযোগী সংস্থা", "title_en": "Bangladesh and Regional and International Organizations", "page_start": 141, "page_end": 149}
-    ],
-    "markdown_path": "dataset/raw/bgs_class8.md"
-  },
-  {
     "id": "physics-9-10",
     "title": "পদার্থবিজ্ঞান — নবম–দশম শ্রেণি",
     "title_en": "Physics — Classes 9–10",

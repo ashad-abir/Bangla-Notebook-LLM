@@ -80,9 +80,8 @@ def test_home_and_health_are_available():
     }
     catalog = client.get("/api/catalog")
     assert catalog.status_code == 200
-    assert [item["id"] for item in catalog.json()["classes"]] == ["8", "9-10"]
+    assert [item["id"] for item in catalog.json()["classes"]] == ["9-10"]
     subjects = {item["id"]: item for item in catalog.json()["subjects"]}
-    assert subjects["bgs"]["book_ids"] == ["bgs-8"]
     assert subjects["physics"]["book_ids"] == ["physics-9-10"]
     physics = next(book for book in catalog.json()["books"] if book["id"] == "physics-9-10")
     assert len(physics["chapters"]) == 13
