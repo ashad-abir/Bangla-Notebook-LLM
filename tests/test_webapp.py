@@ -14,8 +14,9 @@ class FakeLLM:
 
 
 class FakeQA:
-    def ask(self, question, book_ids=None):
+    def ask(self, question, book_ids=None, chapter_refs=None):
         assert book_ids == {"physics-9-10"}
+        assert chapter_refs == {("physics-9-10", "3")}
         return Answer(
             "answered",
             f"উত্তর: {question}",
@@ -27,12 +28,16 @@ class FakeQA:
                     "নিউটনের দ্বিতীয় সূত্রের প্রমাণ।",
                 ),
             ),
+            model="Qwen3-4B",
+            elapsed_seconds=1.234,
+            confidence=0.87,
         )
 
 
 class FakeQuiz:
-    def generate(self, topic, count, quiz_type="mcq", book_ids=None, page_range=None):
+    def generate(self, topic, count, quiz_type="mcq", book_ids=None, page_range=None, chapter_refs=None):
         assert book_ids == {"physics-9-10"}
+        assert chapter_refs == {("physics-9-10", "3")}
         assert topic == "নিউটনের সূত্র জড়তা ভরবেগ বল"
         assert page_range == (67, 102)
         return {
@@ -46,10 +51,12 @@ class FakeQuiz:
 
 
 def fake_runtime():
-    chunks = [SimpleNamespace(book_id="physics-9-10", page=index) for index in range(1, 4)]
+    chunks = [SimpleNamespace(book_id="physics-9-10", chapter_id="3", page=index) for index in range(67, 70)]
     return SimpleNamespace(
         index=SimpleNamespace(chunks=chunks, vectors=object()),
         llm=FakeLLM(),
+        reader=None,
+        answer_backend="chapter_rag",
         qa=FakeQA(),
         quiz=FakeQuiz(),
         generation_lock=Lock(),
@@ -73,6 +80,9 @@ def test_home_and_health_are_available():
         "status": "ready",
         "model_ready": True,
         "model_detail": "test-model",
+        "answer_backend": "chapter_rag",
+        "quiz_model_ready": True,
+        "quiz_model_detail": "test-model",
         "semantic_search": True,
         "chunks": 3,
         "books": 1,
@@ -86,12 +96,13 @@ def test_home_and_health_are_available():
     physics = next(book for book in catalog.json()["books"] if book["id"] == "physics-9-10")
     assert len(physics["chapters"]) == 13
     assert physics["chapters"][2]["title_bn"] == "বল"
+    assert physics["chapters"][2]["chunk_count"] == 3
 
 
 def test_ask_serializes_verified_citations():
     response = make_client().post(
         "/api/ask",
-        json={"question": "সূত্র কী?", "book_ids": ["physics-9-10"]},
+        json={"question": "সূত্র কী?", "book_id": "physics-9-10", "chapter_id": "3"},
     )
 
     assert response.status_code == 200
@@ -99,25 +110,28 @@ def test_ask_serializes_verified_citations():
     assert payload["status"] == "answered"
     assert payload["citations"][0]["page"] == 81
     assert payload["citations"][0]["chunk_ids"] == ["chunk-81"]
+    assert payload["model"] == "Qwen3-4B"
+    assert payload["response_time_seconds"] == 1.234
+    assert payload["confidence"] == 0.87
 
 
 def test_quiz_and_validation_contracts():
     client = make_client()
     response = client.post(
         "/api/quiz",
-        json={"chapter_id": "3", "quiz_type": "mcq", "count": 10, "book_ids": ["physics-9-10"]},
+        json={"chapter_id": "3", "quiz_type": "mcq", "count": 10, "book_id": "physics-9-10"},
     )
     invalid = client.post(
         "/api/quiz",
-        json={"chapter_id": "3", "quiz_type": "mcq", "count": 9, "book_ids": ["physics-9-10"]},
+        json={"chapter_id": "3", "quiz_type": "mcq", "count": 9, "book_id": "physics-9-10"},
     )
     invalid_chapter = client.post(
         "/api/quiz",
-        json={"chapter_id": "99", "quiz_type": "knowledge", "count": 5, "book_ids": ["physics-9-10"]},
+        json={"chapter_id": "99", "quiz_type": "knowledge", "count": 5, "book_id": "physics-9-10"},
     )
     unknown = client.post(
         "/api/quiz",
-        json={"chapter_id": "3", "quiz_type": "mcq", "count": 10, "book_ids": ["unknown"]},
+        json={"chapter_id": "3", "quiz_type": "mcq", "count": 10, "book_id": "unknown"},
     )
 
     assert response.status_code == 200

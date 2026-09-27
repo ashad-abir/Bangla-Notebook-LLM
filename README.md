@@ -6,14 +6,16 @@ The application is designed to run locally without paid APIs. Reviewed Markdown 
 
 ## What the project does
 
-- Uses a catalog-driven Bengali/English interface for class, subject, book, and chapter selection.
-- Retrieves evidence only from the selected indexed textbooks.
+- Uses a catalog-driven Bengali/English interface for class, book, and chapter selection.
+- Stores chapter identity on every indexed chunk and retrieves evidence only from the selected chapter.
 - Combines lexical matching with local semantic embeddings.
 - Refuses unsupported questions with a deterministic Bengali response.
 - Requires generated answers to cite trusted chunk IDs and real book pages.
 - Creates MCQ and short-answer knowledge quizzes, then validates their sources, options, answers, and duplicates before displaying them.
 - Converts PDFs or page images to parser-compatible Markdown or detailed JSON with the optional Surya OCR 2 module.
-- Runs the web app, Qwen answer model, and EmbeddingGemma embedding model locally.
+- Trains BanglaBERT only as a question-to-chapter classifier, using no answers or answer spans.
+- Uses the local Qwen service for grounded answers and quizzes, and EmbeddingGemma for optional semantic retrieval.
+- Reports the selected answer model, end-to-end response time, and confidence in the web conversation.
 
 ## Data flow
 
@@ -22,12 +24,14 @@ flowchart LR
     A[NCTB PDF or image] --> B[Surya OCR 2]
     B --> C[Page-aware Markdown]
     C --> D[Catalog and local index]
-    D --> E[Lexical and semantic retrieval]
-    E --> F{Enough textbook evidence?}
-    F -- No --> G[Fixed refusal]
-    F -- Yes --> H[Local Qwen generation]
-    H --> I[Source and output validation]
-    I --> J[Bengali answer or quiz with citations]
+    D --> E[Class, book, and chapter selection]
+    E --> F[Chapter-filtered lexical and semantic retrieval]
+    F --> G{Enough textbook evidence?}
+    G -- No --> H[Fixed refusal]
+    G -- Yes --> I[Grounded Qwen answer]
+    I --> J[Trusted page citation]
+    F --> K[Qwen quiz generation]
+    K --> L[Quiz source and output validation]
 ```
 
 ## Included content
@@ -44,12 +48,12 @@ Additional Markdown may exist under `dataset/raw/`, but a book is available in t
 
 - Windows 10/11 and PowerShell (the Python modules also work on other platforms, but the launch helpers are PowerShell-based)
 - Python 3.11 or 3.12
-- A recent `llama-server` executable from llama.cpp
-- A local OpenAI-compatible answer model; the supplied scripts expect `Qwen3-4B-Q4_K_M.gguf`
+- A recent `llama-server` executable and `Qwen3-4B-Q4_K_M.gguf` for answers and quizzes
+- Optional for semantic retrieval: the configured embedding model/service
 - Internet access on first setup if model files are not already cached
 - Optional for PDF/image conversion: the dependencies in `requirements-ocr.txt`
 
-Model binaries are intentionally excluded from Git because they are large. Put the answer model at `.runtime/models/Qwen3-4B-Q4_K_M.gguf`. Put `llama-server.exe` at `.runtime/llama.cpp/llama-server.exe`, or set the `PATHSHONGI_LLAMA_SERVER` environment variable to its location.
+Model binaries are intentionally excluded from Git because they are large. Put the Qwen model at `.runtime/models/Qwen3-4B-Q4_K_M.gguf`. Put `llama-server.exe` at `.runtime/llama.cpp/llama-server.exe`, or set `PATHSHONGI_LLAMA_SERVER` to its location. The optional question-only BanglaBERT classifier exports to `.runtime/models/pathshongi-banglabert-physics-chapters` but is never used to supply answer text.
 
 ## Quick start on Windows
 
@@ -67,7 +71,7 @@ Configure a custom llama.cpp location if it is not stored inside this project:
 $env:PATHSHONGI_LLAMA_SERVER = "C:\tools\llama.cpp\llama-server.exe"
 ```
 
-Start the local answer and embedding services in one terminal:
+Start the optional quiz and semantic-retrieval services in one terminal:
 
 ```powershell
 & ".\scripts\start-local-model.ps1"
@@ -87,7 +91,7 @@ Then start the web interface:
 
 Open <http://127.0.0.1:8000>. API documentation is available at <http://127.0.0.1:8000/api/docs>.
 
-After the environment, model, and index are ready, `Launch-Pathshongi.cmd` starts all three local services and opens the browser. `Stop-Pathshongi.cmd` stops only processes recorded by that launcher.
+After the environment, local model, and index are ready, `Launch-Pathshongi.cmd` starts the app and opens the browser. Answers and quizzes are unavailable when Qwen is absent. `Stop-Pathshongi.cmd` stops only processes recorded by that launcher.
 
 ## Quick start on Linux
 
@@ -97,7 +101,7 @@ After creating `.venv` and installing `requirements.txt`, run:
 ./Launch-Pathshongi.sh
 ```
 
-The launcher builds a lexical index when no index exists, starts any locally installed llama.cpp services, starts the web app, records its process IDs under `.runtime/`, and opens the browser. If the model binary or GGUF is not installed, the catalog and lexical retrieval still start in limited mode.
+The launcher builds a lexical index when no index exists, starts any locally installed llama.cpp services, starts the web app, records its process IDs under `.runtime/`, and opens the browser. Without Qwen, retrieval diagnostics remain available but answers and quizzes do not.
 
 Stop only the launcher-managed processes with:
 
@@ -113,7 +117,7 @@ To download and install the official CPU llama.cpp runtime and Qwen3-4B Q4_K_M m
 ./Install-Pathshongi-Model.sh
 ```
 
-The download is resumable. Restart Pathshongi afterward so the launcher can start the answer and embedding services.
+The download is resumable. Restart Pathshongi afterward so the launcher can start the optional quiz and embedding services.
 
 ## OCR: convert a textbook to Markdown or JSON
 
@@ -165,14 +169,14 @@ The GUI reads the catalog dynamically, so a catalog update does not require edit
 
 ```powershell
 # Inspect retrieval and evidence-gate diagnostics
-& ".\.venv\Scripts\python.exe" -m bangla_rag search "নিউটনের দ্বিতীয় সূত্র কী?" --debug
+& ".\.venv\Scripts\python.exe" -m bangla_rag search "নিউটনের দ্বিতীয় সূত্র কী?" --book physics-9-10 --chapter 3 --debug
 
 # Ask one question
-& ".\.venv\Scripts\python.exe" -m bangla_rag ask "নিউটনের দ্বিতীয় সূত্রটি ব্যাখ্যা করো।"
+& ".\.venv\Scripts\python.exe" -m bangla_rag ask "নিউটনের দ্বিতীয় সূত্রটি ব্যাখ্যা করো।" --book physics-9-10 --chapter 3
 
 # Generate a grounded quiz
 & ".\.venv\Scripts\python.exe" -m bangla_rag quiz "বল ও নিউটনের সূত্র" `
-  --type mcq --count 10 --output ".\quiz\newton.json"
+  --book physics-9-10 --chapter 3 --type mcq --count 10 --output ".\quiz\newton.json"
 
 # Evaluate the bundled retrieval/refusal cases
 & ".\.venv\Scripts\python.exe" -m bangla_rag evaluate
@@ -181,7 +185,7 @@ The GUI reads the catalog dynamically, so a catalog update does not require edit
 & ".\.venv\Scripts\python.exe" -m bangla_rag doctor
 ```
 
-For a dependency-light retrieval trial, build a lexical-only index with `python -m bangla_rag ingest --lexical-only`. Answer and quiz generation still require the local answer model.
+For a retrieval trial without the embedding service, build a lexical-only index with `python -m bangla_rag ingest --lexical-only`. Grounded answers and quizzes still require Qwen.
 
 ## API
 
@@ -189,10 +193,10 @@ For a dependency-light retrieval trial, build a lexical-only index with `python 
 | --- | --- | --- |
 | `GET` | `/api/health` | Index, embedding mode, and model readiness |
 | `GET` | `/api/catalog` | Available classes, subjects, books, and chapters |
-| `POST` | `/api/ask` | Book-scoped grounded question answering |
+| `POST` | `/api/ask` | Chapter-scoped grounded question answering |
 | `POST` | `/api/quiz` | Book- and chapter-scoped quiz generation |
 
-Requests must include valid indexed `book_ids`. Unknown or unindexed IDs are rejected before generation.
+Requests must include a valid indexed `book_id` and `chapter_id`. Unknown, mismatched, or unindexed scopes are rejected before generation.
 
 ## Project structure
 
@@ -212,10 +216,11 @@ Generated indexes, model files, caches, logs, PIDs, source PDFs, and OCR scratch
 ## Validation and safety boundaries
 
 - Semantic similarity alone is not treated as proof; lexical coverage and configured evidence thresholds gate generation.
-- The answer model receives only retrieved passages and must return valid source IDs.
+- Retrieval and generation are hard-filtered by the selected `(book_id, chapter_id)` pair.
+- BanglaBERT training consumes only question text and chapter labels; it never receives answer text.
 - Citations are constructed from trusted index metadata, not model-written page numbers.
 - Quiz questions are withheld unless their source IDs and required answer fields validate.
-- The fixed unsupported-question response is: `এই বইয়ে এই প্রশ্নের উত্তর পাওয়া যায়নি।`
+- The fixed unsupported-question response is: `এই অধ্যায়ে এই প্রশ্নের উত্তর পাওয়া যায়নি।`
 - This is an educational local assistant, not an authoritative replacement for the textbook or teacher review.
 
 Run the complete automated suite with:
@@ -228,7 +233,9 @@ Run the complete automated suite with:
 
 `config/settings.json` controls local service URLs, model aliases, chunk sizes, retrieval thresholds, passage limits, and timeouts. The defaults expect:
 
-- answer generation at `http://127.0.0.1:8080/v1`
+- grounded answer and quiz generation at `http://127.0.0.1:8080/v1`
 - embeddings at `http://127.0.0.1:8081/v1`
 
 Thresholds are starter values calibrated for the bundled books and evaluation cases. Re-evaluate them after changing the embedding model, corpus, chunking, or catalog.
+
+Qwen confidence is the model's self-reported estimate of how directly its cited textbook source supports the answer; it is useful as an indicator, not a calibrated probability.

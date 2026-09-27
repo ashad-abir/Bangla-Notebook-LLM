@@ -13,7 +13,7 @@ STOPWORDS = {
     "কি", "কী", "কে", "কাকে", "কেন", "কিভাবে", "কীভাবে", "কেমন", "কোন", "কোনটি",
     "কত", "এবং", "ও", "এর", "এই", "একটি", "হয়", "হলো", "বল", "বলে", "দাও",
     "লেখ", "লিখ", "ব্যাখ্যা", "কর", "করো", "আলাদা", "the", "a", "an", "is", "what",
-    "why", "how", "which", "of", "and", "in", "to", "explain", "write",
+    "এসআই", "why", "how", "which", "of", "and", "in", "to", "explain", "write",
 }
 
 
@@ -46,6 +46,7 @@ class HybridRetriever:
         question: str,
         limit: int = 20,
         book_ids: set[str] | None = None,
+        chapter_refs: set[tuple[str, str]] | None = None,
     ) -> tuple[list[str], dict[str, float]]:
         """Rank exact Bengali/English terms with an IDF-weighted coverage gate.
 
@@ -62,6 +63,8 @@ class HybridRetriever:
             chunk_id: text
             for chunk_id, text in self._lower_text.items()
             if book_ids is None or self.by_id[chunk_id].book_id in book_ids
+            if chapter_refs is None
+            or (self.by_id[chunk_id].book_id, self.by_id[chunk_id].chapter_id) in chapter_refs
         }
         if not allowed_text:
             return [], {}
@@ -75,6 +78,7 @@ class HybridRetriever:
         }
         total_weight = sum(weights.values())
         scores: dict[str, float] = {}
+        phrase = " ".join(terms)
         for chunk_id, text in allowed_text.items():
             matched = [term for term in terms if term in text]
             if not matched:
@@ -85,7 +89,16 @@ class HybridRetriever:
                 len(matched) >= minimum_matches
                 and weighted_coverage >= self.keyword_coverage_threshold
             ):
-                scores[chunk_id] = weighted_coverage
+                # Coverage remains the evidence gate. Repeated terms and the
+                # full content phrase are only tie-breakers, which prevents a
+                # chapter outline from outranking the actual definition.
+                repetition = sum(min(text.count(term), 5) for term in matched)
+                repetition_bonus = 0.1 * repetition / (5 * len(terms))
+                phrase_bonus = 0.2 if len(terms) > 1 and phrase in text else 0.0
+                definition_bonus = 0.3 if len(terms) > 1 and f"{phrase}:" in text else 0.0
+                scores[chunk_id] = (
+                    weighted_coverage + repetition_bonus + phrase_bonus + definition_bonus
+                )
         ranked = sorted(scores, key=lambda item: (-scores[item], item))[:limit]
         return ranked, scores
 
@@ -95,25 +108,40 @@ class HybridRetriever:
         limit: int = 5,
         debug: bool = False,
         book_ids: set[str] | None = None,
+        chapter_refs: set[tuple[str, str]] | None = None,
     ) -> SearchResult:
         if not question.strip():
             raise ValueError("Question cannot be empty")
-        keyword_ids, keyword_scores = self._keyword(question, book_ids=book_ids)
+        keyword_ids, keyword_scores = self._keyword(
+            question,
+            book_ids=book_ids,
+            chapter_refs=chapter_refs,
+        )
         semantic_ids: list[str] = []
         semantic_scores: dict[str, float] = {}
+        semantic_error: str | None = None
         if self.index.vectors is not None and self.embeddings is not None:
-            vector = self.embeddings.query(question)
-            scores = self.index.vectors @ vector
-            allowed_positions = [
-                position
-                for position, chunk in enumerate(self.index.chunks)
-                if book_ids is None or chunk.book_id in book_ids
-            ]
-            order = sorted(allowed_positions, key=lambda position: -scores[position])[:20]
-            for position in order:
-                chunk_id = self.index.chunks[int(position)].id
-                semantic_ids.append(chunk_id)
-                semantic_scores[chunk_id] = float(scores[int(position)])
+            try:
+                vector = self.embeddings.query(question)
+                allowed_positions = [
+                    position
+                    for position, chunk in enumerate(self.index.chunks)
+                    if book_ids is None or chunk.book_id in book_ids
+                    if chapter_refs is None
+                    or (chunk.book_id, chunk.chapter_id) in chapter_refs
+                ]
+                scoped_vectors = self.index.vectors[allowed_positions]
+                scoped_scores = scoped_vectors @ vector
+                scoped_order = np.argsort(-scoped_scores)[:20]
+                for scoped_position in scoped_order:
+                    position = allowed_positions[int(scoped_position)]
+                    chunk_id = self.index.chunks[position].id
+                    semantic_ids.append(chunk_id)
+                    semantic_scores[chunk_id] = float(scoped_scores[int(scoped_position)])
+            except RuntimeError as exc:
+                # The in-process reader can still answer exact-term questions
+                # when the optional semantic service is temporarily offline.
+                semantic_error = str(exc)
 
         fused: dict[str, float] = defaultdict(float)
         for rank, chunk_id in enumerate(semantic_ids, 1):
@@ -155,5 +183,7 @@ class HybridRetriever:
                 "threshold_with_keyword": self.semantic_with_keyword_threshold,
                 "keyword_coverage_threshold": self.keyword_coverage_threshold,
                 "book_ids": sorted(book_ids) if book_ids is not None else None,
+                "chapter_refs": sorted(chapter_refs) if chapter_refs is not None else None,
+                "semantic_error": semantic_error,
             }
         return SearchResult(tuple(hits), sufficient, strongest, has_keyword, details)

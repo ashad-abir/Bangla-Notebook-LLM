@@ -79,7 +79,7 @@ button { cursor: pointer; }
 .path-heading { display: flex; justify-content: space-between; align-items: end; gap: 35px; margin-bottom: 25px; }
 .path-heading h2 { margin: 5px 0 0; font: 700 32px/1.25 Georgia, "Noto Serif Bengali", serif; }
 .path-heading > p { max-width: 500px; margin: 0; color: var(--muted); line-height: 1.6; font-size: 13px; }
-.path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .selection-step { min-height: 190px; padding: 20px; border: 1px solid var(--line); border-radius: 19px; background: rgba(255,255,255,.72); transition: .25s; }
 .selection-step.active { border-color: rgba(8,127,120,.38); box-shadow: inset 0 0 0 1px rgba(8,127,120,.08); }
 .selection-step.locked { opacity: .52; background: rgba(242,242,238,.7); }
@@ -139,6 +139,7 @@ button { cursor: pointer; }
 .message.assistant .bubble { background: #f0f5f3; border: 1px solid rgba(8,127,120,.11); border-bottom-left-radius: 5px; }
 .message.not-found .bubble { background: #fff7e5; border-color: rgba(230,167,54,.32); }
 .message.error .bubble { background: #fff0ee; border-color: rgba(217,96,85,.3); }
+.response-meta { margin: 7px 7px 0; color: var(--muted); font-size: 11px; font-weight: 700; }
 .citations { display: grid; gap: 8px; margin-top: 9px; }
 .citation { border-left: 3px solid var(--teal); background: #fff; border-radius: 10px; padding: 10px 12px; box-shadow: 0 5px 16px rgba(20,42,49,.06); }
 .citation strong { display: block; font-size: 12px; color: var(--teal-dark); }
@@ -155,7 +156,7 @@ button { cursor: pointer; }
 .primary-button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 .latency-note { color: var(--muted); font-size: 11px; margin: 9px 2px 0; }
 
-.quiz-builder { display: grid; grid-template-columns: minmax(230px, 1fr) minmax(180px, .62fr) 120px auto; gap: 14px; align-items: end; margin-top: 25px; }
+.quiz-builder { display: grid; grid-template-columns: minmax(180px, 1fr) 120px auto; gap: 14px; align-items: end; margin-top: 25px; }
 .field label { display: block; font-size: 12px; font-weight: 800; margin: 0 0 7px 3px; }
 .field input, .field select { height: 50px; padding: 0 14px; }
 .quiz-empty { text-align: center; padding: 65px 20px 45px; color: var(--muted); }

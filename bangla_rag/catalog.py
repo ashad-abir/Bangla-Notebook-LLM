@@ -1,13 +1,18 @@
-"""Catalog metadata for class, subject, and book selection."""
+"""Catalog metadata for class, book, and chapter selection."""
 
 import json
 from pathlib import Path
 from typing import Any
 
 
-def load_catalog(config_path: Path, chunk_counts: dict[str, int] | None = None) -> dict[str, Any]:
+def load_catalog(
+    config_path: Path,
+    chunk_counts: dict[str, int] | None = None,
+    chapter_chunk_counts: dict[tuple[str, str], int] | None = None,
+) -> dict[str, Any]:
     records = json.loads(config_path.read_text(encoding="utf-8"))
     counts = chunk_counts or {}
+    chapter_counts = chapter_chunk_counts or {}
     classes: dict[str, dict[str, str]] = {}
     subjects: dict[str, dict[str, Any]] = {}
     books = []
@@ -57,7 +62,17 @@ def load_catalog(config_path: Path, chunk_counts: dict[str, int] | None = None) 
                 "class_ids": class_ids,
                 "subject_id": subject_id,
                 "chunk_count": counts.get(record["id"], 0),
-                "chapters": record.get("chapters", []),
+                "chapters": [
+                    {
+                        **chapter,
+                        "id": str(chapter["id"]),
+                        "chunk_count": chapter_counts.get(
+                            (record["id"], str(chapter["id"])),
+                            0,
+                        ),
+                    }
+                    for chapter in record.get("chapters", [])
+                ],
             }
         )
 

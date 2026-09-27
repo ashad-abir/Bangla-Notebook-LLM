@@ -15,17 +15,18 @@ from bangla_rag.runtime import RuntimeBundle, get_runtime, repo_root
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
-    book_ids: list[str] = Field(min_length=1)
+    book_id: str = Field(min_length=1, max_length=100)
+    chapter_id: str = Field(min_length=1, max_length=50)
 
 
 class QuizRequest(BaseModel):
     chapter_id: str = Field(min_length=1, max_length=50)
     quiz_type: Literal["mcq", "knowledge"]
     count: int = Field(ge=5, le=25)
-    book_ids: list[str] = Field(min_length=1)
+    book_id: str = Field(min_length=1, max_length=100)
 
 
-def selected_chapter(book_ids: set[str], chapter_id: str) -> dict:
+def selected_chapter(book_id: str, chapter_id: str, bundle: RuntimeBundle) -> dict:
     import json
 
     records = json.loads(
@@ -34,25 +35,23 @@ def selected_chapter(book_ids: set[str], chapter_id: str) -> dict:
     matches = [
         chapter
         for record in records
-        if record["id"] in book_ids
+        if record["id"] == book_id
         for chapter in record.get("chapters", [])
         if str(chapter["id"]) == chapter_id
     ]
     if len(matches) != 1:
         raise HTTPException(status_code=400, detail="Unknown chapter for the selected book")
-    return matches[0]
-
-
-def selected_books(book_ids: list[str], bundle: RuntimeBundle) -> set[str]:
-    requested = set(book_ids)
-    available = {chunk.book_id for chunk in bundle.index.chunks}
-    unknown = requested - available
-    if unknown:
+    chapter = matches[0]
+    indexed = any(
+        chunk.book_id == book_id and chunk.chapter_id == chapter_id
+        for chunk in bundle.index.chunks
+    )
+    if not indexed:
         raise HTTPException(
             status_code=400,
-            detail=f"Unknown or unindexed book IDs: {', '.join(sorted(unknown))}",
+            detail="The selected chapter is not present in the current index; rebuild the index",
         )
-    return requested
+    return chapter
 
 
 def answer_payload(answer) -> dict:
@@ -60,6 +59,9 @@ def answer_payload(answer) -> dict:
         "status": answer.status,
         "answer": answer.text,
         "error": answer.error,
+        "model": answer.model,
+        "response_time_seconds": answer.elapsed_seconds,
+        "confidence": answer.confidence,
         "citations": [
             {
                 "book": citation.book_title,
@@ -88,11 +90,18 @@ def create_app() -> FastAPI:
 
     @app.get("/api/health")
     def health(bundle: RuntimeBundle = Depends(get_runtime)) -> dict:
-        model_ok, detail = bundle.llm.health()
+        if bundle.reader is not None:
+            model_ok, detail = bundle.reader.health()
+        else:
+            model_ok, detail = bundle.llm.health()
+        quiz_ok, quiz_detail = bundle.llm.health()
         return {
             "status": "ready" if model_ok else "limited",
             "model_ready": model_ok,
             "model_detail": detail,
+            "answer_backend": bundle.answer_backend,
+            "quiz_model_ready": quiz_ok,
+            "quiz_model_detail": quiz_detail,
             "semantic_search": bundle.index.vectors is not None,
             "chunks": len(bundle.index.chunks),
             "books": len({chunk.book_id for chunk in bundle.index.chunks}),
@@ -102,17 +111,34 @@ def create_app() -> FastAPI:
     @app.get("/api/catalog")
     def catalog(bundle: RuntimeBundle = Depends(get_runtime)) -> dict:
         counts = Counter(chunk.book_id for chunk in bundle.index.chunks)
-        return load_catalog(repo_root() / "config" / "books.json", dict(counts))
+        chapter_counts = Counter(
+            (chunk.book_id, chunk.chapter_id)
+            for chunk in bundle.index.chunks
+            if chunk.chapter_id is not None
+        )
+        return load_catalog(
+            repo_root() / "config" / "books.json",
+            dict(counts),
+            dict(chapter_counts),
+        )
 
     @app.post("/api/ask")
     def ask(
         request: AskRequest,
         bundle: RuntimeBundle = Depends(get_runtime),
     ) -> dict:
-        book_ids = selected_books(request.book_ids, bundle)
+        selected_chapter(request.book_id, request.chapter_id, bundle)
+        book_ids = {request.book_id}
+        chapter_refs = {(request.book_id, request.chapter_id)}
         try:
             with bundle.generation_lock:
-                return answer_payload(bundle.qa.ask(request.question, book_ids=book_ids))
+                return answer_payload(
+                    bundle.qa.ask(
+                        request.question,
+                        book_ids=book_ids,
+                        chapter_refs=chapter_refs,
+                    )
+                )
         except (OSError, RuntimeError) as exc:
             raise HTTPException(status_code=503, detail=str(exc)) from exc
 
@@ -121,8 +147,15 @@ def create_app() -> FastAPI:
         request: QuizRequest,
         bundle: RuntimeBundle = Depends(get_runtime),
     ) -> dict:
-        book_ids = selected_books(request.book_ids, bundle)
-        chapter = selected_chapter(book_ids, request.chapter_id)
+        quiz_ready, quiz_detail = bundle.llm.health()
+        if not quiz_ready:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Quiz model is unavailable: {quiz_detail}",
+            )
+        chapter = selected_chapter(request.book_id, request.chapter_id, bundle)
+        book_ids = {request.book_id}
+        chapter_refs = {(request.book_id, request.chapter_id)}
         valid_range = (10, 25) if request.quiz_type == "mcq" else (5, 10)
         if not valid_range[0] <= request.count <= valid_range[1]:
             raise HTTPException(
@@ -140,6 +173,7 @@ def create_app() -> FastAPI:
                     quiz_type=request.quiz_type,
                     book_ids=book_ids,
                     page_range=(chapter["page_start"], chapter["page_end"]),
+                    chapter_refs=chapter_refs,
                 )
                 result["chapter"] = chapter
                 return result

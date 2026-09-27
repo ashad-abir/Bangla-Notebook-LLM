@@ -1,6 +1,7 @@
 import re
 from collections import defaultdict
 from math import ceil
+from time import perf_counter
 from typing import Any
 
 from bangla_rag.llm import LLMError, LocalLLM
@@ -8,7 +9,7 @@ from bangla_rag.models import Answer, Citation, SearchHit
 from bangla_rag.retriever import HybridRetriever
 
 
-FALLBACK_TEXT = "এই বইয়ে এই প্রশ্নের উত্তর পাওয়া যায়নি।"
+FALLBACK_TEXT = "এই অধ্যায়ে এই প্রশ্নের উত্তর পাওয়া যায়নি।"
 
 
 def _sources(hits: tuple[SearchHit, ...]) -> str:
@@ -19,44 +20,164 @@ def _sources(hits: tuple[SearchHit, ...]) -> str:
 
 
 class QAService:
-    def __init__(self, retriever: HybridRetriever, llm: LocalLLM, passage_limit: int = 5) -> None:
+    def __init__(
+        self,
+        retriever: HybridRetriever,
+        llm: LocalLLM | None,
+        passage_limit: int = 5,
+        llm_name: str = "Qwen",
+        qwen_passage_limit: int = 1,
+    ) -> None:
         self.retriever = retriever
         self.llm = llm
         self.passage_limit = passage_limit
+        self.llm_name = llm_name
+        self.qwen_passage_limit = max(1, qwen_passage_limit)
+
+    @staticmethod
+    def _evidence_confidence(result) -> float:
+        if result.strongest_semantic_score is not None:
+            return max(0.0, min(1.0, result.strongest_semantic_score))
+        scores = result.debug.get("keyword_scores", {})
+        return max(0.0, min(1.0, max(scores.values(), default=0.0)))
+
+    @staticmethod
+    def _select_qwen_hits(question: str, hits: tuple[SearchHit, ...], limit: int) -> tuple[SearchHit, ...]:
+        """Keep the top passage, then greedily add passages covering missing terms."""
+        if len(hits) <= limit:
+            return hits
+        terms = set(re.findall(r"[\u0980-\u09FF]+|[A-Za-z]+", question.casefold()))
+        for term in tuple(terms):
+            if term.startswith("কিলো") and len(term) > 4:
+                terms.add(term[4:])
+
+        def covered(hit: SearchHit) -> set[str]:
+            text = hit.chunk.text.casefold()
+            return {term for term in terms if term in text}
+
+        selected = [hits[0]]
+        remaining = list(hits[1:])
+        seen = covered(hits[0])
+        while remaining and len(selected) < limit:
+            best = max(
+                remaining,
+                key=lambda hit: (
+                    len(covered(hit) - seen),
+                    len(covered(hit)),
+                    hit.semantic_score or 0.0,
+                ),
+            )
+            selected.append(best)
+            seen.update(covered(best))
+            remaining.remove(best)
+        return tuple(selected)
 
     def ask(
         self,
         question: str,
         debug: bool = False,
         book_ids: set[str] | None = None,
+        chapter_refs: set[tuple[str, str]] | None = None,
     ) -> Answer:
+        started = perf_counter()
+
+        def finish(
+            status: str,
+            text: str,
+            citations: tuple[Citation, ...] = (),
+            *,
+            error: str | None = None,
+            details: dict[str, Any] | None = None,
+            model: str | None = None,
+            confidence: float | None = None,
+        ) -> Answer:
+            return Answer(
+                status,
+                text,
+                citations,
+                error,
+                details or {},
+                model,
+                round(perf_counter() - started, 3),
+                None if confidence is None else round(max(0.0, min(1.0, confidence)), 6),
+            )
+
         if not question.strip() or len(question) > 2000:
-            return Answer("error", "প্রশ্নটি খালি অথবা অতিরিক্ত দীর্ঘ।")
+            return finish("error", "প্রশ্নটি খালি অথবা অতিরিক্ত দীর্ঘ।")
         result = self.retriever.search(
             question,
             self.passage_limit,
-            debug,
+            True,
             book_ids=book_ids,
+            chapter_refs=chapter_refs,
         )
+        details = dict(result.debug) if debug else {}
+        evidence_confidence = self._evidence_confidence(result)
+        if not result.hits:
+            return finish(
+                "not_found",
+                FALLBACK_TEXT,
+                details=details,
+                confidence=evidence_confidence,
+            )
         if not result.sufficient_evidence:
-            return Answer("not_found", FALLBACK_TEXT, debug=result.debug)
+            return finish(
+                "not_found",
+                FALLBACK_TEXT,
+                details=details,
+                confidence=evidence_confidence,
+            )
+        if self.llm is None:
+            return finish(
+                "error",
+                "স্থানীয় উত্তর মডেলটি কনফিগার করা হয়নি।",
+                error="No question-answering backend is configured",
+                details=details,
+            )
         system = (
             "/no_think\nYou are a Bengali textbook QA verifier. Use only the supplied sources, never prior knowledge. "
             "Answer in Bengali even when the question is English. If the sources do not explicitly support "
             "the answer, set answerable=false. Return JSON only: "
-            '{"answerable":true|false,"answer":"...","source_ids":["..."]}. '
-            "Every factual claim must be supported by the listed source IDs. Keep the answer concise."
+            '{"answerable":true|false,"answer":"...","source_ids":["..."],"confidence":0.0}. '
+            "Confidence must be between 0 and 1 and reflect only how directly the cited sources support the answer. "
+            "Every factual claim must be supported by the listed source IDs. Keep the answer concise. "
+            "For a numerical answer, show the defining relation, substitute units explicitly, verify the arithmetic, "
+            "and prefer scientific notation or full digits over ambiguous lakh/crore wording. If the supplied sources "
+            "do not contain every quantity or relation needed for the calculation, set answerable=false."
         )
-        user = f"QUESTION:\n{question}\n\nSOURCES:\n{_sources(result.hits)}"
+        qwen_hits = self._select_qwen_hits(question, result.hits, self.qwen_passage_limit)
+        user = f"QUESTION:\n{question}\n\nSOURCES:\n{_sources(qwen_hits)}"
         try:
-            generated = self.llm.complete_json(system, user)
+            generated = self.llm.complete_json(system, user, max_tokens=300)
         except LLMError as exc:
-            return Answer("error", "স্থানীয় উত্তর মডেলটি ব্যবহার করা যায়নি।", error=str(exc), debug=result.debug)
-        valid = {hit.chunk.id: hit.chunk for hit in result.hits}
+            return finish(
+                "error",
+                "স্থানীয় উত্তর মডেলগুলো ব্যবহার করা যায়নি।",
+                error=str(exc),
+                details=details,
+                model=self.llm_name,
+            )
+        valid = {hit.chunk.id: hit.chunk for hit in qwen_hits}
         source_ids = [item for item in generated.get("source_ids", []) if item in valid]
         answer_text = str(generated.get("answer", "")).strip()
+        answer_text = (
+            answer_text.replace("\b", r"\b")
+            .replace("\f", r"\f")
+            .replace("\r", r"\r")
+            .replace("\t", r"\t")
+        )
+        try:
+            qwen_confidence = float(generated.get("confidence", evidence_confidence))
+        except (TypeError, ValueError):
+            qwen_confidence = evidence_confidence
         if generated.get("answerable") is not True or not answer_text or not source_ids:
-            return Answer("not_found", FALLBACK_TEXT, debug=result.debug)
+            return finish(
+                "not_found",
+                FALLBACK_TEXT,
+                details=details,
+                model=self.llm_name,
+                confidence=qwen_confidence,
+            )
 
         grouped: dict[tuple[str, int], list[str]] = defaultdict(list)
         for chunk_id in source_ids:
@@ -66,7 +187,16 @@ class QAService:
             Citation(title, page, tuple(ids), valid[ids[0]].text[:240])
             for (title, page), ids in grouped.items()
         )
-        return Answer("answered", answer_text, citations, debug=result.debug)
+        if debug:
+            details["answer_backend"] = "qwen"
+        return finish(
+            "answered",
+            answer_text,
+            citations,
+            details=details,
+            model=self.llm_name,
+            confidence=qwen_confidence,
+        )
 
 
 class QuizService:
@@ -168,6 +298,7 @@ class QuizService:
         quiz_type: str = "mcq",
         book_ids: set[str] | None = None,
         page_range: tuple[int, int] | None = None,
+        chapter_refs: set[tuple[str, str]] | None = None,
     ) -> dict[str, Any]:
         minimum, maximum = self._count_range(quiz_type)
         if not minimum <= count <= maximum:
@@ -178,6 +309,10 @@ class QuizService:
                 chunk
                 for chunk in self.retriever.index.chunks
                 if (book_ids is None or chunk.book_id in book_ids)
+                and (
+                    chapter_refs is None
+                    or (chunk.book_id, chunk.chapter_id) in chapter_refs
+                )
                 and page_start <= chunk.page <= page_end
             ]
             desired = min(len(candidates), max(self.passage_limit, count))
@@ -191,7 +326,12 @@ class QuizService:
             else:
                 hits = ()
         else:
-            result = self.retriever.search(topic, self.passage_limit, book_ids=book_ids)
+            result = self.retriever.search(
+                topic,
+                self.passage_limit,
+                book_ids=book_ids,
+                chapter_refs=chapter_refs,
+            )
             hits = result.hits if result.sufficient_evidence else ()
         if not hits:
             return {

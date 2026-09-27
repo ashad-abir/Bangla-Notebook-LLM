@@ -115,7 +115,7 @@ if [[ ! -x "$python_bin" ]]; then
     exit 1
 fi
 
-if ! "$python_bin" -c 'import fastapi, numpy, uvicorn' >/dev/null 2>&1; then
+if ! "$python_bin" -c 'import fastapi, numpy, torch, transformers, uvicorn' >/dev/null 2>&1; then
     echo "Core Python dependencies are missing." >&2
     echo "Install them with: .venv/bin/python -m pip install -r requirements.txt" >&2
     exit 1
@@ -123,8 +123,21 @@ fi
 
 cd "$project_root"
 
-if [[ ! -f "$project_root/dataset/index/manifest.json" ]]; then
-    echo "No textbook index was found; building a lexical index..."
+index_manifest="$project_root/dataset/index/manifest.json"
+index_schema="$("$python_bin" - "$index_manifest" 2>/dev/null <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+try:
+    print(int(json.loads(path.read_text(encoding="utf-8")).get("schema_version", 0)))
+except (OSError, ValueError, TypeError):
+    print(0)
+PY
+)"
+if [[ "$index_schema" != "2" ]]; then
+    echo "No chapter-aware textbook index was found; building a lexical index..."
     if ! "$python_bin" -m bangla_rag ingest --lexical-only; then
         echo "Could not build the textbook index." >&2
         exit 1
@@ -161,7 +174,7 @@ if [[ ! -x "$llama_server" ]] && command -v llama-server >/dev/null 2>&1; then
 fi
 
 echo "Starting Pathshongi (পাঠসঙ্গী)..."
-if [[ -x "$llama_server" && -f "$answer_model" ]]; then
+if [[ -x "$llama_server" ]]; then
     if ! port_is_open "$embedding_port"; then
         process_id="$(start_background embedding env HF_HOME="$runtime_dir/huggingface" "$llama_server" \
             --embd-gemma-default --alias local-embedding-model \
@@ -170,21 +183,24 @@ if [[ -x "$llama_server" && -f "$answer_model" ]]; then
         started_pids+=("$process_id")
     fi
 
-    if ! port_is_open "$answer_port"; then
-        process_id="$(start_background answer env HF_HOME="$runtime_dir/huggingface" "$llama_server" \
-            -m "$answer_model" --alias local-model \
-            --host 127.0.0.1 --port "$answer_port" \
-            -c 8192 -ngl 0 --reasoning off --jinja --no-webui)"
-        started_pids+=("$process_id")
-    fi
-
     wait_for_port "$embedding_port" "Retrieval service" 900
-    wait_for_port "$answer_port" "Answer service" 240
+    if [[ -f "$answer_model" ]]; then
+        if ! port_is_open "$answer_port"; then
+            process_id="$(start_background answer env HF_HOME="$runtime_dir/huggingface" "$llama_server" \
+                -m "$answer_model" --alias local-model \
+                --host 127.0.0.1 --port "$answer_port" \
+                -c 8192 -ngl 0 --reasoning off --jinja --no-webui)"
+            started_pids+=("$process_id")
+        fi
+        wait_for_port "$answer_port" "Answer and quiz service" 240
+    else
+        echo "  Qwen model not found; grounded answers and quizzes are unavailable."
+        echo "  Expected model: $answer_model"
+    fi
 else
-    echo "  Local model files not found; starting in retrieval-only mode."
+    echo "  llama-server not found; retrieval diagnostics remain available, but answers and quizzes are unavailable."
     echo "  Expected server: $llama_server"
-    echo "  Expected model:  $answer_model"
-    echo "  Install both with: ./Install-Pathshongi-Model.sh"
+    echo "  Install llama.cpp and Qwen: ./Install-Pathshongi-Model.sh"
 fi
 
 if port_is_open "$gui_port"; then

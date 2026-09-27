@@ -3,11 +3,16 @@
   "embedding_base_url": "http://127.0.0.1:8081/v1",
   "llm_base_url": "http://127.0.0.1:8080/v1",
   "llm_model": "local-model",
+  "answer_backend": "chapter_rag",
+  "banglabert_training_task": "chapter-classification-without-answers",
+  "banglabert_model_path": ".runtime/models/pathshongi-banglabert-physics-chapters",
+  "llm_display_name": "Qwen3-4B",
   "max_chunk_words": 220,
   "overlap_words": 35,
   "semantic_threshold": 0.52,
   "semantic_with_keyword_threshold": 0.55,
   "keyword_coverage_threshold": 0.61,
-  "answer_passages": 2,
+  "answer_passages": 5,
+  "qwen_answer_passages": 2,
   "request_timeout_seconds": 300
 }

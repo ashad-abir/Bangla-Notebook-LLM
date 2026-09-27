@@ -36,7 +36,7 @@
     <section class="hero">
       <div class="eyebrow" data-i18n="eyebrow">বইয়ের বাইরে নয় · উৎসসহ উত্তর</div>
       <h1><span class="hero-ink" data-i18n="heroLineOne">নিজের শ্রেণি বেছে নিন,</span><br><span data-i18n="heroLineTwo">নিজের মতো শিখুন।</span></h1>
-      <p data-i18n="heroDescription">শ্রেণি ও বিষয় নির্বাচন করুন। তারপর বাংলা বা ইংরেজিতে প্রশ্ন করুন অথবা বইভিত্তিক কুইজ তৈরি করুন।</p>
+      <p data-i18n="heroDescription">শ্রেণি, বই ও অধ্যায় নির্বাচন করুন। তারপর বাংলা বা ইংরেজিতে প্রশ্ন করুন অথবা অধ্যায়ভিত্তিক কুইজ তৈরি করুন।</p>
       <div class="book-meta">
         <span><b id="book-count">২</b> <span data-i18n="booksLabel">বই</span></span>
         <span><b id="page-count">—</b> <span data-i18n="pagesLabel">পৃষ্ঠা</span></span>
@@ -50,7 +50,7 @@
           <p class="section-label" data-i18n="startLearning">শেখা শুরু করুন</p>
           <h2 id="path-title" data-i18n="choosePath">আপনার শেখার পথ বেছে নিন</h2>
         </div>
-        <p data-i18n="pathHelp">প্রথমে শ্রেণি, তারপর বিষয় নির্বাচন করুন। আপনার প্রশ্ন শুধু নির্বাচিত বইয়ে খোঁজা হবে।</p>
+        <p data-i18n="pathHelp">শ্রেণি, বই ও অধ্যায় নির্বাচন করুন। আপনার প্রশ্ন শুধু নির্বাচিত অধ্যায়ে খোঁজা হবে।</p>
       </div>
       <div class="path-grid">
         <section class="selection-step active" id="class-step">
@@ -60,13 +60,22 @@
           </div>
           <div class="choice-grid" id="class-choices" data-i18n-aria="classChoices" aria-label="Class choices"></div>
         </section>
-        <section class="selection-step locked" id="subject-step">
+        <section class="selection-step locked" id="book-step">
           <div class="step-heading">
-            <span class="step-number" id="subject-step-number">২</span>
-            <div><small data-i18n="secondStep">দ্বিতীয় ধাপ</small><h3 data-i18n="selectSubject">বিষয় নির্বাচন</h3></div>
+            <span class="step-number" id="book-step-number">২</span>
+            <div><small data-i18n="secondStep">দ্বিতীয় ধাপ</small><h3 data-i18n="selectBook">বই নির্বাচন</h3></div>
           </div>
-          <div class="choice-grid" id="subject-choices" data-i18n-aria="subjectChoices" aria-label="Subject choices">
-            <p class="selection-placeholder" data-i18n="classFirst">বিষয় দেখতে আগে শ্রেণি নির্বাচন করুন।</p>
+          <div class="choice-grid" id="book-choices" data-i18n-aria="bookChoices" aria-label="Book choices">
+            <p class="selection-placeholder" data-i18n="classFirst">বই দেখতে আগে শ্রেণি নির্বাচন করুন।</p>
+          </div>
+        </section>
+        <section class="selection-step locked" id="chapter-step">
+          <div class="step-heading">
+            <span class="step-number" id="chapter-step-number">৩</span>
+            <div><small data-i18n="thirdStep">তৃতীয় ধাপ</small><h3 data-i18n="selectChapter">অধ্যায় নির্বাচন</h3></div>
+          </div>
+          <div class="choice-grid" id="chapter-choices" data-i18n-aria="chapterChoices" aria-label="Chapter choices">
+            <p class="selection-placeholder" data-i18n="bookFirst">অধ্যায় দেখতে আগে বই নির্বাচন করুন।</p>
           </div>
         </section>
       </div>
@@ -78,7 +87,7 @@
           <span class="context-icon" id="context-icon">φ</span>
           <div>
             <small data-i18n="currentlyLearning">এখন শিখছেন</small>
-            <strong id="context-title">নবম–দশম শ্রেণি · পদার্থবিজ্ঞান</strong>
+            <strong id="context-title">নবম–দশম শ্রেণি · পদার্থবিজ্ঞান · অধ্যায়</strong>
           </div>
         </div>
         <button class="ghost-button" id="change-selection" type="button" data-i18n="changeSelection">পরিবর্তন করুন</button>
@@ -112,7 +121,7 @@
             <div class="welcome-icon">φ</div>
             <div>
               <strong data-i18n="letsStart">শুরু করা যাক</strong>
-              <p data-i18n="welcomeCopy">উপরের একটি নমুনা বেছে নিন অথবা নিজের প্রশ্ন লিখুন। নির্বাচিত বইয়ে উত্তর না থাকলে আমি তা স্পষ্টভাবে জানাব।</p>
+              <p data-i18n="welcomeCopy">উপরের একটি নমুনা বেছে নিন অথবা নিজের প্রশ্ন লিখুন। নির্বাচিত অধ্যায়ে উত্তর না থাকলে আমি তা স্পষ্টভাবে জানাব।</p>
             </div>
           </div>
         </div>
@@ -136,12 +145,6 @@
         </div>
 
         <form class="quiz-builder" id="quiz-form">
-          <div class="field grow">
-            <label for="quiz-chapter" data-i18n="selectChapter">অধ্যায় নির্বাচন করুন</label>
-            <select id="quiz-chapter" required>
-              <option value="" data-i18n="chapterFirst">প্রথমে একটি অধ্যায় বেছে নিন</option>
-            </select>
-          </div>
           <div class="field type-field">
             <label for="quiz-type" data-i18n="quizType">প্রশ্নের ধরন</label>
             <select id="quiz-type">
@@ -172,6 +175,6 @@
     <p data-i18n="reviewFooter">AI-তৈরি কুইজ শ্রেণিকক্ষে ব্যবহারের আগে শিক্ষক যাচাই করুন।</p>
   </footer>
 
-  <script src="/static/app.js" defer></script>
+  <script src="/static/app.js?v=5" defer></script>
 </body>
 </html>

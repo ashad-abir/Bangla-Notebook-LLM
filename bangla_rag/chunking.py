@@ -7,9 +7,16 @@ from bangla_rag.models import Book, Chunk, Page
 WORD = re.compile(r"\S+")
 
 
-def _chunk_id(book_id: str, page: int, ordinal: int, text: str) -> str:
+def _chunk_id(
+    book_id: str,
+    chapter_id: str | None,
+    page: int,
+    ordinal: int,
+    text: str,
+) -> str:
     digest = hashlib.sha256(text.encode("utf-8")).hexdigest()[:10]
-    return f"{book_id}-p{page}-c{ordinal}-{digest}"
+    chapter = f"ch{chapter_id}-" if chapter_id is not None else "front-"
+    return f"{book_id}-{chapter}p{page}-c{ordinal}-{digest}"
 
 
 def chunk_pages(
@@ -22,6 +29,14 @@ def chunk_pages(
         raise ValueError("Invalid chunk size or overlap")
     chunks: list[Chunk] = []
     for page in pages:
+        chapter = next(
+            (
+                chapter
+                for chapter in book.chapters
+                if chapter.page_start <= page.number <= chapter.page_end
+            ),
+            None,
+        )
         words = WORD.findall(page.text)
         start = 0
         ordinal = 0
@@ -37,12 +52,20 @@ def chunk_pages(
             if text:
                 chunks.append(
                     Chunk(
-                        _chunk_id(book.id, page.number, ordinal, text),
+                        _chunk_id(
+                            book.id,
+                            chapter.id if chapter is not None else None,
+                            page.number,
+                            ordinal,
+                            text,
+                        ),
                         book.id,
                         book.title,
                         page.number,
                         ordinal,
                         text,
+                        chapter.id if chapter is not None else None,
+                        chapter.title if chapter is not None else None,
                     )
                 )
                 ordinal += 1
@@ -50,4 +73,3 @@ def chunk_pages(
                 break
             start = max(start + 1, end - overlap_words)
     return chunks
-

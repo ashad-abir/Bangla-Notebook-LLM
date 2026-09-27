@@ -16,7 +16,16 @@ python -m venv ".venv"
 & ".\.venv\Scripts\python.exe" -m pip install -r ".\requirements.txt"
 ```
 
-The dependencies and models are free. The first semantic-index run downloads `multilingual-e5-small` from Hugging Face and caches it locally.
+The dependencies and models are free. CPU-only PyTorch is installed from the official PyTorch package index. The optional question-only BanglaBERT classifier can be placed under:
+
+```text
+.runtime/models/pathshongi-banglabert-physics-chapters/
+├── config.json
+├── model.safetensors
+├── tokenizer.json
+├── tokenizer_config.json
+└── vocab.txt
+```
 
 ## 2. Build the index
 
@@ -26,7 +35,7 @@ Recommended hybrid index:
 & ".\.venv\Scripts\python.exe" -m bangla_rag ingest
 ```
 
-Quick dependency-free trial without an embedding model:
+Quick embedding-free trial:
 
 ```powershell
 & ".\.venv\Scripts\python.exe" -m bangla_rag ingest --lexical-only
@@ -34,7 +43,7 @@ Quick dependency-free trial without an embedding model:
 
 Lexical-only mode is useful for smoke testing, but hybrid retrieval is recommended for Bengali paraphrases and English questions.
 
-## 3. Inspect retrieval before running an LLM
+## 3. Inspect retrieval before answering
 
 ```powershell
 & ".\.venv\Scripts\python.exe" -m bangla_rag search "নিউটনের দ্বিতীয় সূত্র কী?" --debug
@@ -43,15 +52,15 @@ Lexical-only mode is useful for smoke testing, but hybrid retrieval is recommend
 
 Evaluation prints every evidence-gate decision. The current thresholds are conservative starter values measured with the bundled EmbeddingGemma model on the included Bengali/English and unrelated cases; they are not universal. Adjust thresholds in `config/settings.json` only after inspecting a larger set of answerable, paraphrased, English, and unrelated questions.
 
-## 4. Start a free local answer model
+## 4. Start optional retrieval and quiz services
 
-Place a Qwen3-4B Q4 GGUF under `.runtime\models` and a recent `llama-server.exe` under `.runtime\llama.cpp`, or set `PATHSHONGI_LLAMA_SERVER` to the executable path. The launcher also starts a local EmbeddingGemma service for retrieval. Start both with:
+For grounded answers and quizzes, place a Qwen3-4B Q4 GGUF under `.runtime\models` and a recent `llama-server.exe` under `.runtime\llama.cpp`, or set `PATHSHONGI_LLAMA_SERVER` to the executable path. Start the local services with:
 
 ```powershell
 & ".\scripts\start-local-model.ps1"
 ```
 
-Keep that terminal open. On the first run, `llama.cpp` downloads the free EmbeddingGemma GGUF into the local Hugging Face cache; later runs are offline. The application expects OpenAI-compatible answer and embedding endpoints at `http://127.0.0.1:8080/v1` and `http://127.0.0.1:8081/v1`. Change the corresponding settings in `config/settings.json` if your local servers differ.
+Keep that terminal open. On the first run, `llama.cpp` downloads the free EmbeddingGemma GGUF into the local Hugging Face cache; later runs are offline. The application expects the answer/quiz and embedding endpoints at `http://127.0.0.1:8080/v1` and `http://127.0.0.1:8081/v1`. Exact-term lexical retrieval diagnostics continue to work if the embedding endpoint is offline.
 
 ## 5. Ask questions
 
@@ -61,42 +70,42 @@ For the easiest demonstration, double-click `Launch-Pathshongi.cmd` in the proje
 
 For manual startup, continue with the commands below.
 
-Keep the model-server terminal open, open a second PowerShell terminal in the project, and run:
+If you started the optional model services, keep that terminal open. In a second PowerShell terminal, run:
 
 ```powershell
 & ".\scripts\start-gui.ps1"
 ```
 
-Then open `http://127.0.0.1:8000` in your browser. Students can switch the interface between বাংলা and English, choose their class and subject, and then ask questions or make quizzes. Retrieval is restricted to the books matching that selection. The GUI also supports verified citations, grounded refusal, answer checking, explanations, and scoring.
+Then open `http://127.0.0.1:8000` in your browser. Students can switch the interface between বাংলা and English, choose their class, book, and chapter, and then ask questions or make quizzes. Retrieval is restricted to that exact chapter. The GUI also supports verified citations, grounded refusal, answer checking, explanations, and scoring.
 
 ### Command line
 
 One question:
 
 ```powershell
-& ".\.venv\Scripts\python.exe" -m bangla_rag ask "নিউটনের দ্বিতীয় সূত্রটি ব্যাখ্যা করো।"
+& ".\.venv\Scripts\python.exe" -m bangla_rag ask "নিউটনের দ্বিতীয় সূত্র কী?" --book physics-9-10 --chapter 3
 ```
 
 Interactive mode:
 
 ```powershell
-& ".\.venv\Scripts\python.exe" -m bangla_rag ask
+& ".\.venv\Scripts\python.exe" -m bangla_rag ask --book physics-9-10 --chapter 3
 ```
 
 The exact unsupported-question response is:
 
 ```text
-এই বইয়ে এই প্রশ্নের উত্তর পাওয়া যায়নি।
+এই অধ্যায়ে এই প্রশ্নের উত্তর পাওয়া যায়নি।
 ```
 
 ## 6. Generate a quiz
 
 ```powershell
-& ".\.venv\Scripts\python.exe" -m bangla_rag quiz "বল ও নিউটনের সূত্র" --count 5 --output ".\quiz\newton.json"
+& ".\.venv\Scripts\python.exe" -m bangla_rag quiz "বল ও নিউটনের সূত্র" --book physics-9-10 --chapter 3 --count 10 --output ".\quiz\newton.json"
 ```
 
 Generated questions are accepted only when their source IDs came from the retrieved book passages. Teacher review is still recommended before classroom use.
-Generate 1–5 questions per command. On this CPU-only machine, answer generation takes roughly one minute and a multi-question quiz can take several minutes.
+Generate 10–25 MCQs or 5–10 short-answer questions per command. On this CPU-only machine, answer generation can take roughly one minute and a multi-question quiz can take several minutes.
 
 ## Add another textbook
 
@@ -146,7 +155,7 @@ After conversion:
 & ".\.venv\Scripts\python.exe" -m bangla_rag ingest
 ```
 
-4. Restart the GUI. The class and subject choices are generated from the catalog automatically; no HTML or JavaScript edit is required.
+4. Restart the GUI. The class, book, and chapter choices are generated from the catalog automatically; no HTML or JavaScript edit is required.
 
 ## 7. Diagnose the system
 
@@ -154,6 +163,6 @@ After conversion:
 & ".\.venv\Scripts\python.exe" -m bangla_rag doctor
 ```
 
-## Training policy
+## Training and safety policy
 
-No training is required for this baseline. Retrieval stores the textbook outside the model and is easier to update, cite, and restrict. If later evaluation shows a repeatable weakness in Bengali answer style or quiz formatting, use LoRA/QLoRA on Google Colab or Kaggle free GPU sessions. Fine-tuning must not replace retrieval or the evidence/refusal checks.
+The exported BanglaBERT checkpoint is trained only for 13-way chapter classification from question text and chapter labels. The training notebook rejects answer-bearing fields, and the web application never uses the checkpoint to supply answer text. Answers are generated only from chunks carrying the user-selected book and chapter IDs, with evidence/refusal checks and trusted citations applied afterward.

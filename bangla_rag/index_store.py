@@ -53,7 +53,7 @@ def build_index(
         connection.close()
 
     manifest = {
-        "schema_version": 1,
+        "schema_version": 2,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "chunks": len(chunks),
         "embedding_model": model_name,
@@ -80,4 +80,3 @@ def load_index(index_dir: Path) -> LoadedIndex:
     if vectors is not None and len(vectors) != len(chunks):
         raise RuntimeError("Index is corrupt: chunk/vector count mismatch")
     return LoadedIndex(chunks, vectors, index_dir / "search.sqlite3", manifest)
-

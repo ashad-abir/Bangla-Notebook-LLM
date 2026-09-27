@@ -2,7 +2,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from bangla_rag.models import Book, Page
+from bangla_rag.models import Book, Chapter, Page
 
 
 PAGE_HEADING = re.compile(r"^##\s+পৃষ্ঠা\s+([0-9]+)\s*$")
@@ -66,5 +66,17 @@ def load_books(repo_root: Path) -> list[Book]:
     books = []
     for record in records:
         source = (repo_root / record["markdown_path"]).resolve()
-        books.append(Book(record["id"], record["title"], source))
+        chapters = tuple(
+            Chapter(
+                str(chapter["id"]),
+                chapter["title_bn"],
+                int(chapter["page_start"]),
+                int(chapter["page_end"]),
+            )
+            for chapter in record.get("chapters", [])
+        )
+        for previous, current in zip(chapters, chapters[1:]):
+            if previous.page_end >= current.page_start:
+                raise BookParseError(f"Overlapping chapter ranges in {record['id']}")
+        books.append(Book(record["id"], record["title"], source, chapters))
     return books

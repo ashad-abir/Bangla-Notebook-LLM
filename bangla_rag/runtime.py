@@ -29,6 +29,8 @@ class RuntimeBundle:
     index: LoadedIndex
     retriever: HybridRetriever
     llm: LocalLLM
+    reader: None
+    answer_backend: str
     qa: QAService
     quiz: QuizService
     generation_lock: Lock
@@ -62,11 +64,21 @@ def get_runtime() -> RuntimeBundle:
         config["llm_model"],
         timeout=config["request_timeout_seconds"],
     )
+    answer_backend = "chapter_rag"
+    reader = None
     return RuntimeBundle(
         index=index,
         retriever=retriever,
         llm=llm,
-        qa=QAService(retriever, llm, config["answer_passages"]),
+        reader=reader,
+        answer_backend=answer_backend,
+        qa=QAService(
+            retriever,
+            llm,
+            config["answer_passages"],
+            llm_name=config.get("llm_display_name", "Qwen"),
+            qwen_passage_limit=int(config.get("qwen_answer_passages", 1)),
+        ),
         quiz=QuizService(retriever, llm),
         generation_lock=Lock(),
     )

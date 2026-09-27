@@ -8,7 +8,7 @@ import numpy as np
 
 from bangla_rag.chunking import chunk_pages
 from bangla_rag.index_store import build_index, load_index
-from bangla_rag.models import Book, Chunk, SearchHit, SearchResult
+from bangla_rag.models import Book, Chapter, Chunk, SearchHit, SearchResult
 from bangla_rag.parser import load_books, parse_book
 from bangla_rag.retriever import HybridRetriever
 from bangla_rag.service import FALLBACK_TEXT, QAService, QuizService
@@ -84,6 +84,22 @@ class CoreTests(unittest.TestCase):
             self.assertEqual({chunk.page for chunk in chunks}, {1, 2})
             self.assertTrue(all("পাঁচ" not in chunk.text for chunk in chunks if chunk.page == 1))
 
+    def test_chunks_preserve_chapter_identity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "book.md"
+            source.write_text("## পৃষ্ঠা 1\nগতি\n## পৃষ্ঠা 2\nবল", encoding="utf-8")
+            book = Book(
+                "book",
+                "বই",
+                source,
+                (Chapter("1", "গতি", 1, 1), Chapter("2", "বল", 2, 2)),
+            )
+
+            chunks = chunk_pages(book, parse_book(book))
+
+            self.assertEqual([chunk.chapter_id for chunk in chunks], ["1", "2"])
+            self.assertTrue(chunks[0].id.startswith("book-ch1-"))
+
     def test_low_evidence_refuses_without_calling_llm(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -104,6 +120,40 @@ class CoreTests(unittest.TestCase):
             llm = FakeLLM({"answerable": True, "answer": "উত্তর", "source_ids": ["invented"]})
             answer = QAService(retriever, llm).ask("নিউটনের সূত্র কী")
             self.assertEqual(answer.text, FALLBACK_TEXT)
+
+    def test_grounded_generator_is_used_without_dataset_answer_lookup(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            chunk = Chunk("c1", "book", "পদার্থবিজ্ঞান", 42, 0, "ঘনত্ব হলো একক আয়তনের ভর।", "5", "চাপ")
+            build_index(root, [chunk], None, None)
+            retriever = HybridRetriever(
+                load_index(root),
+                semantic_threshold=0.0,
+                keyword_coverage_threshold=0.0,
+            )
+            llm = FakeLLM({
+                "answerable": True,
+                "answer": "একক আয়তনের ভরকে ঘনত্ব বলে।",
+                "source_ids": ["c1"],
+                "confidence": 0.82,
+            })
+
+            answer = QAService(
+                retriever,
+                llm,
+                llm_name="Qwen3-4B",
+            ).ask(
+                "ঘনত্ব কাকে বলে?",
+                book_ids={"book"},
+                chapter_refs={("book", "5")},
+            )
+
+            self.assertEqual(answer.status, "answered")
+            self.assertEqual(answer.model, "Qwen3-4B")
+            self.assertEqual(answer.confidence, 0.82)
+            self.assertIsNotNone(answer.elapsed_seconds)
+            self.assertEqual(answer.citations[0].chunk_ids, ("c1",))
+            self.assertEqual(llm.calls, 1)
 
     def test_retrieval_is_limited_to_selected_books(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -128,6 +178,28 @@ class CoreTests(unittest.TestCase):
 
             self.assertTrue(result.hits)
             self.assertTrue(all(hit.chunk.book_id == "chemistry" for hit in result.hits))
+
+    def test_retrieval_is_hard_limited_to_selected_chapter(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            chunks = [
+                Chunk("motion", "physics", "পদার্থবিজ্ঞান", 40, 0, "বেগ ও গতি", "2", "গতি"),
+                Chunk("force", "physics", "পদার্থবিজ্ঞান", 75, 0, "বেগ থেকে ভরবেগ", "3", "বল"),
+            ]
+            build_index(root, chunks, None, None)
+            retriever = HybridRetriever(
+                load_index(root),
+                semantic_threshold=0.0,
+                keyword_coverage_threshold=0.0,
+            )
+
+            result = retriever.search(
+                "বেগ",
+                chapter_refs={("physics", "3")},
+            )
+
+            self.assertEqual([hit.chunk.id for hit in result.hits], ["force"])
+            self.assertTrue(all(hit.chunk.chapter_id == "3" for hit in result.hits))
 
     def test_quiz_service_batches_mcq_and_builds_short_answer_quiz(self):
         chunk = Chunk("c1", "physics", "পদার্থবিজ্ঞান", 10, 0, "বল ও নিউটনের সূত্র")

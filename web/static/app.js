@@ -1,47 +1,49 @@
 const translations = {
   bn: {
     brandName: "পাঠসঙ্গী", brandSubtitle: "আপনার বইভিত্তিক শিক্ষা সহায়ক", checkingSystem: "সিস্টেম যাচাই হচ্ছে…", eyebrow: "বইয়ের বাইরে নয় · উৎসসহ উত্তর",
-    heroLineOne: "নিজের শ্রেণি বেছে নিন,", heroLineTwo: "নিজের মতো শিখুন।", heroDescription: "শ্রেণি ও বিষয় নির্বাচন করুন। তারপর বাংলা বা ইংরেজিতে প্রশ্ন করুন অথবা বইভিত্তিক কুইজ তৈরি করুন।",
+    heroLineOne: "নিজের শ্রেণি বেছে নিন,", heroLineTwo: "নিজের মতো শিখুন।", heroDescription: "শ্রেণি, বই ও অধ্যায় নির্বাচন করুন। তারপর বাংলা বা ইংরেজিতে প্রশ্ন করুন অথবা অধ্যায়ভিত্তিক কুইজ তৈরি করুন।",
     booksLabel: "বই", pagesLabel: "পৃষ্ঠা", chunksLabel: "জ্ঞানাংশ", startLearning: "শেখা শুরু করুন", choosePath: "আপনার শেখার পথ বেছে নিন",
-    pathHelp: "প্রথমে শ্রেণি, তারপর বিষয় নির্বাচন করুন। আপনার প্রশ্ন শুধু নির্বাচিত বইয়ে খোঁজা হবে।", firstStep: "প্রথম ধাপ", selectClass: "শ্রেণি নির্বাচন",
-    secondStep: "দ্বিতীয় ধাপ", selectSubject: "বিষয় নির্বাচন", classFirst: "বিষয় দেখতে আগে শ্রেণি নির্বাচন করুন।", currentlyLearning: "এখন শিখছেন",
+    pathHelp: "শ্রেণি, বই ও অধ্যায় নির্বাচন করুন। আপনার প্রশ্ন শুধু নির্বাচিত অধ্যায়ে খোঁজা হবে।", firstStep: "প্রথম ধাপ", selectClass: "শ্রেণি নির্বাচন",
+    secondStep: "দ্বিতীয় ধাপ", thirdStep: "তৃতীয় ধাপ", selectBook: "বই নির্বাচন", classFirst: "বই দেখতে আগে শ্রেণি নির্বাচন করুন।", bookFirst: "অধ্যায় দেখতে আগে বই নির্বাচন করুন।", currentlyLearning: "এখন শিখছেন",
     changeSelection: "পরিবর্তন করুন", askTab: "প্রশ্ন করুন", quizTab: "কুইজ তৈরি", bookAssistant: "বইভিত্তিক সহায়ক", whatToKnow: "কী জানতে চান?",
-    clearChat: "কথোপকথন মুছুন", letsStart: "শুরু করা যাক", welcomeCopy: "উপরের একটি নমুনা বেছে নিন অথবা নিজের প্রশ্ন লিখুন। নির্বাচিত বইয়ে উত্তর না থাকলে আমি তা স্পষ্টভাবে জানাব।",
-    questionPlaceholder: "যেমন: নিউটনের দ্বিতীয় সূত্রটি উদাহরণসহ বুঝিয়ে দাও…", answerButton: "উত্তর দিন", latencyNote: "CPU-তে একটি উত্তর তৈরি হতে প্রায় ১–২ মিনিট লাগতে পারে।",
+    clearChat: "কথোপকথন মুছুন", letsStart: "শুরু করা যাক", welcomeCopy: "উপরের একটি নমুনা বেছে নিন অথবা নিজের প্রশ্ন লিখুন। নির্বাচিত অধ্যায়ে উত্তর না থাকলে আমি তা স্পষ্টভাবে জানাব।",
+    questionPlaceholder: "যেমন: নিউটনের দ্বিতীয় সূত্র কী?", answerButton: "উত্তর দিন", latencyNote: "শুধু নির্বাচিত অধ্যায়ের জ্ঞানাংশ খুঁজে উৎসভিত্তিক উত্তর তৈরি হবে।",
     practice: "অনুশীলন", makeQuiz: "নিজের কুইজ বানান", selectChapter: "অধ্যায় নির্বাচন করুন", chapterFirst: "প্রথমে একটি অধ্যায় বেছে নিন", questionsLabel: "প্রশ্ন",
     quizType: "প্রশ্নের ধরন", mcqType: "বহুনির্বাচনী (MCQ)", knowledgeType: "জ্ঞানমূলক (সংক্ষিপ্ত)", createQuiz: "কুইজ তৈরি", chooseTopic: "অধ্যায় ও প্রশ্নের ধরন বেছে নিন",
     quizEmptyCopy: "বইয়ের নির্বাচিত অধ্যায় থেকে উৎসসহ MCQ অথবা সংক্ষিপ্ত জ্ঞানমূলক প্রশ্ন তৈরি হবে।", quizLatency: "প্রশ্নের সংখ্যা অনুযায়ী কুইজ তৈরি হতে কয়েক মিনিট লাগতে পারে।",
     privacyFooter: "সম্পূর্ণ লোকাল · কোনো প্রশ্ন বা উত্তর ইন্টারনেটে পাঠানো হয় না", reviewFooter: "AI-তৈরি কুইজ শ্রেণিকক্ষে ব্যবহারের আগে শিক্ষক যাচাই করুন।",
-    modelReady: "লোকাল মডেল প্রস্তুত", modelStopped: "মডেল সার্ভার বন্ধ", guiDisconnected: "GUI সার্ভার সংযোগ নেই", availableBooks: "উপলভ্য বই",
+    modelReady: "অধ্যায়ভিত্তিক উত্তর মডেল প্রস্তুত", modelStopped: "উত্তর মডেল পাওয়া যাচ্ছে না", guiDisconnected: "GUI সার্ভার সংযোগ নেই", availableBooks: "উপলভ্য বই",
     user: "আপনি", assistant: "পাঠসঙ্গী", answerLoading: "বইয়ে প্রাসঙ্গিক অংশ খুঁজে উত্তর তৈরি হচ্ছে…", newConversation: "নতুন কথোপকথন",
-    newConversationCopy: "নিজের প্রশ্ন লিখুন। উত্তর শুধু নির্বাচিত বইয়ের তথ্য থেকে দেওয়া হবে।", questionWord: "প্রশ্ন", difficulty: "অনুশীলন",
+    newConversationCopy: "নিজের প্রশ্ন লিখুন। উত্তর শুধু নির্বাচিত অধ্যায়ের তথ্য থেকে দেওয়া হবে।", questionWord: "প্রশ্ন", difficulty: "অনুশীলন",
     source: "উৎস", textbookPages: "পাঠ্যবইয়ের পৃষ্ঠা", selectAnswers: "উত্তর নির্বাচন করুন", checkAnswers: "উত্তর ও স্কোর দেখুন", score: "স্কোর",
-    correctAnswer: "সঠিক উত্তর", showAnswer: "সংক্ষিপ্ত উত্তর দেখুন", quizLoading: "নির্বাচিত অধ্যায় থেকে যাচাইযোগ্য প্রশ্ন তৈরি হচ্ছে—কয়েক মিনিট লাগতে পারে…", generating: "তৈরি হচ্ছে…", noQuiz: "যাচাইযোগ্য প্রশ্ন তৈরি হয়নি",
+    correctAnswer: "সঠিক উত্তর", showAnswer: "সংক্ষিপ্ত উত্তর দেখুন", quizLoading: "নির্বাচিত অধ্যায় থেকে যাচাইযোগ্য প্রশ্ন তৈরি হচ্ছে—কয়েক মিনিট লাগতে পারে…", generating: "তৈরি হচ্ছে…", noQuiz: "যাচাইযোগ্য প্রশ্ন তৈরি হয়নি", quizUnavailable: "কুইজের Qwen মডেল চালু নেই",
     retryTopic: "আবার চেষ্টা করুন অথবা অন্য অধ্যায় বেছে নিন।", requestFailed: "অনুরোধটি সম্পন্ন হয়নি।", invalidResponse: "সার্ভার থেকে সঠিক উত্তর পাওয়া যায়নি।",
-    catalogFailed: "বইয়ের তালিকা লোড করা যায়নি। পৃষ্ঠাটি আবার খুলুন।", noSubject: "এই শ্রেণির জন্য এখনো কোনো বিষয় যোগ করা হয়নি।", notFound: "নির্বাচিত বইয়ে এই প্রশ্নের উত্তর নেই।",
-    homeLabel: "পাঠসঙ্গী হোম", classChoices: "শ্রেণির তালিকা", subjectChoices: "বিষয়ের তালিকা", appLabel: "পাঠসঙ্গী অ্যাপ", mainSections: "প্রধান বিভাগ", sampleQuestions: "নমুনা প্রশ্ন", questionLabel: "আপনার প্রশ্ন"
+    catalogFailed: "বইয়ের তালিকা লোড করা যায়নি। পৃষ্ঠাটি আবার খুলুন।", noBook: "এই শ্রেণির জন্য এখনো কোনো বই যোগ করা হয়নি।", noChapter: "এই বইয়ের জন্য কোনো অধ্যায় যোগ করা হয়নি।", notFound: "নির্বাচিত অধ্যায়ে এই প্রশ্নের উত্তর নেই।",
+    homeLabel: "পাঠসঙ্গী হোম", classChoices: "শ্রেণির তালিকা", bookChoices: "বইয়ের তালিকা", chapterChoices: "অধ্যায়ের তালিকা", appLabel: "পাঠসঙ্গী অ্যাপ", mainSections: "প্রধান বিভাগ", sampleQuestions: "নমুনা প্রশ্ন", questionLabel: "আপনার প্রশ্ন",
+    usedModel: "মডেল", responseTime: "সময়", confidence: "আত্মবিশ্বাস (মডেল অনুমান)", datasetMatch: "ডেটাসেট মিল", seconds: "সেকেন্ড", bothModelsReady: "অধ্যায়ভিত্তিক Qwen প্রস্তুত", qwenOffline: "Qwen বন্ধ"
   },
   en: {
     brandName: "Pathshongi", brandSubtitle: "Your textbook-grounded learning assistant", checkingSystem: "Checking system…", eyebrow: "Grounded in your books · Answers with sources",
-    heroLineOne: "Choose your class,", heroLineTwo: "learn your way.", heroDescription: "Select a class and subject. Then ask in Bangla or English, or create a quiz from the selected textbook.",
+    heroLineOne: "Choose your class,", heroLineTwo: "learn your way.", heroDescription: "Select a class, book, and chapter. Then ask in Bangla or English, or create a chapter-grounded quiz.",
     booksLabel: "books", pagesLabel: "pages", chunksLabel: "knowledge sections", startLearning: "Start learning", choosePath: "Choose your learning path",
-    pathHelp: "Select your class first, then a subject. Your questions will be searched only in the selected books.", firstStep: "Step one", selectClass: "Select class",
-    secondStep: "Step two", selectSubject: "Select subject", classFirst: "Select a class to see its subjects.", currentlyLearning: "Currently learning", changeSelection: "Change selection",
+    pathHelp: "Select a class, book, and chapter. Your questions will be searched only in the selected chapter.", firstStep: "Step one", selectClass: "Select class",
+    secondStep: "Step two", thirdStep: "Step three", selectBook: "Select book", classFirst: "Select a class to see its books.", bookFirst: "Select a book to see its chapters.", currentlyLearning: "Currently learning", changeSelection: "Change selection",
     askTab: "Ask a question", quizTab: "Create quiz", bookAssistant: "Textbook assistant", whatToKnow: "What would you like to know?", clearChat: "Clear conversation",
-    letsStart: "Let's begin", welcomeCopy: "Choose a sample above or write your own question. If the selected book does not contain the answer, I will say so clearly.",
-    questionPlaceholder: "For example: Explain Newton's second law with an example…", answerButton: "Get answer", latencyNote: "On CPU, generating an answer may take about 1–2 minutes.",
+    letsStart: "Let's begin", welcomeCopy: "Choose a sample above or write your own question. If the selected chapter does not contain the answer, I will say so clearly.",
+    questionPlaceholder: "For example: What is Newton's second law?", answerButton: "Get answer", latencyNote: "A grounded answer is created only from knowledge sections in the selected chapter.",
     practice: "Practice", makeQuiz: "Build your own quiz", selectChapter: "Select a chapter", chapterFirst: "Choose a chapter first", questionsLabel: "Questions",
     quizType: "Question type", mcqType: "Multiple choice (MCQ)", knowledgeType: "Knowledge (short answer)", createQuiz: "Create quiz", chooseTopic: "Choose a chapter and question type",
     quizEmptyCopy: "Create sourced MCQs or short-answer knowledge questions from the selected chapter.", quizLatency: "Depending on the question count, quiz creation may take several minutes.",
     privacyFooter: "Fully local · No questions or answers are sent to the internet", reviewFooter: "Teachers should review AI-generated quizzes before classroom use.",
-    modelReady: "Local model ready", modelStopped: "Model server is offline", guiDisconnected: "Cannot reach the GUI server", availableBooks: "available book(s)",
+    modelReady: "Chapter-grounded answer model ready", modelStopped: "Answer model unavailable", guiDisconnected: "Cannot reach the GUI server", availableBooks: "available book(s)",
     user: "You", assistant: "Pathshongi", answerLoading: "Finding relevant textbook passages and preparing an answer…", newConversation: "New conversation",
-    newConversationCopy: "Write your question. The answer will use only the selected textbook.", questionWord: "Question", difficulty: "Practice", source: "Source",
+    newConversationCopy: "Write your question. The answer will use only the selected chapter.", questionWord: "Question", difficulty: "Practice", source: "Source",
     textbookPages: "textbook page(s)", selectAnswers: "Select your answers", checkAnswers: "Show answers and score", score: "Score", correctAnswer: "Correct answer", showAnswer: "Show short answer",
-    quizLoading: "Creating verifiable questions from the selected chapter—this may take several minutes…", generating: "Creating…", noQuiz: "No verifiable questions could be created",
+    quizLoading: "Creating verifiable questions from the selected chapter—this may take several minutes…", generating: "Creating…", noQuiz: "No verifiable questions could be created", quizUnavailable: "The Qwen quiz model is offline",
     retryTopic: "Try again or choose another chapter.", requestFailed: "The request could not be completed.", invalidResponse: "The server returned an invalid response.",
-    catalogFailed: "The book catalog could not be loaded. Please reload the page.", noSubject: "No subjects have been added for this class yet.", notFound: "The selected book does not contain an answer to this question.",
-    homeLabel: "Pathshongi home", classChoices: "Class choices", subjectChoices: "Subject choices", appLabel: "Pathshongi app", mainSections: "Main sections", sampleQuestions: "Sample questions", questionLabel: "Your question"
+    catalogFailed: "The book catalog could not be loaded. Please reload the page.", noBook: "No books have been added for this class yet.", noChapter: "No chapters have been added for this book.", notFound: "The selected chapter does not contain an answer to this question.",
+    homeLabel: "Pathshongi home", classChoices: "Class choices", bookChoices: "Book choices", chapterChoices: "Chapter choices", appLabel: "Pathshongi app", mainSections: "Main sections", sampleQuestions: "Sample questions", questionLabel: "Your question",
+    usedModel: "Model", responseTime: "Time", confidence: "Confidence (model estimate)", datasetMatch: "Dataset match", seconds: "seconds", bothModelsReady: "Chapter-grounded Qwen ready", qwenOffline: "Qwen offline"
   }
 };
 
@@ -53,7 +55,7 @@ const suggestions = {
 const state = {
   busy: false, quiz: [], catalog: null, health: null,
   language: localStorage.getItem("pathSathiLanguage") === "en" ? "en" : "bn",
-  classId: localStorage.getItem("pathSathiClass"), subjectId: localStorage.getItem("pathSathiSubject"), bookIds: []
+  classId: localStorage.getItem("pathSathiClass"), bookId: localStorage.getItem("pathSathiBook"), chapterId: localStorage.getItem("pathSathiChapter")
 };
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -88,15 +90,21 @@ function updateStaticLanguage() {
   $$(`[data-language]`).forEach((button) => button.classList.toggle("active", button.dataset.language === state.language));
   $$(`[data-suggestion]`).forEach((button) => { button.textContent = suggestions[state.language][button.dataset.suggestion]; });
   $("#class-step-number").textContent = number(1);
-  $("#subject-step-number").textContent = number(2);
-  renderHealth(); renderClassChoices(); renderSubjectChoices(); updateContext(); renderQuizControls();
+  $("#book-step-number").textContent = number(2);
+  $("#chapter-step-number").textContent = number(3);
+  renderHealth(); renderClassChoices(); renderBookChoices(); renderChapterChoices(); updateContext(); renderQuizControls();
 }
 
 function renderHealth() {
   if (!state.health) return;
   const status = $("#system-status");
   status.classList.toggle("ready", state.health.model_ready); status.classList.toggle("error", !state.health.model_ready);
-  status.querySelector("span:last-child").textContent = state.health.model_ready ? t("modelReady") : t("modelStopped");
+  status.querySelector("span:last-child").textContent = state.health.model_ready
+    ? (state.health.quiz_model_ready ? t("bothModelsReady") : t("qwenOffline"))
+    : t("modelStopped");
+  const quizButton = $("#quiz-button");
+  quizButton.disabled = !state.health.quiz_model_ready;
+  quizButton.title = state.health.quiz_model_ready ? "" : t("quizUnavailable");
   $("#chunk-count").textContent = number(state.health.chunks); $("#book-count").textContent = number(state.health.books);
   $("#page-count").textContent = number(state.health.pages);
 }
@@ -106,25 +114,9 @@ async function checkHealth() {
   catch { const status = $("#system-status"); status.classList.add("error"); status.querySelector("span:last-child").textContent = t("guiDisconnected"); }
 }
 
-function booksForSelection(classId = state.classId, subjectId = state.subjectId) {
-  if (!state.catalog || !classId || !subjectId) return [];
-  return state.catalog.books.filter((book) => book.class_ids.includes(classId) && book.subject_id === subjectId);
-}
-
-function renderChapterOptions() {
-  const select = $("#quiz-chapter");
-  const previous = select.value;
-  select.replaceChildren();
-  const prompt = element("option", "", t("chapterFirst")); prompt.value = ""; select.append(prompt);
-  const books = booksForSelection();
-  books.forEach((book) => {
-    (book.chapters || []).forEach((chapter) => {
-      const option = element("option", "", `${number(chapter.id)}. ${localized(chapter, "title")}${books.length > 1 ? ` — ${localized(book, "title")}` : ""}`);
-      option.value = `${book.id}:${chapter.id}`;
-      select.append(option);
-    });
-  });
-  if ([...select.options].some((option) => option.value === previous)) select.value = previous;
+function booksForSelection(classId = state.classId) {
+  if (!state.catalog || !classId) return [];
+  return state.catalog.books.filter((book) => book.class_ids.includes(classId));
 }
 
 function renderQuizCountOptions() {
@@ -140,7 +132,6 @@ function renderQuizCountOptions() {
 }
 
 function renderQuizControls() {
-  renderChapterOptions();
   renderQuizCountOptions();
 }
 
@@ -157,51 +148,77 @@ function renderClassChoices() {
   });
 }
 
-function renderSubjectChoices() {
+function renderBookChoices() {
   if (!state.catalog) return;
-  const root = $("#subject-choices"); root.replaceChildren();
-  $("#subject-step").classList.toggle("locked", !state.classId);
+  const root = $("#book-choices"); root.replaceChildren();
+  $("#book-step").classList.toggle("locked", !state.classId);
   if (!state.classId) { root.append(element("p", "selection-placeholder", t("classFirst"))); return; }
-  const available = state.catalog.subjects.filter((subject) => subject.class_ids.includes(state.classId));
-  if (!available.length) { root.append(element("p", "selection-placeholder", t("noSubject"))); return; }
-  available.forEach((subject) => {
-    const relatedBooks = booksForSelection(state.classId, subject.id);
-    const button = element("button", `choice-card subject-choice${state.subjectId === subject.id ? " selected" : ""}`); button.type = "button";
-    button.append(element("span", "choice-icon", subject.icon || "•"));
-    const copy = element("span", "choice-copy"); copy.append(element("strong", "", localized(subject)), element("small", "", `${number(relatedBooks.length)} ${t("availableBooks")}`));
-    button.append(copy, element("span", "choice-check", state.subjectId === subject.id ? "✓" : "→"));
-    button.addEventListener("click", () => selectSubject(subject.id)); root.append(button);
+  const available = booksForSelection();
+  if (!available.length) { root.append(element("p", "selection-placeholder", t("noBook"))); return; }
+  available.forEach((book) => {
+    const subject = state.catalog.subjects.find((item) => item.id === book.subject_id);
+    const button = element("button", `choice-card subject-choice${state.bookId === book.id ? " selected" : ""}`); button.type = "button";
+    button.append(element("span", "choice-icon", subject?.icon || "•"));
+    const copy = element("span", "choice-copy"); copy.append(element("strong", "", localized(book, "title")), element("small", "", `${number((book.chapters || []).length)} ${t("selectChapter")}`));
+    button.append(copy, element("span", "choice-check", state.bookId === book.id ? "✓" : "→"));
+    button.addEventListener("click", () => selectBook(book.id)); root.append(button);
+  });
+}
+
+function renderChapterChoices() {
+  if (!state.catalog) return;
+  const root = $("#chapter-choices"); root.replaceChildren();
+  $("#chapter-step").classList.toggle("locked", !state.bookId);
+  if (!state.bookId) { root.append(element("p", "selection-placeholder", t("bookFirst"))); return; }
+  const book = state.catalog.books.find((item) => item.id === state.bookId);
+  const chapters = book?.chapters || [];
+  if (!chapters.length) { root.append(element("p", "selection-placeholder", t("noChapter"))); return; }
+  chapters.forEach((chapter) => {
+    const button = element("button", `choice-card${state.chapterId === chapter.id ? " selected" : ""}`); button.type = "button";
+    button.append(element("span", "choice-icon", number(chapter.id)));
+    const copy = element("span", "choice-copy"); copy.append(element("strong", "", localized(chapter, "title")), element("small", "", `${number(chapter.chunk_count)} ${t("chunksLabel")}`));
+    button.append(copy, element("span", "choice-check", state.chapterId === chapter.id ? "✓" : "→"));
+    button.addEventListener("click", () => selectChapter(chapter.id)); root.append(button);
   });
 }
 
 function selectClass(classId) {
   const changed = state.classId !== classId; state.classId = classId; localStorage.setItem("pathSathiClass", classId);
-  if (changed) { state.subjectId = null; state.bookIds = []; localStorage.removeItem("pathSathiSubject"); $("#workspace").hidden = true; }
-  renderClassChoices(); renderSubjectChoices(); $("#subject-step").scrollIntoView({ behavior: "smooth", block: "center" });
+  if (changed) { state.bookId = null; state.chapterId = null; localStorage.removeItem("pathSathiBook"); localStorage.removeItem("pathSathiChapter"); $("#workspace").hidden = true; }
+  renderClassChoices(); renderBookChoices(); renderChapterChoices(); $("#book-step").scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-function selectSubject(subjectId, scroll = true) {
-  state.subjectId = subjectId; state.bookIds = booksForSelection(state.classId, subjectId).map((book) => book.id);
-  if (!state.bookIds.length) return;
-  localStorage.setItem("pathSathiSubject", subjectId); renderSubjectChoices(); updateContext(); renderQuizControls(); $("#workspace").hidden = false;
+function selectBook(bookId) {
+  const changed = state.bookId !== bookId; state.bookId = bookId; localStorage.setItem("pathSathiBook", bookId);
+  if (changed) { state.chapterId = null; localStorage.removeItem("pathSathiChapter"); $("#workspace").hidden = true; }
+  renderBookChoices(); renderChapterChoices(); $("#chapter-step").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function selectChapter(chapterId, scroll = true) {
+  state.chapterId = String(chapterId); localStorage.setItem("pathSathiChapter", state.chapterId);
+  renderChapterChoices(); updateContext(); renderQuizControls(); resetConversation(); $("#workspace").hidden = false;
   if (scroll) $("#workspace").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function updateContext() {
-  if (!state.catalog || !state.classId || !state.subjectId) return;
+  if (!state.catalog || !state.classId || !state.bookId || !state.chapterId) return;
   const classItem = state.catalog.classes.find((item) => item.id === state.classId);
-  const subject = state.catalog.subjects.find((item) => item.id === state.subjectId);
-  if (!classItem || !subject) return;
-  $("#context-title").textContent = `${localized(classItem)} · ${localized(subject)}`; $("#context-icon").textContent = subject.icon || "•";
+  const book = state.catalog.books.find((item) => item.id === state.bookId);
+  const chapter = book?.chapters.find((item) => item.id === state.chapterId);
+  const subject = state.catalog.subjects.find((item) => item.id === book?.subject_id);
+  if (!classItem || !book || !chapter) return;
+  $("#context-title").textContent = `${localized(classItem)} · ${localized(book, "title")} · ${number(chapter.id)}. ${localized(chapter, "title")}`; $("#context-icon").textContent = subject?.icon || "•";
 }
 
 async function loadCatalog() {
   try {
     state.catalog = await requestJSON("/api/catalog");
     if (!state.catalog.classes.some((item) => item.id === state.classId)) state.classId = null;
-    if (!state.catalog.subjects.some((item) => item.id === state.subjectId && item.class_ids.includes(state.classId))) state.subjectId = null;
-    renderClassChoices(); renderSubjectChoices();
-    if (state.classId && state.subjectId) selectSubject(state.subjectId, false);
+    if (!state.catalog.books.some((item) => item.id === state.bookId && item.class_ids.includes(state.classId))) state.bookId = null;
+    const savedBook = state.catalog.books.find((item) => item.id === state.bookId);
+    if (!savedBook?.chapters.some((item) => item.id === state.chapterId)) state.chapterId = null;
+    renderClassChoices(); renderBookChoices(); renderChapterChoices();
+    if (state.classId && state.bookId && state.chapterId) selectChapter(state.chapterId, false);
   } catch (error) { $("#class-choices").replaceChildren(element("p", "selection-placeholder error-text", error.message || t("catalogFailed"))); }
 }
 
@@ -210,9 +227,19 @@ function switchTab(name) {
   ["ask", "quiz"].forEach((panelName) => { const panel = $(`#${panelName}-panel`); panel.hidden = panelName !== name; panel.classList.toggle("active", panelName === name); });
 }
 
-function addMessage(role, text, status = "answered", citations = []) {
+function addMessage(role, text, status = "answered", citations = [], metadata = null) {
   $("#welcome-card")?.remove();
   const wrapper = element("article", `message ${role} ${status}`); wrapper.append(element("span", "message-label", role === "user" ? t("user") : t("assistant")), element("div", "bubble", text));
+  if (role === "assistant" && metadata) {
+    const items = [];
+    if (metadata.model) items.push(`${t("usedModel")}: ${metadata.model}`);
+    if (metadata.response_time_seconds !== null && metadata.response_time_seconds !== undefined) items.push(`${t("responseTime")}: ${number(metadata.response_time_seconds)} ${t("seconds")}`);
+    if (metadata.confidence !== null && metadata.confidence !== undefined) {
+      const confidenceLabel = String(metadata.model || "").includes("QA dataset") ? t("datasetMatch") : t("confidence");
+      items.push(`${confidenceLabel}: ${number((metadata.confidence * 100).toFixed(1))}%`);
+    }
+    if (items.length) wrapper.append(element("div", "response-meta", items.join(" · ")));
+  }
   if (citations.length) {
     const list = element("div", "citations");
     citations.forEach((citation) => { const card = element("div", "citation"); card.append(element("strong", "", `${citation.book} · ${t("source")} ${number(citation.page)}`), element("p", "", citation.excerpt)); list.append(card); });
@@ -263,10 +290,10 @@ function gradeQuiz() {
 }
 
 $("#ask-form").addEventListener("submit", async (event) => {
-  event.preventDefault(); if (state.busy || !state.bookIds.length) return;
+  event.preventDefault(); if (state.busy || !state.bookId || !state.chapterId) return;
   const input = $("#question"); const question = input.value.trim(); if (!question) return;
   addMessage("user", question); input.value = ""; setAskBusy(true);
-  try { const result = await requestJSON("/api/ask", { method: "POST", body: JSON.stringify({ question, book_ids: state.bookIds }) }); addMessage("assistant", result.status === "not_found" ? t("notFound") : result.answer, result.status, result.citations || []); }
+  try { const result = await requestJSON("/api/ask", { method: "POST", body: JSON.stringify({ question, book_id: state.bookId, chapter_id: state.chapterId }) }); addMessage("assistant", result.status === "not_found" ? t("notFound") : result.answer, result.status, result.citations || [], result); }
   catch (error) { addMessage("assistant", error.message, "error"); } finally { setAskBusy(false); input.focus(); }
 });
 
@@ -274,20 +301,19 @@ $("#question").addEventListener("keydown", (event) => { if (event.key === "Enter
 $$(".suggestions button").forEach((button) => button.addEventListener("click", () => { $("#question").value = button.textContent; $("#question").focus(); }));
 
 $("#quiz-form").addEventListener("submit", async (event) => {
-  event.preventDefault(); const button = $("#quiz-button"); const selection = $("#quiz-chapter").value; const count = Number($("#quiz-count").value); const quizType = $("#quiz-type").value;
-  if (!selection || button.disabled || !state.bookIds.length) return;
-  const separator = selection.lastIndexOf(":"); const bookId = selection.slice(0, separator); const chapterId = selection.slice(separator + 1);
+  event.preventDefault(); const button = $("#quiz-button"); const count = Number($("#quiz-count").value); const quizType = $("#quiz-type").value;
+  if (!state.bookId || !state.chapterId || button.disabled) return;
   button.disabled = true; button.textContent = t("generating"); $("#quiz-empty").hidden = true;
   const root = $("#quiz-results"); root.replaceChildren(); const loading = element("div", "loading-row"); loading.append(element("span", "loader"), element("span", "", t("quizLoading"))); root.append(loading);
-  try { renderQuiz(await requestJSON("/api/quiz", { method: "POST", body: JSON.stringify({ chapter_id: chapterId, quiz_type: quizType, count, book_ids: [bookId] }) })); }
-  catch (error) { renderQuiz({ status: "error", message: error.message, questions: [] }); } finally { button.disabled = false; button.textContent = t("createQuiz"); }
+  try { renderQuiz(await requestJSON("/api/quiz", { method: "POST", body: JSON.stringify({ chapter_id: state.chapterId, quiz_type: quizType, count, book_id: state.bookId }) })); }
+  catch (error) { renderQuiz({ status: "error", message: error.message, questions: [] }); } finally { button.disabled = state.health?.quiz_model_ready === false; button.textContent = t("createQuiz"); }
 });
 
 $$(".tab").forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.tab)));
 $("#quiz-type").addEventListener("change", renderQuizCountOptions);
 $$("[data-language]").forEach((button) => button.addEventListener("click", () => { state.language = button.dataset.language; localStorage.setItem("pathSathiLanguage", state.language); updateStaticLanguage(); if (!$("#conversation .message")) resetConversation(); }));
 $("#clear-chat").addEventListener("click", resetConversation);
-$("#change-selection").addEventListener("click", () => { state.subjectId = null; state.bookIds = []; localStorage.removeItem("pathSathiSubject"); $("#workspace").hidden = true; renderSubjectChoices(); $("#learning-path").scrollIntoView({ behavior: "smooth", block: "start" }); });
+$("#change-selection").addEventListener("click", () => { state.bookId = null; state.chapterId = null; localStorage.removeItem("pathSathiBook"); localStorage.removeItem("pathSathiChapter"); $("#workspace").hidden = true; renderBookChoices(); renderChapterChoices(); $("#learning-path").scrollIntoView({ behavior: "smooth", block: "start" }); });
 
 updateStaticLanguage();
 Promise.all([checkHealth(), loadCatalog()]);

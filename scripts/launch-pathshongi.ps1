@@ -52,13 +52,26 @@ function Start-HiddenProcess([string]$FilePath, [string[]]$Arguments, [string]$L
 }
 
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
-foreach ($required in @($python, $Server, $Model)) {
-    if (-not (Test-Path -LiteralPath $required)) {
-        throw "Required file was not found: $required"
-    }
+if (-not (Test-Path -LiteralPath $python)) {
+    throw "Project Python was not found: $python"
+}
+& $python -c "import fastapi, numpy, torch, transformers, uvicorn"
+if ($LASTEXITCODE -ne 0) {
+    throw "Python dependencies are missing. Run: .\.venv\Scripts\python.exe -m pip install -r requirements.txt"
+}
+$saved = @{}
+$indexManifest = Join-Path $projectRoot "dataset\index\manifest.json"
+$indexSchema = 0
+if (Test-Path -LiteralPath $indexManifest) {
+    try { $indexSchema = [int](Get-Content -Raw -LiteralPath $indexManifest | ConvertFrom-Json).schema_version }
+    catch { $indexSchema = 0 }
+}
+if ($indexSchema -ne 2) {
+    Write-Host "No chapter-aware textbook index was found; building a lexical index..."
+    & $python -m bangla_rag ingest --lexical-only
+    if ($LASTEXITCODE -ne 0) { throw "Could not build the textbook index." }
 }
 
-$saved = @{}
 if (Test-Path -LiteralPath $statePath) {
     try {
         $previous = Get-Content -Raw -LiteralPath $statePath | ConvertFrom-Json
@@ -73,29 +86,38 @@ $started = [System.Collections.Generic.List[System.Diagnostics.Process]]::new()
 try {
     Write-Host "Starting Pathshongi (পাঠসঙ্গী)..." -ForegroundColor Cyan
 
-    if (-not (Test-LocalPort $EmbeddingPort)) {
-        $process = Start-HiddenProcess $Server @(
-            "--embd-gemma-default", "--alias", "local-embedding-model",
-            "--host", "127.0.0.1", "--port", "$EmbeddingPort",
-            "-c", "8192", "--parallel", "8", "-ngl", "0", "--embedding", "--no-webui"
-        ) "embedding"
-        $started.Add($process)
-        $saved["embedding"] = $process.Id
-    }
+    if (Test-Path -LiteralPath $Server) {
+        if (-not (Test-LocalPort $EmbeddingPort)) {
+            $process = Start-HiddenProcess $Server @(
+                "--embd-gemma-default", "--alias", "local-embedding-model",
+                "--host", "127.0.0.1", "--port", "$EmbeddingPort",
+                "-c", "8192", "--parallel", "8", "-ngl", "0", "--embedding", "--no-webui"
+            ) "embedding"
+            $started.Add($process)
+            $saved["embedding"] = $process.Id
+        }
+        Wait-LocalPort $EmbeddingPort "Retrieval service" 180
 
-    if (-not (Test-LocalPort $AnswerPort)) {
-        $quotedModel = '"' + $Model + '"'
-        $process = Start-HiddenProcess $Server @(
-            "-m", $quotedModel, "--alias", "local-model",
-            "--host", "127.0.0.1", "--port", "$AnswerPort",
-            "-c", "8192", "-ngl", "0", "--reasoning", "off", "--jinja", "--no-webui"
-        ) "answer"
-        $started.Add($process)
-        $saved["answer"] = $process.Id
+        if (Test-Path -LiteralPath $Model) {
+            if (-not (Test-LocalPort $AnswerPort)) {
+                $quotedModel = '"' + $Model + '"'
+                $process = Start-HiddenProcess $Server @(
+                    "-m", $quotedModel, "--alias", "local-model",
+                    "--host", "127.0.0.1", "--port", "$AnswerPort",
+                    "-c", "8192", "-ngl", "0", "--reasoning", "off", "--jinja", "--no-webui"
+                ) "answer"
+                $started.Add($process)
+                $saved["answer"] = $process.Id
+            }
+            Wait-LocalPort $AnswerPort "Answer and quiz service" 240
+        }
+        else {
+            Write-Host "  Qwen model not found; grounded answers and quizzes are unavailable."
+        }
     }
-
-    Wait-LocalPort $EmbeddingPort "Retrieval service" 180
-    Wait-LocalPort $AnswerPort "Answer service" 240
+    else {
+        Write-Host "  llama-server not found; retrieval diagnostics remain available, but answers and quizzes are unavailable."
+    }
 
     if (-not (Test-LocalPort $GuiPort)) {
         $process = Start-HiddenProcess $python @(

@@ -34,15 +34,21 @@ def build_parser() -> argparse.ArgumentParser:
     ask = commands.add_parser("ask", help="Ask one grounded question")
     ask.add_argument("question", nargs="?")
     ask.add_argument("--debug", action="store_true")
+    ask.add_argument("--book", required=True, help="Catalog book ID")
+    ask.add_argument("--chapter", required=True, help="Chapter ID within the book")
     search = commands.add_parser("search", help="Inspect retrieved passages")
     search.add_argument("question")
     search.add_argument("--limit", type=int, default=5)
     search.add_argument("--debug", action="store_true")
+    search.add_argument("--book", required=True, help="Catalog book ID")
+    search.add_argument("--chapter", required=True, help="Chapter ID within the book")
     quiz = commands.add_parser("quiz", help="Generate a grounded Bengali MCQ quiz")
     quiz.add_argument("topic")
     quiz.add_argument("--type", dest="quiz_type", choices=("mcq", "knowledge"), default="mcq")
     quiz.add_argument("--count", type=int, default=10)
     quiz.add_argument("--output", type=Path)
+    quiz.add_argument("--book", required=True, help="Catalog book ID")
+    quiz.add_argument("--chapter", required=True, help="Chapter ID within the book")
     evaluate = commands.add_parser("evaluate", help="Measure retrieval/refusal gates")
     evaluate.add_argument("dataset", type=Path, nargs="?", default=root() / "evaluation" / "starter.json")
     commands.add_parser("doctor", help="Check index, packages, and model server")
@@ -74,8 +80,34 @@ def ingest(lexical_only: bool) -> int:
     return 0
 
 
-def print_answer(service: QAService, question: str, debug: bool) -> int:
-    answer = service.ask(question, debug)
+def catalog_scope(book_id: str, chapter_id: str) -> tuple[set[str], set[tuple[str, str]], tuple[int, int]]:
+    records = json.loads((root() / "config" / "books.json").read_text(encoding="utf-8"))
+    for record in records:
+        if record["id"] != book_id:
+            continue
+        for chapter in record.get("chapters", []):
+            if str(chapter["id"]) == chapter_id:
+                return (
+                    {book_id},
+                    {(book_id, chapter_id)},
+                    (int(chapter["page_start"]), int(chapter["page_end"])),
+                )
+    raise ValueError("Unknown chapter for the selected book")
+
+
+def print_answer(
+    service: QAService,
+    question: str,
+    debug: bool,
+    book_ids: set[str],
+    chapter_refs: set[tuple[str, str]],
+) -> int:
+    answer = service.ask(
+        question,
+        debug,
+        book_ids=book_ids,
+        chapter_refs=chapter_refs,
+    )
     print(answer.text)
     for citation in answer.citations:
         print(f"উৎস: {citation.book_title}, পৃষ্ঠা {citation.page}")
@@ -122,7 +154,14 @@ def main(argv: list[str] | None = None) -> int:
             return evaluate(args.dataset)
         retriever, llm = runtime()
         if args.command == "search":
-            result = retriever.search(args.question, args.limit, args.debug)
+            book_ids, chapter_refs, _ = catalog_scope(args.book, args.chapter)
+            result = retriever.search(
+                args.question,
+                args.limit,
+                args.debug,
+                book_ids=book_ids,
+                chapter_refs=chapter_refs,
+            )
             for number, hit in enumerate(result.hits, 1):
                 score = "n/a" if hit.semantic_score is None else f"{hit.semantic_score:.4f}"
                 print(f"{number}. পৃষ্ঠা {hit.chunk.page} | semantic={score} | {hit.chunk.id}")
@@ -133,16 +172,25 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "ask":
             service = get_runtime().qa
+            book_ids, chapter_refs, _ = catalog_scope(args.book, args.chapter)
             if args.question:
-                return print_answer(service, args.question, args.debug)
+                return print_answer(service, args.question, args.debug, book_ids, chapter_refs)
             print("প্রশ্ন লিখুন; বন্ধ করতে exit লিখুন।")
             while True:
                 question = input("\nআপনি: ").strip()
                 if question.lower() in {"exit", "quit", "q"}:
                     return 0
-                print_answer(service, question, args.debug)
+                print_answer(service, question, args.debug, book_ids, chapter_refs)
         if args.command == "quiz":
-            result = get_runtime().quiz.generate(args.topic, args.count, args.quiz_type)
+            book_ids, chapter_refs, page_range = catalog_scope(args.book, args.chapter)
+            result = get_runtime().quiz.generate(
+                args.topic,
+                args.count,
+                args.quiz_type,
+                book_ids=book_ids,
+                page_range=page_range,
+                chapter_refs=chapter_refs,
+            )
             rendered = json.dumps(result, ensure_ascii=False, indent=2)
             if args.output:
                 args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -152,15 +200,19 @@ def main(argv: list[str] | None = None) -> int:
                 print(rendered)
             return 0 if result.get("status") == "ok" else 1
         if args.command == "doctor":
+            bundle = get_runtime()
+            answer_healthy, answer_detail = llm.health()
             checks = [
                 ("index", True, f"{len(retriever.index.chunks)} chunks"),
                 ("semantic", retriever.index.vectors is not None, "enabled" if retriever.index.vectors is not None else "lexical-only"),
+                (f"answers ({bundle.answer_backend})", answer_healthy, answer_detail),
             ]
             healthy, detail = llm.health()
-            checks.append(("local model", healthy, detail))
+            checks.append(("grounded answer and quiz model", healthy, detail))
             for name, passed, detail in checks:
                 print(f"{'PASS' if passed else 'FAIL'} {name}: {detail}")
-            return 0 if all(item[1] for item in checks) else 1
+            required = checks[:3]
+            return 0 if all(item[1] for item in required) else 1
     except (RuntimeError, ValueError, OSError, LLMError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1

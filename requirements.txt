@@ -1,4 +1,9 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
 numpy>=1.26,<3
 pytest>=8,<9
 fastapi>=0.116,<1
 uvicorn>=0.35,<1
+torch>=2.2,<3
+transformers>=4.46,<5
+safetensors>=0.4,<1
