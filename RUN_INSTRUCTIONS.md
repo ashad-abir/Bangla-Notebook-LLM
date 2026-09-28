@@ -167,5 +167,12 @@ After conversion:
 
 The exported BanglaBERT checkpoint is trained only for 13-way chapter classification from question text and chapter labels. The training notebook rejects answer-bearing fields, and the web application never uses the checkpoint to supply answer text. Answers are generated only from chunks carrying the user-selected book and chapter IDs. Retrieval ranks those chunks; Qwen reads them before deciding whether to answer or refuse, and citations remain restricted to trusted source IDs.
 
+When the checkpoint is present at the configured path, the application loads it
+automatically and runs it for Physics questions. Its top-three result is returned
+as advisory `chapter_prediction` metadata. A prediction never changes the
+selected chapter, expands retrieval to another chapter, or causes an immediate
+refusal. The health endpoint reports the checkpoint's availability and recorded
+test accuracy.
+
 Follow `BANGLABERT_CHAPTER_TRAINING.md` to validate the question-only dataset,
 train in Colab, import the checkpoint, and test local chapter prediction.

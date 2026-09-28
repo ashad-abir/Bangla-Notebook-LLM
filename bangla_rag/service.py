@@ -4,6 +4,7 @@ from math import ceil
 from time import perf_counter
 from typing import Any
 
+from bangla_rag.chapter_classifier import ChapterClassifierError, LocalChapterClassifier
 from bangla_rag.llm import LLMError, LocalLLM
 from bangla_rag.models import Answer, Citation, SearchHit
 from bangla_rag.retriever import HybridRetriever
@@ -27,12 +28,54 @@ class QAService:
         passage_limit: int = 5,
         llm_name: str = "Qwen",
         qwen_passage_limit: int = 1,
+        chapter_classifier: LocalChapterClassifier | None = None,
+        classifier_book_id: str = "physics-9-10",
     ) -> None:
         self.retriever = retriever
         self.llm = llm
         self.passage_limit = passage_limit
         self.llm_name = llm_name
         self.qwen_passage_limit = max(1, qwen_passage_limit)
+        self.chapter_classifier = chapter_classifier
+        self.classifier_book_id = classifier_book_id
+
+    def _chapter_prediction(
+        self,
+        question: str,
+        chapter_refs: set[tuple[str, str]] | None,
+    ) -> tuple[dict[str, Any] | None, str | None]:
+        if self.chapter_classifier is None or not chapter_refs or len(chapter_refs) != 1:
+            return None, None
+        book_id, selected_chapter_id = next(iter(chapter_refs))
+        if book_id != self.classifier_book_id:
+            return None, None
+        try:
+            predictions = self.chapter_classifier.predict(question, top_k=3)
+            metadata = self.chapter_classifier.metadata()
+        except (ChapterClassifierError, OSError, RuntimeError, ValueError) as exc:
+            return None, str(exc)
+        if not predictions:
+            return None, None
+        top = predictions[0]
+        metrics = metadata.get("test_metrics", {})
+        return {
+            "model": "BanglaBERT",
+            "selected_chapter_id": selected_chapter_id,
+            "predicted_chapter_id": top.chapter_id,
+            "predicted_chapter_title": top.chapter_title,
+            "confidence": round(top.confidence, 6),
+            "matches_selected_chapter": top.chapter_id == selected_chapter_id,
+            "advisory_only": True,
+            "checkpoint_test_accuracy": metrics.get("test_accuracy"),
+            "top_predictions": [
+                {
+                    "chapter_id": prediction.chapter_id,
+                    "chapter_title": prediction.chapter_title,
+                    "confidence": round(prediction.confidence, 6),
+                }
+                for prediction in predictions
+            ],
+        }, None
 
     @staticmethod
     def _evidence_confidence(result) -> float:
@@ -80,6 +123,8 @@ class QAService:
         chapter_refs: set[tuple[str, str]] | None = None,
     ) -> Answer:
         started = perf_counter()
+        chapter_prediction = None
+        classifier_error = None
 
         def finish(
             status: str,
@@ -100,10 +145,12 @@ class QAService:
                 model,
                 round(perf_counter() - started, 3),
                 None if confidence is None else round(max(0.0, min(1.0, confidence)), 6),
+                chapter_prediction,
             )
 
         if not question.strip() or len(question) > 2000:
             return finish("error", "প্রশ্নটি খালি অথবা অতিরিক্ত দীর্ঘ।")
+        chapter_prediction, classifier_error = self._chapter_prediction(question, chapter_refs)
         result = self.retriever.search(
             question,
             self.passage_limit,
@@ -112,6 +159,8 @@ class QAService:
             chapter_refs=chapter_refs,
         )
         details = dict(result.debug) if debug else {}
+        if debug and classifier_error:
+            details["chapter_classifier_error"] = classifier_error
         evidence_confidence = self._evidence_confidence(result)
         if not result.hits:
             return finish(

@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 
 from bangla_rag.chunking import chunk_pages
-from bangla_rag.chapter_classifier import LocalChapterClassifier
+from bangla_rag.chapter_classifier import ChapterPrediction, LocalChapterClassifier
 from bangla_rag.index_store import build_index, load_index
 from bangla_rag.models import Book, Chapter, Chunk, SearchHit, SearchResult
 from bangla_rag.parser import load_books, parse_book
@@ -31,6 +31,26 @@ class FakeLLM:
     def complete_json(self, *_args, **_kwargs):
         self.calls += 1
         return self.response
+
+
+class FakeChapterClassifier:
+    def __init__(self, chapter_id="3", confidence=0.9):
+        self.chapter_id = chapter_id
+        self.confidence = confidence
+        self.calls = 0
+
+    def predict(self, _question, top_k=3):
+        self.calls += 1
+        predictions = [
+            ChapterPrediction(self.chapter_id, f"chapter_{int(self.chapter_id):02d}", "বল", self.confidence),
+            ChapterPrediction("2", "chapter_02", "গতি", 0.05),
+            ChapterPrediction("4", "chapter_04", "কাজ, ক্ষমতা ও শক্তি", 0.05),
+        ]
+        return tuple(predictions[:top_k])
+
+    @staticmethod
+    def metadata():
+        return {"test_metrics": {"test_accuracy": 0.8}}
 
 
 class BatchQuizLLM:
@@ -172,11 +192,14 @@ class CoreTests(unittest.TestCase):
                 "source_ids": ["c1"],
                 "confidence": 0.82,
             })
+            classifier = FakeChapterClassifier("3")
 
             answer = QAService(
                 retriever,
                 llm,
                 llm_name="Qwen3-4B",
+                chapter_classifier=classifier,
+                classifier_book_id="book",
             ).ask(
                 "ঘনত্ব কাকে বলে?",
                 book_ids={"book"},
@@ -189,6 +212,10 @@ class CoreTests(unittest.TestCase):
             self.assertIsNotNone(answer.elapsed_seconds)
             self.assertEqual(answer.citations[0].chunk_ids, ("c1",))
             self.assertEqual(llm.calls, 1)
+            self.assertEqual(classifier.calls, 1)
+            self.assertEqual(answer.chapter_prediction["predicted_chapter_id"], "3")
+            self.assertFalse(answer.chapter_prediction["matches_selected_chapter"])
+            self.assertTrue(answer.chapter_prediction["advisory_only"])
 
     def test_retrieval_is_limited_to_selected_books(self):
         with tempfile.TemporaryDirectory() as directory:

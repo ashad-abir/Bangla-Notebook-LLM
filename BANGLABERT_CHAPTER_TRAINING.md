@@ -115,6 +115,11 @@ student and must not immediately reject a question. The application always
 restricts retrieval to the user's selected chapter, sends that context to Qwen,
 and lets Qwen decide whether the chapter supports an answer.
 
+No additional activation step is required after extraction. Restart Pathshongi;
+the shared runtime loads the checkpoint lazily, `/api/health` reports
+`chapter_classifier_ready`, and `/api/ask` includes its advisory top-three
+`chapter_prediction` analysis.
+
 ## 5. Before using a newly trained checkpoint
 
 - Keep the untouched test split separate from training and model selection.

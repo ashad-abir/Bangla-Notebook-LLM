@@ -14,6 +14,7 @@ The application is designed to run locally without paid APIs. Reviewed Markdown 
 - Creates MCQ and short-answer knowledge quizzes, then validates their sources, options, answers, and duplicates before displaying them.
 - Converts PDFs or page images to parser-compatible Markdown or detailed JSON with the optional Surya OCR 2 module.
 - Trains BanglaBERT only as a question-to-chapter classifier, using no answers or answer spans.
+- Runs the local BanglaBERT checkpoint on Physics questions as an advisory chapter signal; it never overrides the student's selected chapter or rejects a question.
 - Uses the local Qwen service for grounded answers and quizzes, and EmbeddingGemma for optional semantic retrieval.
 - Reports the selected answer model, end-to-end response time, and confidence in the web conversation.
 
@@ -194,7 +195,7 @@ For a retrieval trial without the embedding service, build a lexical-only index 
 
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
-| `GET` | `/api/health` | Index, embedding mode, and model readiness |
+| `GET` | `/api/health` | Index, embedding mode, Qwen readiness, and BanglaBERT readiness |
 | `GET` | `/api/catalog` | Available classes, subjects, books, and chapters |
 | `POST` | `/api/ask` | Chapter-scoped grounded question answering |
 | `POST` | `/api/quiz` | Book- and chapter-scoped quiz generation |
@@ -243,6 +244,12 @@ Run the complete automated suite with:
 Thresholds are starter values calibrated for the bundled books and evaluation cases. Re-evaluate them after changing the embedding model, corpus, chunking, or catalog.
 
 Qwen confidence is the model's self-reported estimate of how directly its cited textbook source supports the answer; it is useful as an indicator, not a calibrated probability.
+
+The `/api/ask` response includes `chapter_prediction` from BanglaBERT. It is
+diagnostic only: retrieval remains hard-scoped to the chapter selected by the
+student, and Qwen still examines that chapter's sources before answering or
+refusing. The interface displays the predicted chapter only at 50% confidence
+or higher.
 
 For the fresh question-only BanglaBERT notebook, validation steps, Colab
 instructions, and checkpoint import procedure, see

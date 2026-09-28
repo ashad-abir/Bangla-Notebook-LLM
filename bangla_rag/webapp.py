@@ -62,6 +62,7 @@ def answer_payload(answer) -> dict:
         "model": answer.model,
         "response_time_seconds": answer.elapsed_seconds,
         "confidence": answer.confidence,
+        "chapter_prediction": answer.chapter_prediction,
         "citations": [
             {
                 "book": citation.book_title,
@@ -90,11 +91,14 @@ def create_app() -> FastAPI:
 
     @app.get("/api/health")
     def health(bundle: RuntimeBundle = Depends(get_runtime)) -> dict:
-        if bundle.reader is not None:
-            model_ok, detail = bundle.reader.health()
-        else:
-            model_ok, detail = bundle.llm.health()
+        model_ok, detail = bundle.llm.health()
         quiz_ok, quiz_detail = bundle.llm.health()
+        classifier_ok, classifier_detail = bundle.chapter_classifier.health()
+        classifier_accuracy = None
+        if classifier_ok:
+            classifier_accuracy = bundle.chapter_classifier.metadata().get("test_metrics", {}).get(
+                "test_accuracy"
+            )
         return {
             "status": "ready" if model_ok else "limited",
             "model_ready": model_ok,
@@ -102,6 +106,9 @@ def create_app() -> FastAPI:
             "answer_backend": bundle.answer_backend,
             "quiz_model_ready": quiz_ok,
             "quiz_model_detail": quiz_detail,
+            "chapter_classifier_ready": classifier_ok,
+            "chapter_classifier_detail": classifier_detail,
+            "chapter_classifier_test_accuracy": classifier_accuracy,
             "semantic_search": bundle.index.vectors is not None,
             "chunks": len(bundle.index.chunks),
             "books": len({chunk.book_id for chunk in bundle.index.chunks}),

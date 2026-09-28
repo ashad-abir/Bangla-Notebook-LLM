@@ -7,6 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 from threading import Lock
 
+from bangla_rag.chapter_classifier import LocalChapterClassifier
 from bangla_rag.embeddings import EmbeddingProvider
 from bangla_rag.index_store import LoadedIndex, load_index
 from bangla_rag.llm import LocalLLM
@@ -29,7 +30,7 @@ class RuntimeBundle:
     index: LoadedIndex
     retriever: HybridRetriever
     llm: LocalLLM
-    reader: None
+    chapter_classifier: LocalChapterClassifier
     answer_backend: str
     qa: QAService
     quiz: QuizService
@@ -65,12 +66,23 @@ def get_runtime() -> RuntimeBundle:
         timeout=config["request_timeout_seconds"],
     )
     answer_backend = "chapter_rag"
-    reader = None
+    configured_classifier_path = Path(
+        config.get(
+            "banglabert_model_path",
+            ".runtime/models/pathshongi-banglabert-physics-chapters",
+        )
+    )
+    classifier_path = (
+        configured_classifier_path
+        if configured_classifier_path.is_absolute()
+        else root / configured_classifier_path
+    )
+    chapter_classifier = LocalChapterClassifier(classifier_path)
     return RuntimeBundle(
         index=index,
         retriever=retriever,
         llm=llm,
-        reader=reader,
+        chapter_classifier=chapter_classifier,
         answer_backend=answer_backend,
         qa=QAService(
             retriever,
@@ -78,6 +90,8 @@ def get_runtime() -> RuntimeBundle:
             config["answer_passages"],
             llm_name=config.get("llm_display_name", "Qwen"),
             qwen_passage_limit=int(config.get("qwen_answer_passages", 1)),
+            chapter_classifier=chapter_classifier,
+            classifier_book_id=config.get("banglabert_book_id", "physics-9-10"),
         ),
         quiz=QuizService(retriever, llm),
         generation_lock=Lock(),

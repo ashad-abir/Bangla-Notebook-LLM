@@ -176,6 +176,7 @@ def main(argv: list[str] | None = None) -> int:
                 {
                     "chapter_id": prediction.chapter_id,
                     "label": prediction.label,
+                    "chapter_title": prediction.chapter_title,
                     "confidence": round(prediction.confidence, 6),
                 }
                 for prediction in predictions

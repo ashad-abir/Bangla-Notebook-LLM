@@ -13,6 +13,14 @@ class FakeLLM:
         return True, "test-model"
 
 
+class FakeClassifier:
+    def health(self):
+        return True, "test-classifier"
+
+    def metadata(self):
+        return {"test_metrics": {"test_accuracy": 0.75}}
+
+
 class FakeQA:
     def ask(self, question, book_ids=None, chapter_refs=None):
         assert book_ids == {"physics-9-10"}
@@ -31,6 +39,16 @@ class FakeQA:
             model="Qwen3-4B",
             elapsed_seconds=1.234,
             confidence=0.87,
+            chapter_prediction={
+                "model": "BanglaBERT",
+                "selected_chapter_id": "3",
+                "predicted_chapter_id": "3",
+                "predicted_chapter_title": "বল",
+                "confidence": 0.91,
+                "matches_selected_chapter": True,
+                "advisory_only": True,
+                "top_predictions": [],
+            },
         )
 
 
@@ -55,7 +73,7 @@ def fake_runtime():
     return SimpleNamespace(
         index=SimpleNamespace(chunks=chunks, vectors=object()),
         llm=FakeLLM(),
-        reader=None,
+        chapter_classifier=FakeClassifier(),
         answer_backend="chapter_rag",
         qa=FakeQA(),
         quiz=FakeQuiz(),
@@ -83,6 +101,9 @@ def test_home_and_health_are_available():
         "answer_backend": "chapter_rag",
         "quiz_model_ready": True,
         "quiz_model_detail": "test-model",
+        "chapter_classifier_ready": True,
+        "chapter_classifier_detail": "test-classifier",
+        "chapter_classifier_test_accuracy": 0.75,
         "semantic_search": True,
         "chunks": 3,
         "books": 1,
@@ -115,6 +136,8 @@ def test_ask_serializes_verified_citations():
     assert payload["model"] == "Qwen3-4B"
     assert payload["response_time_seconds"] == 1.234
     assert payload["confidence"] == 0.87
+    assert payload["chapter_prediction"]["predicted_chapter_id"] == "3"
+    assert payload["chapter_prediction"]["advisory_only"] is True
 
 
 def test_quiz_and_validation_contracts():

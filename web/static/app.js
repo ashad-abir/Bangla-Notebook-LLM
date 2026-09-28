@@ -20,7 +20,7 @@ const translations = {
     retryTopic: "আবার চেষ্টা করুন অথবা অন্য অধ্যায় বেছে নিন।", requestFailed: "অনুরোধটি সম্পন্ন হয়নি।", invalidResponse: "সার্ভার থেকে সঠিক উত্তর পাওয়া যায়নি।",
     catalogFailed: "বইয়ের তালিকা লোড করা যায়নি। পৃষ্ঠাটি আবার খুলুন।", noBook: "এই শ্রেণির জন্য এখনো কোনো বই যোগ করা হয়নি।", noChapter: "এই বইয়ের জন্য কোনো অধ্যায় যোগ করা হয়নি।", notFound: "নির্বাচিত অধ্যায়ে এই প্রশ্নের উত্তর নেই।",
     homeLabel: "পাঠসঙ্গী হোম", classChoices: "শ্রেণির তালিকা", bookChoices: "বইয়ের তালিকা", chapterChoices: "অধ্যায়ের তালিকা", appLabel: "পাঠসঙ্গী অ্যাপ", mainSections: "প্রধান বিভাগ", sampleQuestions: "নমুনা প্রশ্ন", questionLabel: "আপনার প্রশ্ন",
-    usedModel: "মডেল", responseTime: "সময়", confidence: "আত্মবিশ্বাস (মডেল অনুমান)", datasetMatch: "ডেটাসেট মিল", seconds: "সেকেন্ড", bothModelsReady: "অধ্যায়ভিত্তিক Qwen প্রস্তুত", qwenOffline: "Qwen বন্ধ"
+    usedModel: "মডেল", responseTime: "সময়", confidence: "আত্মবিশ্বাস (মডেল অনুমান)", datasetMatch: "ডেটাসেট মিল", chapterPrediction: "BanglaBERT অধ্যায় অনুমান", seconds: "সেকেন্ড", bothModelsReady: "Qwen + BanglaBERT প্রস্তুত", classifierOffline: "Qwen প্রস্তুত · BanglaBERT পাওয়া যায়নি", qwenOffline: "Qwen বন্ধ"
   },
   en: {
     brandName: "Pathshongi", brandSubtitle: "Your textbook-grounded learning assistant", checkingSystem: "Checking system…", eyebrow: "Grounded in your books · Answers with sources",
@@ -43,7 +43,7 @@ const translations = {
     retryTopic: "Try again or choose another chapter.", requestFailed: "The request could not be completed.", invalidResponse: "The server returned an invalid response.",
     catalogFailed: "The book catalog could not be loaded. Please reload the page.", noBook: "No books have been added for this class yet.", noChapter: "No chapters have been added for this book.", notFound: "The selected chapter does not contain an answer to this question.",
     homeLabel: "Pathshongi home", classChoices: "Class choices", bookChoices: "Book choices", chapterChoices: "Chapter choices", appLabel: "Pathshongi app", mainSections: "Main sections", sampleQuestions: "Sample questions", questionLabel: "Your question",
-    usedModel: "Model", responseTime: "Time", confidence: "Confidence (model estimate)", datasetMatch: "Dataset match", seconds: "seconds", bothModelsReady: "Chapter-grounded Qwen ready", qwenOffline: "Qwen offline"
+    usedModel: "Model", responseTime: "Time", confidence: "Confidence (model estimate)", datasetMatch: "Dataset match", chapterPrediction: "BanglaBERT chapter prediction", seconds: "seconds", bothModelsReady: "Qwen + BanglaBERT ready", classifierOffline: "Qwen ready · BanglaBERT unavailable", qwenOffline: "Qwen offline"
   }
 };
 
@@ -100,7 +100,7 @@ function renderHealth() {
   const status = $("#system-status");
   status.classList.toggle("ready", state.health.model_ready); status.classList.toggle("error", !state.health.model_ready);
   status.querySelector("span:last-child").textContent = state.health.model_ready
-    ? (state.health.quiz_model_ready ? t("bothModelsReady") : t("qwenOffline"))
+    ? (state.health.chapter_classifier_ready ? t("bothModelsReady") : t("classifierOffline"))
     : t("modelStopped");
   const quizButton = $("#quiz-button");
   quizButton.disabled = !state.health.quiz_model_ready;
@@ -279,6 +279,10 @@ function addMessage(role, text, status = "answered", citations = [], metadata = 
     if (metadata.confidence !== null && metadata.confidence !== undefined) {
       const confidenceLabel = String(metadata.model || "").includes("QA dataset") ? t("datasetMatch") : t("confidence");
       items.push(`${confidenceLabel}: ${number((metadata.confidence * 100).toFixed(1))}%`);
+    }
+    const chapterPrediction = metadata.chapter_prediction;
+    if (chapterPrediction?.confidence >= 0.5) {
+      items.push(`${t("chapterPrediction")}: ${number(chapterPrediction.predicted_chapter_id)}. ${chapterPrediction.predicted_chapter_title} (${number((chapterPrediction.confidence * 100).toFixed(1))}%)`);
     }
     if (items.length) wrapper.append(element("div", "response-meta", items.join(" · ")));
   }

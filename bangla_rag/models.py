@@ -74,3 +74,4 @@ class Answer:
     model: str | None = None
     elapsed_seconds: float | None = None
     confidence: float | None = None
+    chapter_prediction: dict[str, Any] | None = None

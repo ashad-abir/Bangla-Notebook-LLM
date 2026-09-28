@@ -6,6 +6,7 @@
   "answer_backend": "chapter_rag",
   "banglabert_training_task": "chapter-classification-without-answers",
   "banglabert_model_path": ".runtime/models/pathshongi-banglabert-physics-chapters",
+  "banglabert_book_id": "physics-9-10",
   "llm_display_name": "Qwen3-4B",
   "max_chunk_words": 220,
   "overlap_words": 35,
