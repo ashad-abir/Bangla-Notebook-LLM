@@ -87,16 +87,12 @@ button { cursor: pointer; }
 .step-number { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 11px; color: var(--teal-dark); background: #e0f0ed; font-weight: 900; }
 .step-heading small { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .09em; }
 .step-heading h3 { margin: 2px 0 0; font-size: 17px; }
-.choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.choice-card { position: relative; min-height: 82px; display: flex; align-items: center; gap: 12px; padding: 13px; text-align: left; color: var(--ink); border: 1px solid var(--line); border-radius: 14px; background: #fff; transition: .18s; }
-.choice-card:hover { border-color: rgba(8,127,120,.48); transform: translateY(-1px); }
-.choice-card.selected { color: #fff; border-color: var(--teal); background: var(--teal); box-shadow: 0 10px 24px rgba(8,127,120,.18); }
-.choice-icon { width: 39px; height: 39px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 12px; color: var(--teal-dark); background: #e8f3f1; font: 700 20px Georgia, serif; }
-.choice-card.selected .choice-icon { color: #fff; background: rgba(255,255,255,.17); }
-.choice-card strong, .choice-card small { display: block; }
-.choice-card small { margin-top: 3px; color: var(--muted); font-size: 11px; }
-.choice-card.selected small { color: rgba(255,255,255,.77); }
 .selection-placeholder { grid-column: 1 / -1; margin: 17px 3px; color: var(--muted); font-size: 13px; }
+.selection-select-wrap { display: grid; align-content: start; min-height: 82px; }
+.selection-select { width: 100%; height: 54px; padding: 0 42px 0 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink); font: inherit; font-size: 13px; outline: none; transition: .2s; }
+.selection-select:hover:not(:disabled) { border-color: rgba(8,127,120,.48); }
+.selection-select:focus { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(8,127,120,.09); }
+.selection-select:disabled { cursor: not-allowed; color: var(--muted); background: #f4f2ec; }
 
 .workspace { border: 1px solid rgba(255,255,255,.8); background: var(--card); backdrop-filter: blur(16px); border-radius: 28px; box-shadow: var(--shadow); overflow: hidden; animation: rise .35s ease-out; }
 .workspace[hidden] { display: none; }
@@ -205,7 +201,6 @@ footer { max-width: 1200px; margin: 0 auto; padding: 0 28px 32px; display: flex;
   .path-heading { display: block; }
   .path-heading > p { margin-top: 10px; }
   .path-grid { grid-template-columns: 1fr; }
-  .choice-grid { grid-template-columns: 1fr 1fr; }
   .context-bar { align-items: flex-start; }
   .context-copy strong { max-width: 190px; }
   .panel-intro { align-items: flex-start; }

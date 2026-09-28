@@ -4,7 +4,7 @@ const translations = {
     heroLineOne: "নিজের শ্রেণি বেছে নিন,", heroLineTwo: "নিজের মতো শিখুন।", heroDescription: "শ্রেণি, বই ও অধ্যায় নির্বাচন করুন। তারপর বাংলা বা ইংরেজিতে প্রশ্ন করুন অথবা অধ্যায়ভিত্তিক কুইজ তৈরি করুন।",
     booksLabel: "বই", pagesLabel: "পৃষ্ঠা", chunksLabel: "জ্ঞানাংশ", startLearning: "শেখা শুরু করুন", choosePath: "আপনার শেখার পথ বেছে নিন",
     pathHelp: "শ্রেণি, বই ও অধ্যায় নির্বাচন করুন। আপনার প্রশ্ন শুধু নির্বাচিত অধ্যায়ে খোঁজা হবে।", firstStep: "প্রথম ধাপ", selectClass: "শ্রেণি নির্বাচন",
-    secondStep: "দ্বিতীয় ধাপ", thirdStep: "তৃতীয় ধাপ", selectBook: "বই নির্বাচন", classFirst: "বই দেখতে আগে শ্রেণি নির্বাচন করুন।", bookFirst: "অধ্যায় দেখতে আগে বই নির্বাচন করুন।", currentlyLearning: "এখন শিখছেন",
+    secondStep: "দ্বিতীয় ধাপ", thirdStep: "তৃতীয় ধাপ", selectBook: "বই নির্বাচন", chaptersLabel: "অধ্যায়", classFirst: "বই দেখতে আগে শ্রেণি নির্বাচন করুন।", bookFirst: "অধ্যায় দেখতে আগে বই নির্বাচন করুন।", currentlyLearning: "এখন শিখছেন",
     changeSelection: "পরিবর্তন করুন", askTab: "প্রশ্ন করুন", quizTab: "কুইজ তৈরি", bookAssistant: "বইভিত্তিক সহায়ক", whatToKnow: "কী জানতে চান?",
     clearChat: "কথোপকথন মুছুন", letsStart: "শুরু করা যাক", welcomeCopy: "উপরের একটি নমুনা বেছে নিন অথবা নিজের প্রশ্ন লিখুন। নির্বাচিত অধ্যায়ে উত্তর না থাকলে আমি তা স্পষ্টভাবে জানাব।",
     questionPlaceholder: "যেমন: নিউটনের দ্বিতীয় সূত্র কী?", answerButton: "উত্তর দিন", latencyNote: "শুধু নির্বাচিত অধ্যায়ের জ্ঞানাংশ খুঁজে উৎসভিত্তিক উত্তর তৈরি হবে।",
@@ -27,7 +27,7 @@ const translations = {
     heroLineOne: "Choose your class,", heroLineTwo: "learn your way.", heroDescription: "Select a class, book, and chapter. Then ask in Bangla or English, or create a chapter-grounded quiz.",
     booksLabel: "books", pagesLabel: "pages", chunksLabel: "knowledge sections", startLearning: "Start learning", choosePath: "Choose your learning path",
     pathHelp: "Select a class, book, and chapter. Your questions will be searched only in the selected chapter.", firstStep: "Step one", selectClass: "Select class",
-    secondStep: "Step two", thirdStep: "Step three", selectBook: "Select book", classFirst: "Select a class to see its books.", bookFirst: "Select a book to see its chapters.", currentlyLearning: "Currently learning", changeSelection: "Change selection",
+    secondStep: "Step two", thirdStep: "Step three", selectBook: "Select book", chaptersLabel: "chapters", classFirst: "Select a class to see its books.", bookFirst: "Select a book to see its chapters.", currentlyLearning: "Currently learning", changeSelection: "Change selection",
     askTab: "Ask a question", quizTab: "Create quiz", bookAssistant: "Textbook assistant", whatToKnow: "What would you like to know?", clearChat: "Clear conversation",
     letsStart: "Let's begin", welcomeCopy: "Choose a sample above or write your own question. If the selected chapter does not contain the answer, I will say so clearly.",
     questionPlaceholder: "For example: What is Newton's second law?", answerButton: "Get answer", latencyNote: "A grounded answer is created only from knowledge sections in the selected chapter.",
@@ -47,9 +47,9 @@ const translations = {
   }
 };
 
-const suggestions = {
-  bn: { newton: "নিউটনের দ্বিতীয় সূত্র কী?", speed: "বেগ ও দ্রুতি কীভাবে আলাদা?", reflection: "আলোর প্রতিফলনের সূত্র ব্যাখ্যা করো।" },
-  en: { newton: "What is Newton's second law?", speed: "How are speed and velocity different?", reflection: "Explain the laws of reflection." }
+const defaultSuggestions = {
+  bn: ["ভৌত রাশি কাকে বলে?", "বেগ ও দ্রুতি কীভাবে আলাদা?", "নিউটনের দ্বিতীয় সূত্র কী?"],
+  en: ["What is a physical quantity?", "How are speed and velocity different?", "What is Newton's second law?"]
 };
 
 const state = {
@@ -88,7 +88,7 @@ function updateStaticLanguage() {
   $$(`[data-i18n-placeholder]`).forEach((node) => { node.placeholder = t(node.dataset.i18nPlaceholder); });
   $$(`[data-i18n-aria]`).forEach((node) => { node.setAttribute("aria-label", t(node.dataset.i18nAria)); });
   $$(`[data-language]`).forEach((button) => button.classList.toggle("active", button.dataset.language === state.language));
-  $$(`[data-suggestion]`).forEach((button) => { button.textContent = suggestions[state.language][button.dataset.suggestion]; });
+  renderSuggestions();
   $("#class-step-number").textContent = number(1);
   $("#book-step-number").textContent = number(2);
   $("#chapter-step-number").textContent = number(3);
@@ -119,6 +119,22 @@ function booksForSelection(classId = state.classId) {
   return state.catalog.books.filter((book) => book.class_ids.includes(classId));
 }
 
+function selectedChapter() {
+  const book = state.catalog?.books.find((item) => item.id === state.bookId);
+  return book?.chapters.find((item) => item.id === state.chapterId) || null;
+}
+
+function renderSuggestions() {
+  const chapter = selectedChapter();
+  const samples = chapter?.[`sample_questions_${state.language}`]
+    || chapter?.sample_questions_bn
+    || defaultSuggestions[state.language];
+  $$(`[data-suggestion]`).forEach((button, index) => {
+    button.hidden = !samples[index];
+    button.textContent = samples[index] || "";
+  });
+}
+
 function renderQuizCountOptions() {
   const select = $("#quiz-count");
   const previous = Number(select.value);
@@ -135,51 +151,77 @@ function renderQuizControls() {
   renderQuizCountOptions();
 }
 
+function selectionDropdown(id, label, prompt) {
+  const select = element("select", "selection-select");
+  select.id = id;
+  select.setAttribute("aria-label", label);
+  const option = element("option", "", prompt);
+  option.value = "";
+  option.disabled = true;
+  select.append(option);
+  return select;
+}
+
 function renderClassChoices() {
   if (!state.catalog) return;
   const root = $("#class-choices"); root.replaceChildren();
+  const select = selectionDropdown("class-select", t("selectClass"), t("selectClass"));
   state.catalog.classes.forEach((item) => {
     const relatedBooks = state.catalog.books.filter((book) => book.class_ids.includes(item.id));
-    const button = element("button", `choice-card${state.classId === item.id ? " selected" : ""}`); button.type = "button";
-    button.append(element("span", "choice-icon", item.id));
-    const copy = element("span", "choice-copy"); copy.append(element("strong", "", localized(item)), element("small", "", `${number(relatedBooks.length)} ${t("availableBooks")}`));
-    button.append(copy, element("span", "choice-check", state.classId === item.id ? "✓" : "→"));
-    button.addEventListener("click", () => selectClass(item.id)); root.append(button);
+    const option = element("option", "", `${localized(item)} — ${number(relatedBooks.length)} ${t("availableBooks")}`);
+    option.value = item.id;
+    select.append(option);
   });
+  select.value = state.classId || "";
+  select.addEventListener("change", () => {
+    if (select.value) selectClass(select.value);
+  });
+  root.append(select);
 }
 
 function renderBookChoices() {
   if (!state.catalog) return;
   const root = $("#book-choices"); root.replaceChildren();
   $("#book-step").classList.toggle("locked", !state.classId);
-  if (!state.classId) { root.append(element("p", "selection-placeholder", t("classFirst"))); return; }
+  const select = selectionDropdown("book-select", t("selectBook"), state.classId ? t("selectBook") : t("classFirst"));
+  if (!state.classId) { select.disabled = true; root.append(select); return; }
   const available = booksForSelection();
-  if (!available.length) { root.append(element("p", "selection-placeholder", t("noBook"))); return; }
+  if (!available.length) { select.options[0].textContent = t("noBook"); select.disabled = true; root.append(select); return; }
   available.forEach((book) => {
-    const subject = state.catalog.subjects.find((item) => item.id === book.subject_id);
-    const button = element("button", `choice-card subject-choice${state.bookId === book.id ? " selected" : ""}`); button.type = "button";
-    button.append(element("span", "choice-icon", subject?.icon || "•"));
-    const copy = element("span", "choice-copy"); copy.append(element("strong", "", localized(book, "title")), element("small", "", `${number((book.chapters || []).length)} ${t("selectChapter")}`));
-    button.append(copy, element("span", "choice-check", state.bookId === book.id ? "✓" : "→"));
-    button.addEventListener("click", () => selectBook(book.id)); root.append(button);
+    const option = element("option", "", `${localized(book, "title")} — ${number((book.chapters || []).length)} ${t("chaptersLabel")}`);
+    option.value = book.id;
+    select.append(option);
   });
+  select.value = state.bookId || "";
+  select.addEventListener("change", () => {
+    if (select.value) selectBook(select.value);
+  });
+  root.append(select);
 }
 
 function renderChapterChoices() {
   if (!state.catalog) return;
   const root = $("#chapter-choices"); root.replaceChildren();
   $("#chapter-step").classList.toggle("locked", !state.bookId);
-  if (!state.bookId) { root.append(element("p", "selection-placeholder", t("bookFirst"))); return; }
+  const select = selectionDropdown("chapter-select", t("selectChapter"), state.bookId ? t("chapterFirst") : t("bookFirst"));
+  if (!state.bookId) { select.disabled = true; root.append(select); return; }
   const book = state.catalog.books.find((item) => item.id === state.bookId);
   const chapters = book?.chapters || [];
-  if (!chapters.length) { root.append(element("p", "selection-placeholder", t("noChapter"))); return; }
+  if (!chapters.length) { select.options[0].textContent = t("noChapter"); select.disabled = true; root.append(select); return; }
   chapters.forEach((chapter) => {
-    const button = element("button", `choice-card${state.chapterId === chapter.id ? " selected" : ""}`); button.type = "button";
-    button.append(element("span", "choice-icon", number(chapter.id)));
-    const copy = element("span", "choice-copy"); copy.append(element("strong", "", localized(chapter, "title")), element("small", "", `${number(chapter.chunk_count)} ${t("chunksLabel")}`));
-    button.append(copy, element("span", "choice-check", state.chapterId === chapter.id ? "✓" : "→"));
-    button.addEventListener("click", () => selectChapter(chapter.id)); root.append(button);
+    const option = element(
+      "option",
+      "",
+      `${number(chapter.id)}. ${localized(chapter, "title")} — ${number(chapter.chunk_count)} ${t("chunksLabel")}`,
+    );
+    option.value = chapter.id;
+    select.append(option);
   });
+  select.value = state.chapterId || "";
+  select.addEventListener("change", () => {
+    if (select.value) selectChapter(select.value);
+  });
+  root.append(select);
 }
 
 function selectClass(classId) {
@@ -196,7 +238,7 @@ function selectBook(bookId) {
 
 function selectChapter(chapterId, scroll = true) {
   state.chapterId = String(chapterId); localStorage.setItem("pathSathiChapter", state.chapterId);
-  renderChapterChoices(); updateContext(); renderQuizControls(); resetConversation(); $("#workspace").hidden = false;
+  renderChapterChoices(); updateContext(); renderSuggestions(); renderQuizControls(); resetConversation(); $("#workspace").hidden = false;
   if (scroll) $("#workspace").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 

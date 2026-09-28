@@ -50,7 +50,7 @@ Lexical-only mode is useful for smoke testing, but hybrid retrieval is recommend
 & ".\.venv\Scripts\python.exe" -m bangla_rag evaluate
 ```
 
-Evaluation prints every evidence-gate decision. The current thresholds are conservative starter values measured with the bundled EmbeddingGemma model on the included Bengali/English and unrelated cases; they are not universal. Adjust thresholds in `config/settings.json` only after inspecting a larger set of answerable, paraphrased, English, and unrelated questions.
+Evaluation prints retrieval-quality diagnostics. These thresholds help compare ranking behavior, but the answer API does not use them to reject a question before generation. Qwen reads the ranked selected-chapter passages and makes the grounded answer/refusal decision. Adjust thresholds only after inspecting a larger set of answerable, paraphrased, English, and unrelated questions.
 
 ## 4. Start optional retrieval and quiz services
 
@@ -165,4 +165,7 @@ After conversion:
 
 ## Training and safety policy
 
-The exported BanglaBERT checkpoint is trained only for 13-way chapter classification from question text and chapter labels. The training notebook rejects answer-bearing fields, and the web application never uses the checkpoint to supply answer text. Answers are generated only from chunks carrying the user-selected book and chapter IDs, with evidence/refusal checks and trusted citations applied afterward.
+The exported BanglaBERT checkpoint is trained only for 13-way chapter classification from question text and chapter labels. The training notebook rejects answer-bearing fields, and the web application never uses the checkpoint to supply answer text. Answers are generated only from chunks carrying the user-selected book and chapter IDs. Retrieval ranks those chunks; Qwen reads them before deciding whether to answer or refuse, and citations remain restricted to trusted source IDs.
+
+Follow `BANGLABERT_CHAPTER_TRAINING.md` to validate the question-only dataset,
+train in Colab, import the checkpoint, and test local chapter prediction.

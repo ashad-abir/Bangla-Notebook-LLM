@@ -4,6 +4,7 @@ import os
 import sys
 from pathlib import Path
 
+from bangla_rag.chapter_classifier import ChapterClassifierError, LocalChapterClassifier
 from bangla_rag.chunking import chunk_pages
 from bangla_rag.embeddings import EmbeddingProvider
 from bangla_rag.index_store import build_index
@@ -51,6 +52,12 @@ def build_parser() -> argparse.ArgumentParser:
     quiz.add_argument("--chapter", required=True, help="Chapter ID within the book")
     evaluate = commands.add_parser("evaluate", help="Measure retrieval/refusal gates")
     evaluate.add_argument("dataset", type=Path, nargs="?", default=root() / "evaluation" / "starter.json")
+    classify = commands.add_parser(
+        "classify",
+        help="Predict the Physics chapter with the question-only BanglaBERT model",
+    )
+    classify.add_argument("question")
+    classify.add_argument("--top-k", type=int, default=3)
     commands.add_parser("doctor", help="Check index, packages, and model server")
     return parser
 
@@ -139,6 +146,17 @@ def evaluate(path: Path) -> int:
     return 0 if correct == len(cases) else 1
 
 
+def chapter_classifier() -> LocalChapterClassifier:
+    configured = Path(
+        settings().get(
+            "banglabert_model_path",
+            ".runtime/models/pathshongi-banglabert-physics-chapters",
+        )
+    )
+    model_path = configured if configured.is_absolute() else root() / configured
+    return LocalChapterClassifier(model_path)
+
+
 def main(argv: list[str] | None = None) -> int:
     # Windows PowerShell may inherit a legacy code page even when the source and
     # data are UTF-8. Keep Bengali output usable without requiring global changes.
@@ -152,6 +170,17 @@ def main(argv: list[str] | None = None) -> int:
             return ingest(args.lexical_only)
         if args.command == "evaluate":
             return evaluate(args.dataset)
+        if args.command == "classify":
+            predictions = chapter_classifier().predict(args.question, args.top_k)
+            print(json.dumps([
+                {
+                    "chapter_id": prediction.chapter_id,
+                    "label": prediction.label,
+                    "confidence": round(prediction.confidence, 6),
+                }
+                for prediction in predictions
+            ], ensure_ascii=False, indent=2))
+            return 0
         retriever, llm = runtime()
         if args.command == "search":
             book_ids, chapter_refs, _ = catalog_scope(args.book, args.chapter)
@@ -209,11 +238,13 @@ def main(argv: list[str] | None = None) -> int:
             ]
             healthy, detail = llm.health()
             checks.append(("grounded answer and quiz model", healthy, detail))
+            classifier_ok, classifier_detail = chapter_classifier().health()
+            checks.append(("BanglaBERT chapter classifier (optional)", classifier_ok, classifier_detail))
             for name, passed, detail in checks:
                 print(f"{'PASS' if passed else 'FAIL'} {name}: {detail}")
             required = checks[:3]
             return 0 if all(item[1] for item in required) else 1
-    except (RuntimeError, ValueError, OSError, LLMError) as exc:
+    except (RuntimeError, ValueError, OSError, LLMError, ChapterClassifierError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
     return 2

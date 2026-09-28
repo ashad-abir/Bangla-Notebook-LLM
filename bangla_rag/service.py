@@ -115,15 +115,9 @@ class QAService:
         evidence_confidence = self._evidence_confidence(result)
         if not result.hits:
             return finish(
-                "not_found",
-                FALLBACK_TEXT,
-                details=details,
-                confidence=evidence_confidence,
-            )
-        if not result.sufficient_evidence:
-            return finish(
-                "not_found",
-                FALLBACK_TEXT,
+                "error",
+                "নির্বাচিত অধ্যায়ের কোনো পাঠ্যাংশ সূচিতে পাওয়া যায়নি।",
+                error="The selected chapter has no indexed chunks",
                 details=details,
                 confidence=evidence_confidence,
             )
@@ -137,7 +131,8 @@ class QAService:
         system = (
             "/no_think\nYou are a Bengali textbook QA verifier. Use only the supplied sources, never prior knowledge. "
             "Answer in Bengali even when the question is English. If the sources do not explicitly support "
-            "the answer, set answerable=false. Return JSON only: "
+            "the answer, set answerable=false, but only after examining all supplied sources. Retrieval scores "
+            "are ranking hints, not a refusal decision. Return JSON only: "
             '{"answerable":true|false,"answer":"...","source_ids":["..."],"confidence":0.0}. '
             "Confidence must be between 0 and 1 and reflect only how directly the cited sources support the answer. "
             "Every factual claim must be supported by the listed source IDs. Keep the answer concise. "
@@ -147,6 +142,10 @@ class QAService:
         )
         qwen_hits = self._select_qwen_hits(question, result.hits, self.qwen_passage_limit)
         user = f"QUESTION:\n{question}\n\nSOURCES:\n{_sources(qwen_hits)}"
+        if debug:
+            details["answer_backend"] = "qwen"
+            details["retrieval_gate_used"] = False
+            details["context_chunk_ids"] = [hit.chunk.id for hit in qwen_hits]
         try:
             generated = self.llm.complete_json(system, user, max_tokens=300)
         except LLMError as exc:
@@ -171,6 +170,8 @@ class QAService:
         except (TypeError, ValueError):
             qwen_confidence = evidence_confidence
         if generated.get("answerable") is not True or not answer_text or not source_ids:
+            if debug:
+                details["refusal_source"] = "model_context_review"
             return finish(
                 "not_found",
                 FALLBACK_TEXT,
@@ -187,8 +188,6 @@ class QAService:
             Citation(title, page, tuple(ids), valid[ids[0]].text[:240])
             for (title, page), ids in grouped.items()
         )
-        if debug:
-            details["answer_backend"] = "qwen"
         return finish(
             "answered",
             answer_text,

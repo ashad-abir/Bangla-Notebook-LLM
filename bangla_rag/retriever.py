@@ -53,7 +53,7 @@ class HybridRetriever:
         SQLite unicode61 tokenization is retained in the on-disk index for
         inspection, but it can split Bengali combining characters poorly on
         some Windows builds. For a textbook-sized corpus, this deterministic
-        scan is fast and produces a much safer refusal signal.
+        scan is fast and provides a useful lexical relevance signal.
         """
         terms = query_terms(question)
         if not terms:
@@ -149,7 +149,36 @@ class HybridRetriever:
         for rank, chunk_id in enumerate(keyword_ids, 1):
             fused[chunk_id] += 1.0 / (self.rrf_k + rank)
         if not fused:
-            return SearchResult((), False, None, False, {"reason": "no_candidates"})
+            scoped_chunks = [
+                chunk
+                for chunk in self.index.chunks
+                if book_ids is None or chunk.book_id in book_ids
+                if chapter_refs is None
+                or (chunk.book_id, chunk.chapter_id) in chapter_refs
+            ]
+            # Never make the answer/refusal decision in retrieval. If lexical
+            # and semantic ranking produce nothing, provide a small,
+            # deterministic cross-section of the selected chapter so the
+            # grounded model can inspect actual textbook context first.
+            desired = min(limit, len(scoped_chunks))
+            positions = (
+                []
+                if desired == 0
+                else [0]
+                if desired == 1
+                else [round(index * (len(scoped_chunks) - 1) / (desired - 1)) for index in range(desired)]
+            )
+            fallback_hits = tuple(
+                SearchHit(scoped_chunks[position], 0.0)
+                for position in positions
+            )
+            details = {
+                "reason": "chapter_context_fallback" if fallback_hits else "no_scoped_chunks",
+                "book_ids": sorted(book_ids) if book_ids is not None else None,
+                "chapter_refs": sorted(chapter_refs) if chapter_refs is not None else None,
+                "semantic_error": semantic_error,
+            }
+            return SearchResult(fallback_hits, False, None, False, details if debug else {})
 
         ranked = sorted(fused, key=lambda item: (-fused[item], item))[:limit]
         hits = []

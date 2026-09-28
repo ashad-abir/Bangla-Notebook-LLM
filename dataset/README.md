@@ -7,20 +7,17 @@ page range. It contains no answer, answer span, explanation, or answer passage.
 
 The Colab notebook trains BanglaBERT as a 13-label chapter classifier:
 
-`notebooks/train_banglabert_physics_qa_colab.ipynb`
+`notebooks/train_banglabert_chapter_classifier_colab.ipynb`
 
 The notebook rejects answer-bearing fields before training and uses a
-chapter-balanced split of 15 training and 3 validation questions per chapter.
-The exported checkpoint is not an answer generator and is not used as a source
-of answer text.
-
-`physics_qa_234.json` is retained only as a legacy reviewed evaluation/reference
-artifact. It must not be uploaded to the training notebook or loaded by the web
-application. Runtime answers are generated from retrieved textbook chunks in
-the chapter explicitly selected by the user.
+chapter-balanced split of 12 training, 3 validation, and 3 untouched test
+questions per chapter. The exported checkpoint is not an answer generator and
+is not used as a source of answer text. See `BANGLABERT_CHAPTER_TRAINING.md` for
+the complete training and import procedure.
 
 Regenerate the question-only dataset with:
 
 ```bash
 python scripts/build_physics_question_dataset.py
+python scripts/validate_banglabert_chapter_dataset.py
 ```

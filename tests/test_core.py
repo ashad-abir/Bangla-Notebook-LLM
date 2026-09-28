@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 
 from bangla_rag.chunking import chunk_pages
+from bangla_rag.chapter_classifier import LocalChapterClassifier
 from bangla_rag.index_store import build_index, load_index
 from bangla_rag.models import Book, Chapter, Chunk, SearchHit, SearchResult
 from bangla_rag.parser import load_books, parse_book
@@ -63,6 +64,38 @@ class BatchQuizLLM:
 
 
 class CoreTests(unittest.TestCase):
+    def test_chapter_classifier_health_requires_exported_model_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            model_path = Path(directory)
+            classifier = LocalChapterClassifier(model_path)
+            healthy, detail = classifier.health()
+            self.assertFalse(healthy)
+            self.assertIn("config.json", detail)
+
+            (model_path / "config.json").write_text("{}", encoding="utf-8")
+            (model_path / "model.safetensors").write_bytes(b"placeholder")
+            (model_path / "vocab.txt").write_text("[PAD]\n", encoding="utf-8")
+            (model_path / "training_metadata.json").write_text(
+                json.dumps({
+                    "task": "physics-chapter-classification",
+                    "contains_answers": False,
+                }),
+                encoding="utf-8",
+            )
+            healthy, _ = classifier.health()
+            self.assertTrue(healthy)
+
+            (model_path / "training_metadata.json").write_text(
+                json.dumps({
+                    "task": "physics-chapter-classification",
+                    "contains_answers": True,
+                }),
+                encoding="utf-8",
+            )
+            healthy, detail = classifier.health()
+            self.assertFalse(healthy)
+            self.assertIn("answer-free", detail)
+
     def test_real_book_has_366_pages(self):
         source = Path(__file__).resolve().parents[1] / "dataset" / "raw" / "physics.md"
         pages = parse_book(Book("physics-9-10", "পদার্থবিজ্ঞান", source))
@@ -100,16 +133,18 @@ class CoreTests(unittest.TestCase):
             self.assertEqual([chunk.chapter_id for chunk in chunks], ["1", "2"])
             self.assertTrue(chunks[0].id.startswith("book-ch1-"))
 
-    def test_low_evidence_refuses_without_calling_llm(self):
+    def test_low_evidence_is_sent_to_model_before_refusal(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             chunk = Chunk("c1", "book", "বই", 1, 0, "আলোর প্রতিফলন")
             build_index(root, [chunk], np.asarray([[0.0, 1.0]], dtype=np.float32), "test")
             retriever = HybridRetriever(load_index(root), FakeEmbeddings([1.0, 0.0]))
             llm = FakeLLM({})
-            answer = QAService(retriever, llm).ask("বিরিয়ানির রেসিপি")
+            answer = QAService(retriever, llm).ask("বিরিয়ানির রেসিপি", debug=True)
             self.assertEqual(answer.text, FALLBACK_TEXT)
-            self.assertEqual(llm.calls, 0)
+            self.assertEqual(llm.calls, 1)
+            self.assertFalse(answer.debug["retrieval_gate_used"])
+            self.assertEqual(answer.debug["refusal_source"], "model_context_review")
 
     def test_invalid_source_id_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -200,6 +235,26 @@ class CoreTests(unittest.TestCase):
 
             self.assertEqual([hit.chunk.id for hit in result.hits], ["force"])
             self.assertTrue(all(hit.chunk.chapter_id == "3" for hit in result.hits))
+
+    def test_no_match_still_returns_selected_chapter_context_for_model_review(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            chunks = [
+                Chunk("c1", "physics", "পদার্থবিজ্ঞান", 67, 0, "জড়তা ও বল", "3", "বল"),
+                Chunk("c2", "physics", "পদার্থবিজ্ঞান", 80, 0, "ভরবেগের সূত্র", "3", "বল"),
+            ]
+            build_index(root, chunks, None, None)
+            retriever = HybridRetriever(load_index(root))
+
+            result = retriever.search(
+                "How do plants make food?",
+                debug=True,
+                chapter_refs={("physics", "3")},
+            )
+
+            self.assertEqual({hit.chunk.id for hit in result.hits}, {"c1", "c2"})
+            self.assertFalse(result.sufficient_evidence)
+            self.assertEqual(result.debug["reason"], "chapter_context_fallback")
 
     def test_quiz_service_batches_mcq_and_builds_short_answer_quiz(self):
         chunk = Chunk("c1", "physics", "পদার্থবিজ্ঞান", 10, 0, "বল ও নিউটনের সূত্র")

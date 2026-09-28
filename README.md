@@ -26,10 +26,10 @@ flowchart LR
     C --> D[Catalog and local index]
     D --> E[Class, book, and chapter selection]
     E --> F[Chapter-filtered lexical and semantic retrieval]
-    F --> G{Enough textbook evidence?}
-    G -- No --> H[Fixed refusal]
-    G -- Yes --> I[Grounded Qwen answer]
-    I --> J[Trusted page citation]
+    F --> G[Send ranked chapter passages to Qwen]
+    G --> H{Sources support an answer?}
+    H -- No --> I[Grounded refusal]
+    H -- Yes --> J[Bengali answer with trusted citation]
     F --> K[Qwen quiz generation]
     K --> L[Quiz source and output validation]
 ```
@@ -181,6 +181,9 @@ The GUI reads the catalog dynamically, so a catalog update does not require edit
 # Evaluate the bundled retrieval/refusal cases
 & ".\.venv\Scripts\python.exe" -m bangla_rag evaluate
 
+# Test an imported question-only BanglaBERT chapter classifier
+& ".\.venv\Scripts\python.exe" -m bangla_rag classify "নিউটনের দ্বিতীয় গতিসূত্র কী?" --top-k 3
+
 # Check the index and local model connection
 & ".\.venv\Scripts\python.exe" -m bangla_rag doctor
 ```
@@ -215,7 +218,8 @@ Generated indexes, model files, caches, logs, PIDs, source PDFs, and OCR scratch
 
 ## Validation and safety boundaries
 
-- Semantic similarity alone is not treated as proof; lexical coverage and configured evidence thresholds gate generation.
+- Retrieval scores rank passages but never reject a question before the model reads selected-chapter context.
+- Qwen must refuse when the supplied chapter sources do not explicitly support an answer.
 - Retrieval and generation are hard-filtered by the selected `(book_id, chapter_id)` pair.
 - BanglaBERT training consumes only question text and chapter labels; it never receives answer text.
 - Citations are constructed from trusted index metadata, not model-written page numbers.
@@ -239,3 +243,7 @@ Run the complete automated suite with:
 Thresholds are starter values calibrated for the bundled books and evaluation cases. Re-evaluate them after changing the embedding model, corpus, chunking, or catalog.
 
 Qwen confidence is the model's self-reported estimate of how directly its cited textbook source supports the answer; it is useful as an indicator, not a calibrated probability.
+
+For the fresh question-only BanglaBERT notebook, validation steps, Colab
+instructions, and checkpoint import procedure, see
+[`BANGLABERT_CHAPTER_TRAINING.md`](BANGLABERT_CHAPTER_TRAINING.md).

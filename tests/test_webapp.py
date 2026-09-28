@@ -97,6 +97,8 @@ def test_home_and_health_are_available():
     assert len(physics["chapters"]) == 13
     assert physics["chapters"][2]["title_bn"] == "বল"
     assert physics["chapters"][2]["chunk_count"] == 3
+    assert physics["chapters"][2]["sample_questions_bn"][0] == "নিউটনের প্রথম গতিসূত্র কী?"
+    assert physics["chapters"][2]["sample_questions_en"][0] == "What is Newton's first law of motion?"
 
 
 def test_ask_serializes_verified_citations():
